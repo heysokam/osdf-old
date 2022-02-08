@@ -6,12 +6,16 @@
 - [] Basic vq3 movement
 - [] Timer
 - [] Basic cpm movement
+
 ## (0.2.0 and over)
 - [] Velocity pads  
 - [] Weapons  
 - [] Surface flags  
-- [] Triggers / Logic
 - [] Checkpoints
+- [] Proxymod compatibility
+- [] Replays
+- [] Ghosts
+- [] Triggers / Targets
 - [] ...
 
 ## Complete functionality (1.0.0)
@@ -23,8 +27,10 @@
 - [] vq1 movement (+ frictionless alternative)
 - [] vq2 movement
 - [] vq4 movement
+- [] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
 
 ## Wishlist
 - [] Steam integration (requires Standalone game, since we are not modding baseq3 but gpl code)
+- [] Portals
 - [] Darkplaces Renderer
 - [] K talent system

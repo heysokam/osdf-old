@@ -1,17 +1,18 @@
 # Imports
 from sys import platform    # for platform specific flow control
-
-# Folders
-def rootDir = "."   # Where all other dirs are stored
-def binDir = "bin"  # Where the compiled binaries will be output
-def srcDir = "src"  # Source code of the mod
-def refDir = "ref"  # Reference code and other important information
+from sys import path        # for loading scripts stored in subfolders (python :facepalm:, should be just "import folder/script")
+sys.path.insert(1, './src/')
+import cfg                  # Scripts configuration
+import comp                 # Compiling functions
 
 # Compile
-import subprocess   # for bash scripting
+## From Linux
 if sys.platform.startswith('linux'):    # Linux-specific code here...
-    subprocess.run(["ls"])              # Basic command
-    subprocess.run(["ls", "-la"])       # Command with arguments
+    exit("TEMPerr:: Script not connected. See ./src/comp.py")
 
+## From Windows
 elif sys.platform.startswith('win'):    # Windows-specific code here...
-    return
+    exit("TEMPerr:: Compile manually. Windows platform compile script is not written yet.")
+
+## Non supported platforms handler
+else:   exit("ERR:: The OS platform you are using is not supported in this script. Consult ioq3 documentation on how to compile for it.")
