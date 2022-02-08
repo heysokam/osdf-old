@@ -1,16 +1,16 @@
 # Open Source defrag's mod code
 
 ## Goals:
-### Gameplay:
-- Maintain gameplay 1:1. The code is not accessible, but can be reverse-engineered.
-- Achieve compatibility with existing maps. Avoid requiring any form of map porting as much as possible.
-- Community collaboration in bug-fixing and further development of the mod.
-
 ### Code & License:
 - Respect FOSS philosophy. Open source and community focus.
 - Eliminate all traces of q3a-sdk licensing constraints.
 - Either reverse-engineer or rewrite the code.
 - Community based, where anyone can become a contributor.
+
+### Gameplay:
+- Maintain gameplay 1:1. The code is not accessible, but can be reverse-engineered or rewritten.
+- Achieve compatibility with existing maps. Avoid requiring any form of map porting as much as possible.
+- Community collaboration in bug-fixing and further development of the mod.
 
 ## Reference Repositories
 ## Base:
