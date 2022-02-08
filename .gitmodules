@@ -1,0 +1,24 @@
+[submodule "ref/ratoa_gamecode"]
+	path = ref/ratoa_gamecode
+	url = https://github.com/rdntcntrl/ratoa_gamecode.git
+[submodule "ref/opendf"]
+	path = ref/opendf
+	url = https://github.com/oitzujoey/opendf.git
+[submodule "ref/Quake3e"]
+	path = ref/Quake3e
+	url = https://github.com/ec-/Quake3e.git
+[submodule "ref/q3vm"]
+	path = ref/q3vm
+	url = https://github.com/brugal/q3vm.git
+[submodule "ref/ioq3"]
+	path = ref/ioq3
+	url = https://github.com/ioquake/ioq3.git
+[submodule "ref/Quake-III-Arena"]
+	path = ref/Quake-III-Arena
+	url = https://github.com/id-Software/Quake-III-Arena.git
+[submodule "ref/DF_Reverse_Stuff"]
+	path = ref/DF_Reverse_Stuff
+	url = https://github.com/krsh732/DF_Reverse_Stuff.git
+[submodule "ref/defragmmod"]
+	path = ref/defragmmod
+	url = https://github.com/chovelyoukai/defragmmod.git
