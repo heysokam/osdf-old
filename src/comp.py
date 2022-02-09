@@ -2,6 +2,8 @@
 #   This script should be used as an import module.
 #   Exit if script is not imported as such:
 if __name__ == "__main__": exit("ERR:: This script is not meant to be executed independently")
+# :::::::::::::::::
+
 
 # Imports
 import cfg          # Script Configuration
@@ -10,7 +12,10 @@ import bash         # Bash helper functions
 # Compiling
 ## QVM
 ##   Creates OS independent bytecode, that can be then run by any engine that supports it (ioq3/q3a have different qvm versions)
-makeQVM= "make BUILD_CLIENT=0 BUILD_SERVER=0 BUILD_GAME_SO=0" # Make only QVM-game and QVM-tools
+#Syntax# 
+#  make BUILD_CLIENT=0 BUILD_SERVER=0 BUILD_GAME_SO=0 BUILD_DIR=../../bin BASEGAME=osdf
+makeQVM= "make BUILD_CLIENT=0 BUILD_SERVER=0 BUILD_GAME_SO=0"+space+"BUILD_DIR="+binDir +space+"BASEGAME="+modName # Make only QVM-game and QVM-tools
+
 def compileQVM():
     bash(makeQVM)
 

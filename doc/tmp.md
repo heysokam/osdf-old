@@ -1,3 +1,6 @@
+# TODO:
+- Figure out if there is a way to extract QVM compiling tools from ioq3, to become independent from its code.
+
 # Compile & code:
   - Make gamecode modifications in ioq3  
   - Compile with their qvm makefile (root/compile.py will do this)  
@@ -9,7 +12,7 @@ _It only modifies gamecode._
   Gamecode Folders: cgame, game, q3_ui  
   ioq3 (supposedly) contains modifications to vanilla gameplay    #TODO: confirm this  
 
-# q3e engine:
+# oDFe engine:
   ?? no modifications needed (in theory)  
 
 # Compile Settings:

@@ -22,3 +22,6 @@
 [submodule "ref/defragmmod"]
 	path = ref/defragmmod
 	url = https://github.com/chovelyoukai/defragmmod.git
+[submodule "ref/odfe"]
+	path = ref/odfe
+	url = https://github.com/JBustos22/oDFe.git

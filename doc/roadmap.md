@@ -1,7 +1,13 @@
 # Roadmap:
 ## Minimal working product (0.0.1)
-- [] First working version of the mod, with no functionality added to base gameplay.
+- [] Initial setup & compilation (manual)
 - [] Map loading
+- [] First releaseable dev version of the mod, with no functionality added to baseq3 gameplay.
+
+## Automated setup on linux (0.0.2)
+- [] Automated compilation from python or custom makefile
+- [] Automated packing
+
 ## Minimal viable product (0.1.0)
 - [] Basic vq3 movement
 - [] Timer
