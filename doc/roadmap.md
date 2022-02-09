@@ -1,4 +1,11 @@
 # Roadmap:
+## Works in default q3a
+- [x] Surface flags (uses shader properties)
+- [x] Vq3 movement (needs `pmove_fixed 1`)
+- [x] Vq3 Teleports
+- [x] vq3 Hurt Trigger
+- [x] target score
+
 ## Minimal working product (0.0.1)
 - [x] Initial setup & compilation (manual)
 - [x] Map loading
@@ -6,23 +13,30 @@
 - [] First releaseable dev version of the mod, with no functionality added to baseq3.
 
 ## Automated setup on linux (0.0.2)
-- [] Automated compilation from python or custom makefile
+- [] Automated compilation from python, custom makefile or scons
 - [] Automated packing
 
 ## Minimal viable product (0.1.0)
-- [] Basic vq3 movement
+- [x] Basic vq3 movement
+- [x] Weapons  
 - [] Timer
-- [] Basic cpm movement
 
-## (0.2.0 and over)
+## CPM and Overbounce (0.2.0 and over)
+- [] Basic cpm movement
+- [] no-ob
+
+## Strafehud and velocity pads (0.3.0)
+- [] Proxymod compatibility (?maybe postponed to later patch?)
 - [] Velocity pads  
-- [] Weapons  
-- [] Surface flags  
+
+## (0.4.0 and over)
 - [] Checkpoints
-- [] Proxymod compatibility
+- [] Triggers / Targets
+- [] Frags Filter
 - [] Replays
 - [] Ghosts
-- [] Triggers / Targets
+- [] HUD cleanup
+- [] HUD customization
 - [] ...
 
 ## Complete functionality (1.0.0)
