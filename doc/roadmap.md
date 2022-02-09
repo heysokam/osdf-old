@@ -1,8 +1,9 @@
 # Roadmap:
 ## Minimal working product (0.0.1)
-- [] Initial setup & compilation (manual)
-- [] Map loading
-- [] First releaseable dev version of the mod, with no functionality added to baseq3 gameplay.
+- [x] Initial setup & compilation (manual)
+- [x] Map loading
+- [] Prove that changes to the code actually affect gameplay through `.qvm` files
+- [] First releaseable dev version of the mod, with no functionality added to baseq3.
 
 ## Automated setup on linux (0.0.2)
 - [] Automated compilation from python or custom makefile

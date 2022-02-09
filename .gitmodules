@@ -4,9 +4,6 @@
 [submodule "ref/opendf"]
 	path = ref/opendf
 	url = https://github.com/oitzujoey/opendf.git
-[submodule "ref/Quake3e"]
-	path = ref/Quake3e
-	url = https://github.com/ec-/Quake3e.git
 [submodule "ref/q3vm"]
 	path = ref/q3vm
 	url = https://github.com/brugal/q3vm.git
