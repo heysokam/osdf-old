@@ -18,7 +18,17 @@ _It only modifies gamecode._
 # Compile Settings:
 if you go in ioq3 and run `make BUILD_CLIENT=0 BUILD_SERVER=0 BUILD_GAME_SO=0`, this will build qvm tools + qvms only
 
+
+# QVM verification
+`fs_debug 1`
+`\which vm/filename.qvm`
+Only if said module is currently running
+The game qvm isn't running with local client connected to a remote server,  
+and cgame qvm isn't running if at main menu
+
+
 # Rewrite or Reverse engineer?  
+
 
 # Guide
 Start from ioquake3 repo.
