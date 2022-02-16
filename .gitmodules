@@ -22,3 +22,6 @@
 [submodule "ref/odfe"]
 	path = ref/odfe
 	url = https://github.com/JBustos22/oDFe.git
+[submodule "src/osdf-ioq3"]
+	path = src/osdf-ioq3
+	url = https://github.com/heysokam/osdf-ioq3.git

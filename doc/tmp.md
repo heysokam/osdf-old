@@ -26,9 +26,29 @@ Only if said module is currently running
 The game qvm isn't running with local client connected to a remote server,  
 and cgame qvm isn't running if at main menu
 
+# DearIMGUI:
+To add DearIMGUI:  
+## QVM:
+Files:    q3_ui/ui_main.c  
+Makefile vars: CLIENT_CFLAGS, CLIENT_LIBS
+Cannot modify expected structure
+## Engine:
+Files:    code/client/cl_ui.c
+Make:     ??
+Connect it with a check for what type of ui to use.
+
 
 # Rewrite or Reverse engineer?  
 
+# QVM tools only
+QVM toolchain: lcc, rcc, q3asm
+
+G: if you go in ioq3 and run make BUILD_CLIENT=0 BUILD_SERVER=0 BUILD_GAME_SO=0, this will build qvm tools + qvms only
+sOkam!: could i get gamecode directly from gpl vanilla, and make it work by compiling in whatever engine?
+G: yes. you don't compile in an engine
+f: you don't need any engine to comile qvms. only qvm toolchain - lcc, rcc, q3asm. engine only runs qvms
+G: you compile qvms first, then can run your .qvm files in any engine.  eg. ~/.q3a/baseq3/vm/cgame.qvm (edited)
+by doing this. and when you run q3e/etc, the engine will load them
 
 # Guide
 Start from ioquake3 repo.

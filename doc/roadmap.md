@@ -54,4 +54,3 @@
 - [] Steam integration (requires Standalone game, since we are not modding baseq3 but gpl code)
 - [] Portals
 - [] Darkplaces Renderer
-- [] K talent system
