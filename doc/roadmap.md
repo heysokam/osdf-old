@@ -20,6 +20,7 @@
 - [x] Basic vq3 Weapons (should be full by default)  
 - [x] Basic cpm strafing (Correct accel, aircontrol and A/D strafing)
 - [] Timer
+- [] Gamemode "run"
 - [] First releasable version (dev)
 
 ## CPM and Overbounce (0.2.0 and over)
@@ -31,7 +32,6 @@
 - [] Velocity pads  
 
 ## (0.4.0 and over)
-- [] Gamemode "run"
 - [] Checkpoints
 - [] Triggers / Targets
 - [] Frags Filter
@@ -57,4 +57,3 @@
 ## Wishlist
 - [] Steam integration (requires Standalone game, since we are not modding baseq3 but gpl code)
 - [] Portals
-- [] Darkplaces Renderer
