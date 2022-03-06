@@ -1,7 +1,7 @@
 # Roadmap:
 ## Works in default q3a
 - [x] Surface flags (uses shader properties)
-- [x] Vq3 movement (needs `pmove_fixed 1`)
+- [x] Vq3 movement (`pmove_fixed 1`)
 - [x] Vq3 Teleports
 - [x] vq3 Hurt Trigger
 - [x] target score
@@ -9,20 +9,21 @@
 ## Minimal working product (0.0.1)
 - [x] Initial setup & compilation (manual)
 - [x] Map loading
-- [] Prove that changes to the code actually affect gameplay through `.qvm` files
-- [] First releaseable dev version of the mod, with no functionality added to baseq3.
+- [x] Changes to the code actually affect gameplay through `.qvm` files
 
-## Automated setup on linux (0.0.2)
-- [] Automated compilation from python, custom makefile or scons
-- [] Automated packing
+## Automated compilation on bash shell (0.0.2)
+- [x] Automated compilation from makefile
+- [x] Automated packing
 
 ## Minimal viable product (0.1.0)
-- [x] Basic vq3 movement
-- [x] Weapons  
+- [x] Full vq3 movement
+- [x] Basic vq3 Weapons (should be full by default)  
+- [x] Basic cpm strafing (Correct accel, aircontrol and A/D strafing)
 - [] Timer
+- [] First releasable version (dev)
 
 ## CPM and Overbounce (0.2.0 and over)
-- [] Basic cpm movement
+- [] Full cpm strafing (double jumps and other specific mechanics)
 - [] no-ob
 
 ## Strafehud and velocity pads (0.3.0)
@@ -30,13 +31,16 @@
 - [] Velocity pads  
 
 ## (0.4.0 and over)
+- [] Gamemode "run"
 - [] Checkpoints
 - [] Triggers / Targets
 - [] Frags Filter
 - [] Replays
 - [] Ghosts
-- [] HUD cleanup
+- [] HUD cvar compatibility ()
 - [] HUD customization
+- [] Instant respawn
+- [] Scoreboard
 - [] ...
 
 ## Complete functionality (1.0.0)

@@ -23,13 +23,6 @@ PK3file="$compileDir/$modname/$vmFile.pk3"  # created by the make block of this 
 
 # ::::::::::::::::::::
 # Helper code
-## Aliases
-alias cp="cp -v"
-alias mv="mv -v"
-alias md="mkdir -v"
-alias zip="zip -v"
-alias echo="echo -e"
-startFolder="$(pwd)"
 ## Functions
 hold() {
   while [[ true ]]; do 
@@ -56,17 +49,30 @@ elif [[ -v NOOP ]]; then
   PS4='+ Line ${LINENO}: ${BASH_COMMAND} => '
   set -vn
 fi
+## Aliases
+shopt -s expand_aliases
+alias cp='cp -v '
+alias mv='mv -v '
+alias md='mkdir -v '
+alias zip='zip -v '
+alias echo='echo -e '
+startFolder="$(pwd)"
 # ::::::::::::::::::::
 
 
 # ::::::::::::::::::::
 # Make
 # ::::::::::::::::::::
+# Remove previous compile, for better q3lcc debugging messages.
+if true; then
+  rm -rf $compileDir;
+fi;
+
 # Enter ioq3 folder
 cd "$srcDir" || quit "ERR:: Failed to enter $srcDir" && echo ":: Entered folder: $(pwd)"
 # Make qvm
 #make BUILD_CLIENT=0 BUILD_SERVER=0 BUILD_GAME_SO=0 BUILD_DIR=$binDir BASEGAME=$modname
-make
+make || quit "ERR:: Failed to compile. Read compiler output for more info."
 
 # Enter qvm compile target folder
 cd "$compileDir"/$modname || quit "ERR:: Failed to enter $compileDir/$modname" && echo ":: Entered folder: $(pwd)"
@@ -81,7 +87,7 @@ echo -e "\n:: Created $targetFile backup file inside $bkpDir"
 
 # Avoid installing when called with "make" option
 if [ "$1" = "make" ]; then
-quit ":: QVM made, but not installed or packed.";
+  quit ":: QVM made, but not installed or packed.";
 fi
 
 
@@ -100,8 +106,12 @@ cd $startFolder # go back to start folder
 #  This is not executed when calling with "make" argument.
 # Create the release folders
 #   that will be extracted by the user into install root folder (BASEPATH)
+releaseBase="basepath" # releases subfolder name. Stored under each version folder (to avoid recursive zipping)
+
 md $releasesDir
-baseRoot="$releasesDir/$versionNumber"
+versRoot="$releasesDir/$versionNumber"
+md $versRoot
+baseRoot="$versRoot/$releaseBase"
 md $baseRoot
 modRoot="$baseRoot/$modname"
 md $modRoot
@@ -119,15 +129,15 @@ cp $cfgDir/*.cfg $modRoot/
 
 # Create the releasable zip file
 ## Calculate revision number
-#   Find out the number of pk3 files already created for this version (num of files inside baseRoot) 
+#   Find out the number of zip files already created for this version (num of files inside versRoot) 
 #   and assign that number to revNumber
-revNumber=$(find $baseRoot -maxdepth 1 -type f -name "*.zip" -printf x | wc -c)
+revNumber=$(find $versRoot -maxdepth 1 -type f -name "*.zip" -printf x | wc -c)
 
 ## Zip
 packedFile=$fullname.$versionNumber-r$revNumber.zip
 cd $baseRoot
 zip -r "$packedFile" .
-
+mv $packedFile ../$packedFile
 
 
 # ::::::::::::::::::::
