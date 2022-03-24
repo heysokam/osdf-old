@@ -21,7 +21,7 @@ _(This list has no version tracking. For an overview of the project, see ./roadm
 - [] Map loader
 - [] Player state configuration (health, ammo, powerups, etc)
 ### Strafe helpers
-- [] UPS meter
+- [x] UPS meter
 - [] Proxymod support
 
 ## Console
