@@ -22,8 +22,13 @@
 - [x] Instant respawn (g_combat.c/player_die()/line608  & some other spots to switch timer to ms and make 1 mean immediate )
 - [x] Gamemode "run"
 - [] Timer
+<<<<<<< HEAD
 -- [] Independent timer score (separate to fragfilters/score)
 - [] First cpm/vq3 releasable version (dev)
+=======
+- [] Gamemode "run"
+- [] First releasable version (dev)
+>>>>>>> cd925cac0963b4278c683b1fed44ce278c8107be
 
 ## CPM and Physics selection (0.2.0)
 - [x] Full cpm strafing (double jumps, slick and other specific mechanics)
@@ -37,10 +42,13 @@
 - [] Velocity pads  
 
 ## (0.4.0 and over)
+<<<<<<< HEAD
 - [] Crouch doesn't remove +left/+right
 - [] no-ob
 -- [] Rough implementation (cvar phy_overbounce_scale = 1.000f) //TODO Code is created. cvar is currently disconnected
 -- [] Robust fix for random overbounces only, while keeping the good ones.
+=======
+>>>>>>> cd925cac0963b4278c683b1fed44ce278c8107be
 - [] Checkpoints
 - [] Frags Filter
 - [] Triggers / Targets: speed, ...
@@ -71,4 +79,7 @@
 ## Wishlist
 - [] Steam integration (requires Standalone game, since we are not modding baseq3 but gpl code)
 - [] Portals
+<<<<<<< HEAD
 - [] Vortex weapons (implosion/pull instead of explosion/knockback)
+=======
+>>>>>>> cd925cac0963b4278c683b1fed44ce278c8107be
