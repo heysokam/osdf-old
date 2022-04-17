@@ -1,56 +1,37 @@
-#!/bin/bash
+#!/usr/bin/env -S nim --hints:off
+# ScriptMode: 
+let sMode= 'w'    ; if sMode == 'w': mode= Scriptmode.Whatif elif smode == 's': mode= ScriptMode.Silent elif smode == 'v': mode= ScriptMode.Verbose else: discard #   WhatIf: Do not run commands, instead just echo what would have been done.
+import lib/nim/shell
+import strutils
 #TODO: Convert to nimscript. Helper: github.com/Vindaar/shell
 #TODO: Fix rev numbering not working properly
 
+
 # Configuration
 ## Mod
-versionNumber="0.0.1"
-modname="osdf"
-fullname="opensource-defrag"
+const
+  versionNumber   = "0.0.1"
+  modname         = "osdf"
+  fullname        = "opensource-defrag"
 
 ## Folders Configuration
-basepath="/app/vg/os-defrag" # installation folder
+const
+  basepath        = "/app/vg/os-defrag" # installation folder
 # code folders
-releasesDir="../bin/releases"
-devRoot="$HOME/gd/osdf"
-srcRoot="$devRoot/src"
-srcDir="$srcRoot/osdf-ioq3"
-cfgDir="$srcRoot/cfg"
+  releasesDir     = "../bin/releases"
+  devRoot         = "$HOME/gd/osdf"
+  srcRoot         = &"{devRoot}/src"
+  srcDir          = &"{srcRoot}/osdf-ioq3"
+  cfgDir          = &"{srcRoot}/cfg"
 # bin output
-binDir="$devRoot/bin"
-compileDir="$binDir/release-linux-x86_64"  # set by the compiler (makefile)
-bkpDir="$binDir/vm-bkp"
-vmFile="vm"   # without extension
-PK3file="$compileDir/$modname/$vmFile.pk3"  # created by the make block of this script
+  binDir          = &"{devRoot}/bin"
+  compileDir      = &"{binDir}/release-linux-x86_64"  # set by the compiler (makefile)
+  bkpDir          = &"{binDir}/vm-bkp"
+  vmFile          = "vm"   # without extension
+  PK3file         = &"{compileDir}/{modname}/{vmFile}.pk3"  # created by the make block of this script
 
 # ::::::::::::::::::::
 # Helper code
-## Functions
-hold() {
-  while [[ true ]]; do 
-    echo -e "]] Script ended. Press any key to exit."; 
-    read -r -n 1; done; }
-quit() { 
-  echo -e "$1";
-  notify-send "$1"
-  if [[ -v HOLD ]]; then
-    hold; exit
-  else exit; fi; }
-## Bash options
-shopt -s nullglob # Make empty results not output a '*' character. With this, they return "" (empty/null)
-if [[ -v DBG ]] && [[ -v NOOP ]]; then
-  echo "DBG + NOOP mode: Active"
-  PS4='+ Line ${LINENO}: ${BASH_COMMAND} => '
-  set -vxn
-elif [[ -v DBG ]]; then
-  echo "DBG mode: Active"
-  PS4='+ Line ${LINENO}: ${BASH_COMMAND} => '
-  set -vx # Verbose + Xtrace mode for debugging. TMI for regular use.
-elif [[ -v NOOP ]]; then
-  echo "NOOP mode: Active"
-  PS4='+ Line ${LINENO}: ${BASH_COMMAND} => '
-  set -vn
-fi
 ## Aliases
 shopt -s expand_aliases
 alias cp='cp -v '

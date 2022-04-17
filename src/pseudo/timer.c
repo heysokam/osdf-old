@@ -1,13 +1,83 @@
 
+//
+// g_target.c
+//
+void target_timer_use( int ev, gentity_t *act ) {
+  // Skip cases
+  if (!act->client){return;} // Activator is not a client
+  if (act->client->ps.pm_type != PM_NORMAL){return;} // Activator is not in normal movement mode
+  if (act->client->ps.stats[STAT_HEALTH] <= 0){return;} // Activator is not alive
+
+  switch (ev){
+  case EV_TIMER_START:
+    // Hitting start trigger
+    // Set start to servertime
+    act->client->ps.stats[STAT_TIME_START] = cmd.servertime; ///TODO ????
+    // Notify: New time as servertime
+  case EV_TIMER_CP:
+    // Hitting checkpoint trigger, and timer is active
+    // Exit if timer is not active (start = NULL)
+    if (act->client->ps.stats[STAT_TIME_START] = NULL) {return;}
+    //
+    // Notify: Add client checkpoint as current servertime - start
+    // ??
+  case EV_TIMER_CANCEL:
+    // Cancel timer. When player respawns, and timer is active
+    // Exit if timer is not active (start = NULL)
+    if (act->client->ps.stats[STAT_TIME_START] = NULL) {return;}
+    // 
+    // Notify: Timer has been canceled at servertime - start
+    // Set timer to inactive (start = NULL)
+    act->client->ps.stats[STAT_TIME_START] = NULL;
+  case EV_TIMER_END:
+    // Hitting stop trigger with an active timer
+    // Exit if timer is not active (start = NULL)
+    if (act->client->ps.stats[STAT_TIME_START] = NULL) {return;}
+    //
+    // Store end time
+    // Notify: Final run time is servertime - start
+    // Set timer to inactive (start = NULL)
+    act->client->ps.stats[STAT_TIME_START] = NULL;
+  }
+}
+
+
+
+
+
+
+
+
+//..//  I don't think we need all of this
+//        All that we need is probably just the start servertime
+//        Instead of adding time every frame...
+//          we calculate the time on the client or server when needed
+//          and consider NULL as the timer being inactive
+typedef struct {
+  qboolean active;  // inactive:  time = NULL
+  int time;         // calculated, not stored
+  int start;        // stored in ps.stats
+} timerData_t;
+
+
+
+
+
+
+
+
 
 > Define gamemode
+  - 0 = run = ffa-default
 
 > Load map
->> Select map gamemode
->> Show gamemode info
+>> Select map gamemode [x]
+>> Show gamemode info  [x]
 
 > Spawn map entities
->> Spawn timer targets
+>> Spawn timer targets [ ]
+    SP_target_timer    [ ]
+      Populate timer entity properties
 
 > Trigger Multiple
 >> Target timer
@@ -19,12 +89,12 @@
 
 >>> Checkpoint
 	Entity activated:       target_checkpoint
-    Event sent to client:   ET_TIMER_CHECKPOINT
 	Function called:        timer_checkpoint(timer)
+    Event sent to client:   ET_TIMER_CHECKPOINT
 >>> Finish
 	Entity activated:       target_stopTimer
-    Event sent to client:   ET_TIMER_STOP
 	Function called:        timer_checkpoint(timer)
+    Event sent to client:   ET_TIMER_STOP
 >>>  ??    Can I use just one event type for all of them ??   
 >>>> ET_TIMER
 >>>> entity->classname == "target_startTimer" :: do start function
@@ -32,6 +102,7 @@
 struct {
 	q3_trigger_t  trigger;   // Trigger that activated this target 
 	qboolean 	 canReset;   // Can reset running timer
+  
 } timerData_t;
 
 timerData_t timer;

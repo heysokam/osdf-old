@@ -21,11 +21,11 @@
 - [x] Basic cpm strafing (Correct accel, aircontrol and A/D strafing)
 - [x] Instant respawn (g_combat.c/player_die()/line608  & some other spots to switch timer to ms and make 1 mean immediate )
 - [x] Gamemode "run"
-- [ ] Timer
-  - [ ] Independent timer score (separate to fragfilters/score)
-- [ ] First cpm/vq3 releasable version (dev)
-- [ ] Gamemode "run"
-- [ ] First releasable version (dev)
+- [x] Timer (local, best per session)
+- [x] Gamemode "run" (basic)
+  - [x] Definition in code (replaced FFA, g_gametype 0)
+  - [ ] Entity reset on player_die()
+- [ ] First cpm/vq3 alpha/dev release version
 
 ## CPM and Physics selection (0.2.0)
 - [x] Full cpm strafing (double jumps, slick and other specific mechanics)
@@ -43,34 +43,70 @@
 - [ ] no-ob
   - [ ] Rough implementation (cvar phy_overbounce_scale = 1.000f) //TODO Code is created. cvar is currently disconnected
   - [ ] Robust fix for random overbounces only, while keeping the good ones.
-- [ ] Checkpoints
+- [ ] Independent timer score (separate to fragfilters/score)
 - [ ] Frags Filter
 - [ ] Triggers / Targets: speed, ...
-- [ ] Tricks Mode
-- [ ] Scoreboard
 - [ ] Entity filters: notcpm, notvq3, notsp, notmp, notdf, nottm, notfc, notdefrag
 - [ ] Proxymod port
-- [ ] Replays
-- [ ] Ghosts
+- [ ] Scoreboard
+- [ ] All gamemodes
+  - [ ] Run (complete)
+  - [ ] Tricks Mode
+  - [ ] FastCap
+  - [ ] Hooks
+- [ ] Multiplayer
+  - [ ] Remove player interaction
 - [ ] ...
+
+## Ghosts and Records (0.9.0)
+- [ ] Ghosts
+- [ ] Records saving to disk 
+- [ ] Better timer
+- [ ] Checkpoints and comparison to best times
+- [ ] Automatic replay recording
 
 ## Complete functionality (1.0.0)
 - [ ] Entity compatibility for existing maps
+- [ ] HUD customization
+- [ ] HUD cvar compatibility   //Is this necessary, because of the hud rewrite ??
 - [ ] Server leaderboards
 - [ ] Web access to leaderboards data
-- [ ] HUD cvar compatibility ()   //Is this necessary, because of the hud rewrite ??
-- [ ] HUD customization
 
 ## Expand (+1.0.0)
-- [ ] vq1 movement (+ frictionless alternative)
-- [ ] vq2 movement
-- [ ] vq4 movement
+_[this section is not a todo, but more like a wishlist of sorts]_
 - [ ] Airjump Powerup
 - [ ] Physics selection Powerups (cpm and vq3 sections in the same map)
 - [ ] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
-- [ ] Native race mode (like AG, first to finish wins. also FFA standings based on finish order)
+- [ ] Native race mode (like AG, first to finish wins. also FFA race, standings based on finish order)
+- [ ] New data and stats:
+  - [ ] Persistent stats per map.
+  - [ ] Checkpoints: player vs wr, p vs pb (spec or own), p vs own pb
+  - [ ] Getting data from leaderboards server to compare
+- [ ] Ghosts expand:
+  - [ ] Multiple ghosts (example: own & spec'ed player)
+- [ ] Conditional binds (bind X if cvar cvarvalue actionTrue actionFalse)
+
+### New physics
+- [x] vq1 movement (qw/ag)
+  - [x] AD movement
+    - [x] QW balanced
+    - [x] AG balanced
+  - [ ] SBJ
+  - [ ] Duckroll
+  - [ ] Q1 rocket launcher
+  - [ ] Gaus (needs new name)
+  - [ ] ...
+- [ ] vq2 movement
+- [ ] vq4 movement
+- [ ] New mechanics
+  - [ ] Walljumps (urt insp) (optional wsw-like powerup, to boost its power)
+  - [ ] ...
 
 ## Wishlist
-- [ ] Steam integration (requires Standalone game, since we are not modding baseq3 but gpl code)
-- [ ] Portals
 - [ ] Vortex weapons (implosion/pull instead of explosion/knockback)
+- [ ] Portals
+- [ ] Steam integration (requires Standalone game, since we are not modding baseq3 but gpl code)
+
+## Fixes
+- [ ] Make target_speaker loop globally (currently can either loop or global, but not both)
+
