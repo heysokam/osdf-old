@@ -62,12 +62,30 @@
   - [ ] Rough implementation (cvar phy_overbounce_scale = 1.000f) //TODO Code is created. cvar is currently disconnected
   - [ ] Robust fix for random overbounces only, while keeping the good ones.
 - [ ] ...
+  - [ ] Complete the list of TODO features
+
+
 
 ## Entities (0.6.0)
-- [ ] Entities
-  - [ ] Frags Filter
-  - [ ] target_speed
-  - [ ] ...
+- [ ] Support for all Entities
+  - [ ] target_ entities
+    - [x] target_startTimer
+    - [x] target_stopTimer
+    - [ ] target_checkpoint
+    - [ ] target_speed
+    - [ ] target_fragsFilter
+    - [ ] target_init
+    - [ ] target_smallprint
+    - [ ] target_print
+    - [ ] target_multimanager
+  - [ ] shooter_ entities
+    - [ ] shooter_grenade_targetplayer
+    - [ ] shooter_plasma_targetplayer
+    - [ ] shooter_rocket_targetplayer
+    - [ ] shooter_bfg
+  - [ ] trigger_ entities
+    - [ ] trigger_push_velocity
+  - [ ] weapon_grapplinghook_types (support for all df hook types)
 - [ ] Entity filters:
   - [ ] notcpm
   - [ ] notvq3
