@@ -53,7 +53,16 @@
 - [ ] Velocity pads  
 
 ## Proxymod port (0.4.0) 
-- [ ] Proxymod port
+- [ ] Complete proxymod port
+  - [ ] strafehud
+    - [ ] cgaz
+    - [ ] snaps
+  - [ ] pitch
+  - [ ] compass
+  - [ ] jump
+  - [ ] RL
+  - [ ] GL
+  - [ ] bbox
 
 
 ## 0.5.0 and over
@@ -112,7 +121,7 @@
 - [ ] Records saving to disk 
 - [ ] Better timer
   - [ ] Independent timer score (separate to fragfilters/score)
-  - [ ] Revert hack for `trigger_multiple->wait -1` being hardcoded to `0.5` instead
+  - [ ] Revert hack for `trigger_multiple->wait -1` being hardcoded to `0.5`
   - [ ] Per-client activation of triggers
 - [ ] Checkpoints and comparison to best times
 - [ ] Automatic replay recording
