@@ -21,49 +21,84 @@
 - [x] Basic cpm strafing (Correct accel, aircontrol and A/D strafing)
 - [x] Instant respawn (g_combat.c/player_die()/line608  & some other spots to switch timer to ms and make 1 mean immediate )
 - [x] Gamemode "run"
-- [x] Timer (local, best per session)
+- [x] Timer (local, best per session, all maps have TimeReset)
 - [x] Gamemode "run" (basic)
   - [x] Definition in code (replaced FFA, g_gametype 0)
-  - [ ] Entity reset on player_die()
-- [ ] First cpm/vq3 alpha/dev release version
+- [x] First cpm/vq3 alpha/dev release version
 
 ## CPM and Physics selection (0.2.0)
+- [x] Physics type Selection (phy_movetype NUMBER :: 0=CPM, 3=VQ3, 1:Q1-ag)
 - [x] Full cpm strafing (double jumps, slick and other specific mechanics)
 - [ ] Basic CPM weapons (should be full with this pass)
   - [x] Rockets 1000ups
-  - [ ] ... other
-- [x] Physics type Selection (phy_movetype NUMBER :: 0=CPM, 3=VQ3, 1:Q1-ag)
+  - [ ] Rockets increased horizontal knockback
+  - [x] Instant weapon switch
+  - [ ] CPMA changes: Need side-by-side comparison of csdf-cpm and osdf-cpm
+    - [ ] Gauntlet knockback changed from 1 to 0.5
+    - [ ] Machine Gun damage changed from 7 to 5
+    - [ ] Shotgun damage decreased from 10 to 7
+    - [ ] Shotgun spread increased from 700 to 900
+    - [ ] Shotgun knockback increased from 1 to 1.35
+    - [ ] Grenade Launcher reload reduced from 800 to 600
+    - [x] Rocket Launcher speed increased from 900 to 1000
+    - [ ] Rocket Launcher knockback increased from 1 to 1.2
+    - [ ] Rocket Launcher splash knockback increased from 1 to 1.2
+    - [ ] Lightning Gun knockback increased from 1 to 1.55
+    - [ ] Railgun cooldown decreased from 1500 to 1000 for weapon switch
+    - [ ] Plasma Gun damage reduced from 20 to 15
+    - [ ] Plasma Gun knockback reduced from 1 to 0.5
 
 ## Strafehud and velocity pads (0.3.0)
 - [ ] Proxymod strafehud
 - [ ] Velocity pads  
 
-## (0.4.0 and over)
+## Proxymod port (0.4.0) 
+- [ ] Proxymod port
+
+
+## 0.5.0 and over
 - [ ] Crouch doesn't remove +left/+right
 - [ ] no-ob
   - [ ] Rough implementation (cvar phy_overbounce_scale = 1.000f) //TODO Code is created. cvar is currently disconnected
   - [ ] Robust fix for random overbounces only, while keeping the good ones.
-- [ ] Independent timer score (separate to fragfilters/score)
-- [ ] Frags Filter
-- [ ] Triggers / Targets: speed, ...
-- [ ] Entity filters: notcpm, notvq3, notsp, notmp, notdf, nottm, notfc, notdefrag
-- [ ] Proxymod port
-- [ ] Scoreboard
-- [ ] All gamemodes
-  - [ ] Run (complete)
-  - [ ] Tricks Mode
-  - [ ] FastCap
-  - [ ] Hooks
-- [ ] Multiplayer
-  - [ ] Remove player interaction
 - [ ] ...
 
+## Entities (0.6.0)
+- [ ] Entities
+  - [ ] Frags Filter
+  - [ ] target_speed
+  - [ ] ...
+- [ ] Entity filters:
+  - [ ] notcpm
+  - [ ] notvq3
+  - [ ] notsp
+  - [ ] notmp
+  - [ ] notdf
+  - [ ] nottm
+  - [ ] notfc
+  - [ ] notdefrag
+
+## Gamemodes (0.7.0)
+- [ ] Run (complete)
+- [ ] Tricks Mode
+- [ ] FastCap
+- [ ] Hooks
+
+## Multiplayer (0.8.0)
+- [ ] Multiplayer
+  - [ ] Remove player interaction
+  - [ ] Per client entity state (timers, weapons, etc)
+  - [ ] Scoreboard
+
 ## Ghosts and Records (0.9.0)
-- [ ] Ghosts
 - [ ] Records saving to disk 
 - [ ] Better timer
+  - [ ] Independent timer score (separate to fragfilters/score)
+  - [ ] Revert hack for `trigger_multiple->wait -1` being hardcoded to `0.5` instead
+  - [ ] Per-client activation of triggers
 - [ ] Checkpoints and comparison to best times
 - [ ] Automatic replay recording
+- [ ] Ghosts
 
 ## Complete functionality (1.0.0)
 - [ ] Entity compatibility for existing maps
