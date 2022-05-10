@@ -1,3 +1,4 @@
+# ::::::::::::::::::::
 #!/usr/bin/env -S nim --hints:off
 # ScriptMode:
 let sMode= "s"    ; if sMode == "w": mode= Scriptmode.Whatif elif smode == "s": mode= ScriptMode.Silent elif smode == "v": mode= ScriptMode.Verbose else: discard #   WhatIf: Do not run commands, instead just echo what would have been done.
@@ -8,8 +9,6 @@ import sequtils
 import lib/helperBuild as b
 import lib/helperBash as sh
 # ::::::::::::::::::::
-
-#TODO: Fix rev numbering not working properly
 
 
 # ::::::::::::::::::::
