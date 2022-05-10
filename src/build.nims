@@ -64,6 +64,7 @@ withDir srcDir:
   except OSError: quit "ERR:: Failed to compile. Read compiler output for more info."
 
 # Enter compile target folder, and zip the appropiate files
+#   TODO: Library files should no longer be stored in a .pk3 file. They need to be in the mod's basepath
 withDir compileDir/modName:
   echo &":: Entered folder: {getCurrentDir()}"
   let soFiles = listfiles(getCurrentDir()).filterIt(".so" in it).join(" ")
@@ -79,7 +80,7 @@ if getBuildType() == "make":  quit ":: Built done, but not installed or packed."
 
 # ::::::::::::::::::::
 # Install
-#   *This is not executed when calling with "make" argument.
+#   *This is not executed when calling with "make" build type.
 # ::::::::::::::::::::
 let origin=compileDir/modName/pk3Filename
 let itarget=installBase/modName/pk3Filename
@@ -88,7 +89,7 @@ cpUpd origin, itarget
 # ::::::::::::::::::::
 # Release
 # ::::::::::::::::::::
-#  This is not executed when calling with "make" build type.
+#   *This is not executed when calling with "make" build type.
 # Create the release folders
 #   these will be extracted by the user into install root folder (BASEPATH)
 let versRoot = rlsDir/modVers

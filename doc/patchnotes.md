@@ -12,10 +12,10 @@
 
 # History
 ## 0.2.0
-rmv : Removed bash shell script used for automating the build process. Temporarily stored in `+` subfolder, but will be deleted. (2022.05.10)
-new : Linux automated build script has been fully rewritten in nimscript (bash syntax becomes {cr}ypt!$C real fast) (2022.05.10)
-chg : The build system no longer compiles into QVM by default. It creates Dynamic Libraries instead. (2022.05.10)
-dep : This mod will no longer support the QVM based architecture moving forward. Incoming features will make the mod fully incompatible with QVM compiling (2022.05.10)
+rmv : Removed bash shell script used for automating the build process. Temporarily stored in `+` subfolder, but will be deleted. (2022.05.10)  
+new : Linux automated build script has been fully rewritten in nimscript (bash syntax becomes {cr}ypt!$C real fast) (2022.05.10)  
+chg : The build system no longer compiles into QVM by default. It creates Dynamic Libraries instead. (2022.05.10)  
+dep : This mod will no longer support the QVM based architecture moving forward. Incoming features will make the mod fully incompatible with QVM compiling (2022.05.10)  
 
 ## 0.0.2
 new : Local Timer. Best per session. All maps have TimeReset (temporary hack until better Timer support)  
