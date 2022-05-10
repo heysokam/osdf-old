@@ -4,18 +4,18 @@
 ### Code & License:
 - Respect FOSS philosophy. Open source and community focus.
 - Eliminate all traces of q3a-sdk licensing constraints.
-- Either reverse-engineer or rewrite the code.
+- Rewrite the code 1:1, with the aid of reverse-engineered code only where strictly necessary.
 - Community based, where anyone can become a contributor.
 
 ### Gameplay:
-- Maintain gameplay 1:1. The code is not accessible, but can be reverse-engineered or rewritten.
-- Achieve compatibility with existing maps. Avoid requiring any form of map porting as much as possible.
+- Maintain gameplay 1:1.
+- Achieve compatibility with existing maps. Avoid requiring any form of map porting for existing content.
 - Community collaboration in bug-fixing and further development of the mod.
 
 ## Reference Repositories
 ## Base:
 - ioquake3: https://github.com/ioquake/ioq3.git  
-Base development starting point (q3e has no gpl qvm creation utilities)
+Base development starting point (q3e has no gpl gamecode)
 
 - Q3Arena 1.32b GPL release:  https://github.com/id-Software/Quake-III-Arena.git  
 Base Gameplay code (ioq3 has gameplay modifications)

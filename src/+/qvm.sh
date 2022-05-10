@@ -4,12 +4,12 @@
 
 # Configuration
 ## Mod
-versionNumber="0.0.1"
+versionNumber="0.2.0"
 modname="osdf"
 fullname="opensource-defrag"
 
 ## Folders Configuration
-basepath="/app/vg/os-defrag" # installation folder
+basepath="/app/vg/defrag" # installation folder
 # code folders
 releasesDir="../bin/releases"
 devRoot="$HOME/gd/osdf"
@@ -19,9 +19,9 @@ cfgDir="$srcRoot/cfg"
 # bin output
 binDir="$devRoot/bin"
 compileDir="$binDir/release-linux-x86_64"  # set by the compiler (makefile)
-bkpDir="$binDir/vm-bkp"
-vmFile="vm"   # without extension
-PK3file="$compileDir/$modname/$vmFile.pk3"  # created by the make block of this script
+bkpDir="$binDir/$modname-bkp"
+modFile="$modname-$versionNumber"   # without extension
+PK3file="$compileDir/$modname/$modFile.pk3"  # created by the make block of this script
 
 # ::::::::::::::::::::
 # Helper code
@@ -72,20 +72,18 @@ fi;
 
 # Enter ioq3 folder
 cd "$srcDir" || quit "ERR:: Failed to enter $srcDir" && echo ":: Entered folder: $(pwd)"
-# Make qvm
-#make BUILD_CLIENT=0 BUILD_SERVER=0 BUILD_GAME_SO=0 BUILD_DIR=$binDir BASEGAME=$modname
+# Make dll
 make || quit "ERR:: Failed to compile. Read compiler output for more info."
 
-# Enter qvm compile target folder
-cd "$compileDir"/$modname || quit "ERR:: Failed to enter $compileDir/$modname" && echo ":: Entered folder: $(pwd)"
+# Enter compile target folder
+cd "$compileDir/$modname" || quit "ERR:: Failed to enter $compileDir/$modname" && echo ":: Entered folder: $(pwd)"
 
-# Zip qvm files with .pk3 extension
-targetFile=$vmFile.pk3
-zip -r $targetFile vm && echo ":: Created file: $(pwd)/$targetFile"
+# Zip files with .pk3 extension
+targetFile=$modFile.pk3
+zip -r $targetFile vm && echo ":: Created file: $(pwd)/$targetFile" || quit "ERR:: Failed to zip $targetFile"
 
 # Copy .pk3 to vm.bkp, with version control
-cp -u --backup=t $targetFile "$bkpDir"/$targetFile 
-echo -e "\n:: Created $targetFile backup file inside $bkpDir"
+cp -u --backup=t $targetFile "$bkpDir"/$targetFile && echo -e "\n:: Created $targetFile backup file inside $bkpDir"
 
 # Avoid installing when called with "make" option
 if [ "$1" = "make" ]; then

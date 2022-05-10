@@ -143,7 +143,9 @@ _[this section is not a todo, but more like a wishlist of sorts]_
 - [ ] Physics selection Powerups (cpm and vq3 sections in the same map)
 - [ ] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
 - [ ] Native race mode (like AG, first to finish wins. also FFA race, standings based on finish order)
+- [ ] PVP race mode (can interact with other players, and do things to change their movement)
 - [ ] Look-behind command (map-based, not global)
+- [ ] Improved replay tools (q3mme inspired, using the new UI tools)
 - [ ] New data and stats:
   - [ ] Persistent stats per map.
   - [ ] Checkpoints: player vs wr, p vs pb (spec or own), p vs own pb

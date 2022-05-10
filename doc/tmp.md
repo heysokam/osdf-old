@@ -38,8 +38,6 @@ Make:     ??
 Connect it with a check for what type of ui to use.
 
 
-# Rewrite or Reverse engineer?  
-
 # QVM tools only
 QVM toolchain: lcc, rcc, q3asm
 
