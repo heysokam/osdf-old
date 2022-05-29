@@ -28,3 +28,6 @@
 [submodule "src/engine"]
 	path = src/engine
 	url = https://github.com/heysokam/osdf-engine.git
+[submodule "src/game"]
+	path = src/game
+	url = https://github.com/heysokam/osdf-game.git
