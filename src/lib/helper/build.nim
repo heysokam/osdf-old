@@ -1,5 +1,5 @@
 import os, parseopt, strutils, strformat
-import helperBash as sh
+import ./bash as sh
 # Command line option parsing
 func getBuildType*():string =
   var args = initOptParser(commandLineParams())

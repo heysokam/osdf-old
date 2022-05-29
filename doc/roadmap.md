@@ -1,38 +1,11 @@
 # Roadmap:
-## Works in default q3a
-- [x] Surface flags (uses shader properties)
-- [x] Vq3 movement (`pmove_fixed 1`)
-- [x] Vq3 Teleports
-- [x] vq3 Hurt Trigger
-- [x] target score
-
-## Minimal working product (0.0.1)
-- [x] Initial setup & compilation (manual)
-- [x] Map loading
-- [x] Changes to the code actually affect gameplay through `.qvm` files
-
-## Automated compilation on bash shell (0.0.2)
-- [x] Automated compilation from makefile
-- [x] Automated packing
-
-## Minimal viable product (0.1.0)
-- [x] Full vq3 movement
-- [x] Basic vq3 Weapons (should be full by default)  
-- [x] Basic cpm strafing (Correct accel, aircontrol and A/D strafing)
-- [x] Instant respawn (g_combat.c/player_die()/line608  & some other spots to switch timer to ms and make 1 mean immediate )
-- [x] Gamemode "run"
-- [x] Timer (local, best per session, all maps have TimeReset)
-- [x] Gamemode "run" (basic)
-  - [x] Definition in code (replaced FFA, g_gametype 0)
-- [x] First cpm/vq3 alpha/dev release version
-
 ## CPM and Physics selection (0.2.0)
 - [x] Physics type Selection (phy_movetype NUMBER :: 0=CPM, 3=VQ3, 1:Q1-ag)
 - [x] Full cpm strafing (double jumps, slick and other specific mechanics)
 - [ ] Full CPM weapons
   - [x] Instant weapon switch
   - [x] Rocket Launcher speed increased from 900 to 1000
-  - [ ] Rocket Launcher knockback increased from 1 to 1.2
+  - [x] Rocket Launcher knockback increased from 1 to 1.2
   - [ ] Item pickup size increased (from ? to ?)
   - [x] CPMA changes: Need side-by-side comparison of csdf-cpm and osdf-cpm
     - [x] (false) Shotgun damage decreased from 10 to 7
@@ -154,6 +127,13 @@ _[this section is not a todo, but more like a wishlist of sorts]_
   - [ ] Multiple ghosts (example: own & spec'ed player)
 - [ ] Conditional binds (bind X if cvar cvarvalue actionTrue actionFalse)
 - [ ] ? Optional taller pickups / flags
+- [ ] Improved Loading screen:
+  - [ ] Adjust thumbnail based on resolution
+  - [ ] Better map info distribution
+  - [ ] Add map description text field
+- [ ] Separate respawn command
+- [ ] 0ups Teleport property
+
 
 ### New physics
 - [x] vq1 movement (qw/ag)
@@ -178,4 +158,32 @@ _[this section is not a todo, but more like a wishlist of sorts]_
 
 ## Fixes
 - [ ] Make target_speaker loop globally (currently can either loop or global, but not both)
+- [ ] Solve issues with clip/slick/trigger brush rendering. transparency, render limit, impossible to hide some brushes from gameplay
 
+# Done:
+## Works in default q3a
+- [x] Surface flags (uses shader properties)
+- [x] Vq3 movement (`pmove_fixed 1`)
+- [x] Vq3 Teleports
+- [x] vq3 Hurt Trigger
+- [x] target score
+
+## Minimal working product (0.0.1)
+- [x] Initial setup & compilation (manual)
+- [x] Map loading
+- [x] Changes to the code actually affect gameplay through `.qvm` files
+
+## Automated compilation on bash shell (0.0.2)
+- [x] Automated compilation from makefile
+- [x] Automated packing
+
+## Minimal viable product (0.1.0)
+- [x] Full vq3 movement
+- [x] Basic vq3 Weapons (should be full by default)  
+- [x] Basic cpm strafing (Correct accel, aircontrol and A/D strafing)
+- [x] Instant respawn (g_combat.c/player_die()/line608  & some other spots to switch timer to ms and make 1 mean immediate )
+- [x] Gamemode "run"
+- [x] Timer (local, best per session, all maps have TimeReset)
+- [x] Gamemode "run" (basic)
+  - [x] Definition in code (replaced FFA, g_gametype 0)
+- [x] First cpm/vq3 alpha/dev release version
