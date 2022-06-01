@@ -24,7 +24,7 @@ Base Gameplay code (ioq3 has gameplay modifications)
 Most accurate non-id3-engine implementation to date
 
 - oDFe: https://github.com/JBustos22/oDFe.git
-Preferred engine to run binaries.  
+Base engine that was forked to start osdf-engine
 
 ## Helper:
 Repositories that can aid in the success of this project:
