@@ -23,7 +23,7 @@ Base Gameplay code (ioq3 has gameplay modifications)
 - Lumia's Momentum Mod GPL codebase: https://github.com/chovelyoukai/defragmmod  
 Most accurate non-id3-engine implementation to date
 
-- oDFe: https://github.com/JBustos22/oDFe.git
+- oDFe: https://github.com/JBustos22/oDFe.git  
 Base engine that was forked to start osdf-engine
 
 ## Helper:
