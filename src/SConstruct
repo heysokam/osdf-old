@@ -61,12 +61,12 @@ Help("""
 : Clean:      scons -c             Cleans all built targets. Doesn't remove folders.
 : Build:        
     Default   scons                Builds the targets set in the `build_default` list
-    Debug     ?scons debug          Builds debug version only     (client+server+game).  Default when `build_default` is empty
-    Distrib   !scons distribute     Cross-compiles and builds release versions for all supported platforms.
-    Release   !scons release        Builds release version only   (client+server+game)
+    Game    -> scons game           Builds only the game code (dynamic library), without the engine   (sgame, cgame, ui)
+    Debug    **scons debug          Builds debug version only     (client+server+game).  Default when `build_default` is empty
     Engine    !scons engine         Builds only the engine code, without any game code
-    Game      !scons game           Builds only the game code (dynamic library), without the engine   (sgame, cgame, ui)
     Server    !scons server         Builds only the dedicated server code (ded), without any client code
+    Release   !scons release        Builds release version only   (client+server+game)
+    Distrib   !scons distribute     Cross-compiles and builds release versions for all supported platforms.
     All       !scons all            Builds all targets (including debug and release versions of both). Doesn't install
     Install   !scons install        Builds release version only, and installs it in the folder defined in the script.
               !scons install=DIR    Same as `install`, but installs directly to `DIR` instead
@@ -95,7 +95,10 @@ Help("""
 # ::::::::::::::::::
 from   os.path import exists
 import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
-from   lib.helper.scons import *
+import lib.helper.mingw
+import lib.helper.scons as h
+from lib.helper.scons import getLocal, getCur, getCli, getGlob, getBits, isVerbose
+from lib.helper.scons import ARCH, PLAT, BITS, TRG, scPlatforms, BuildObject, BuildInfo
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
 
@@ -103,13 +106,13 @@ from   lib.helper.scons import *
 ###############
 # Configuration
 # ::::::::::::::::
-from lib.helper.scons_config import *
+from lib.helper.config_scons import *
 
 # For configuration different than the defaults, without losing changes during updates:
 #   Create a new file named "scons_local.py" in the same directory as this one
 #   Assign your configuration there
 #   The values active in the file will overwrite any values set in lib.scons_config      
-if exists('scons_local.py'): from scons_local import *
+if h.exists('scons_local.py'): from scons_local import *
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
@@ -132,52 +135,32 @@ validTargets   = ['debug', ]  #TODO: 'release', 'distribute', 'engine', 'game', 
 vmArchs         = ['x86_64', 'x86', 'arm', 'aarch64'] # List of architectures compatible with vm compiling  #TEMP: Q3 names. fix this
 
 
-# Define system    #TODO: Move all system checks inside the class
+# Define system
 # ::::::::::::::
 # Current system
 curPlatform    = getCur(PLAT)
 curArch        = getCur(ARCH) 
 curBits        = getCur(BITS)
+if not curPlatform or not curArch:     sys.exit(f'::ERR SCons failed to detect the host system: HOST_OS={curPlatform}, HOST_ARCH={curArch}') 
+if curPlatform not in validPlatforms:  sys.exit(f'::ERR Compilation from host platform: {curPlatform}  is not currently supported') 
+if curArch     not in validArchs:      sys.exit(f'::ERR Compilation from host arch: {curArch}  is not currently supported') 
+## OS
+posix  = bool(curPlatform in ['posix'])
+win    = bool(curPlatform in ['win32'])    #todo: tools=['mingw'] during env creation, to change from msvc to mingw
+mingw  = bool(curPlatform in ['mingw'])    #TODO: How to set this value correctly? There is no mingw platform
+#darwin = bool(curPlatform in ['darwin'])
+#arm    = bool(curPlatform in ['arm'])
+#arm64  = bool(curPlatform in ['arm64'])
 
-# Target system  #TODO:   trg   temporarily means   dbg.  Adapt to the new oo system
-## Platform
+# CLI System
 cliPlatform = getCli(PLAT)   # Gets the converted value, not the raw alias input in `p=` or `platform=`
-trgPlatform = cliPlatform if cliPlatform else getLocal(trgPlatform, curPlatform) # Chooses cli if not empty, else script specified target, or else current host platform
-
-### OS
-posix  = bool(trgPlatform in ['posix'])
-win    = bool(trgPlatform in ['win32'])
-darwin = bool(trgPlatform in ['darwin'])
-mingw  = bool(trgPlatform in ['cygwin'])
-arm    = bool(trgPlatform in ['arm'])
-arm64  = bool(trgPlatform in ['arm64'])
-
-## Architecture
-cliArch = getCli(ARCH) 
-#if arm: trgArch = 'arm'   #todo: For arm support. Overrides previous x86 assumption 
-# Assumed x86/64 anytime we supply a platform. For amd64: we need to override from 'arch=' or trgArch from config, unless platform is not specified
-trgArch = cliArch if cliArch else getLocal(trgArch,  curArch)  # Chooses cli if not empty, else script specified target, or else current host arch
-
-## Bits
-trgBits = getBits(trgArch) if trgArch else curBits
-x64 = bool(trgBits==64)  
-x86 = not x64  # Opposite of x64. If we are not on 64bit, then we are on 32bit. One or the other
-
-## Common
-xCompile = True if (trgPlatform != curPlatform) or (trgArch != curArch) else False
-#if darwin:  use_sdl = 1  #Disabled. Only using sdl.   # Forces sdl on mac.
-
-# Error Management
-# :::::::::::::::::
-if not curPlatform or not curArch:    sys.exit(f'::ERR SCons failed to detect the host system: HOST_OS={curPlatform}, HOST_ARCH={curArch}') 
-if trgPlatform not in scPlatforms:    sys.exit(f'::ERR Trying to compile for a platform not supported by SCons: {trgPlatform}')
-if trgPlatform not in validPlatforms: sys.exit(f'::ERR Trying to compile for an unsupported platform: {trgPlatform}')
+cliArch     = getCli(ARCH) 
 
 # SCons setup
 # ::::::::::::
 ## Verbose
-if not verbose and scQuiet: SetOption('no_progress',1)  # Mute SCons progress text on non-verbose mode
-if verbose: Progress(': Evaluating  $TARGET\n') # SCons will echo when each file is being evaluated. TODO: Chapter 9.3
+if not isVerbose and scQuiet: SetOption('no_progress',1)  # Mute SCons progress text on non-verbose mode
+if isVerbose(): Progress(': Evaluating  $TARGET\n') # SCons will echo when each file is being evaluated. TODO: Chapter 9.3
 ## Jobs
 scJobs = max(2,int(cores*coresPc))
 if cores: SetOption('num_jobs', scJobs)
@@ -190,207 +173,28 @@ SConsignFile(scDir+'/scons-sign')
 
 
 ###############
-# Construction Environments
-# ::::::::::::::::::::::::::
-
-# Platform/Architecture specific
-# ::::::::::::::::::::::::::::::
-trgArch_ext = None  #TODO: Remove this elsewhere
-if x64:      trgArch_ext = '.x64'  
-if arm:      trgArch_ext = '.arm'
-if arm64:    trgArch_ext = '.aarch64'
-ext_x64   = '.x64'
-ext_arm   = '.arm'
-ext_arm64 = '.aarch64'
-
-
-## Base Env
-# ::::::::::
-############
-base = BuildObject()  # Don't use base.setup(). This just stores build data     # Superclass possible, but #todo(maybe)
-base.bindir = binDir
-
-### Compiler FLAGS
-# :::::::::::::::::
-base.ccflags  = CCFLAGS_base  # Needs to be =, because None+List = Error
-base.ccflags += [
-      # Default in Q3 makefile:
-    '-Wall','-Wstrict-prototypes', 
-    '-Wno-unused-result', #TODO: Is this needed?
-    #'-pipe', # Used to be a performance increase back in the day. Probably unnoticeable now, and it can create issues
-    #'-Wimplicit', # Default in Q3, but implied by -Wall
-      # New by sOkam:
-    #'-std=c89', '-Wpedantic', '-pedantic-errors', # Enforce ISO C89 standard
-    #'-Wdouble-promotion', # Warn when a float is treated as a double
-      # Recommended in tutorial:
-    #'-Wextra',#'-Werror',
-    #'-Wmissing-prototypes','-Wmisleading-indentation','-Wduplicated-cond','-Wold-style-definition',
-    #'-Wconversion','-Wshadow','-Winit-self','-Wfloat-equal','-Wcast-align=strict',
-    #'-Wformat-overflow=2','-Wformat-truncation=2', #'-Wformat', # Implied in -Wall
-    #'-fdiagnostics-format=text','-fdiagnostics-minimum-margin-width=5',#'-Wwrite-strings',
-    ]
-#base.shflags = ['']  # SHCCFLAGS= # SCons handles '-fPIC',     '-fvisibility=hidden' is taken from $CCFLAGS
-#if genDependencies: CCFLAGS_base += ['-MMD'] #TODO: This might not be needed at all. Chapter 6.5. This is like ParseDepends. Should only be used if the scanners fail (they probably wont)
-
-
-### General Defines
-# ::::::::::::::::::
-base.defines = DFLAGS_base
-compile_VM = True if trgArch in vmArchs else False   # Only compile VM if arch is compatible
-base.defines += (['BOTLIB'])
-if not compile_VM:     base.defines += ['NO_VM_COMPILED']
-if baseDir:            base.defines += [f'DEFAULT_BASEDIR="{baseDir}"']
-if use_vulkan_api:     base.defines += [ 'USE_VULKAN_API']
-base.defines += (['BOTLIB'])
-#if use_render_dlopen:  # We are not using dynamically loaded renderers
-#                       base.defines += ['USE_RENDER_DLOPEN']
-#                       base.defines += [f'RENDER_PREFIX="{render_prefix}"']
-#                       base.defines += [f'RENDER_DEFAULT={render_default}']
-
-### Libraries
-# ::::::::::::
-#### Defines
-# We are not using local headers at all. We use system libraries always. And we are not using dlopen versions of any
-#if use_local_headers:  base.defines += ['USE_LOCAL_HEADERS=1']
-base.defines += ['USE_PCRE']          #Default:  if use_pcre:
-base.defines += ['USE_SYSTEM_JPEG']   #Default:  if use_system_jpeg:
-base.defines += ['USE_CURL']          #Default:  if use_curl:
-#if use_curl: 
-#  if use_curl_dlopen: envBase.AppendUnique(CPPDEFINES='USE_CURL_DLOPEN') #Disabled. Not using curl hotplug
-if mingw:              base.defines += ['CURL_STATICLIB']  #Default    elif mingw:
-
-#### Linking
-base.libs     = LIBS_base     # Initialize to list (currently None)
-base.libs    += ['SDL2']      #TODO: Filter to only the client
-base.libs    += ['jpeg']      #TODO: Filter to only the client
-base.libs    += ['curl']      #TODO: Filter to only the client
-base.libs    += ['pcre']      #TODO: Filter to only the client
-base.libs    += ['m']         # -lm
-base.libs    += ['dl']        # -ldl
-base.ldflags  = LDFLAGS_base  # Initialize to list (currently None)
-base.ldflags += ['-Wl,--gc-sections', '-fvisibility=hidden']
-base.ldflags += ['-Wl,--hash-style=both']
-
-#### Include Paths
-base.ccpath = CCPATH_base
-if posix:   #TODO: Include folders in other systems
-  #base.ccpath += ['/usr/include', '/usr/local/include']  #TODO: This shouldn't be needed, but.... is it?
-  #PKG_CONFIG  = pkg-config # Information about installed libraries
-  base.parse = ['pkg-config --silence-errors --cflags-only-I sdl2']
-  #base.parse += ['pkg-config --silence-errors --cflags-only-I x11')  #Disabled. Only using SDL
-  # Reasonable defaults for SDL/X11
-  #base.ccpath += ['/usr/X11R6/include'] #todo: Find default x11 include folder
-
-
-# Platform/Architecture specific
-# ::::::::::::::::::::::::::::::
-if x86:
-  base.ccflags += ['-m32']   #todo: Needed? Isn't this copied by SCons?
-  base.ldflags += ['-m32']
-if posix or win:
-  base.defines += ['USE_ICON']   #todo: Can't macos have icon?
-
-
-## Release Env
-# :::::::::::::
-###############
-rls = base.clone()
-rls.ctype = 'release'
-### Compiler FLAGS
-# ::::::::::::::::
-rls.ccflags += CCFLAGS_rls
-rls.ccflags += [
-    #TODO: Test and research -O3 and -Ofast. Should be faster than -O2
-    '-O2', # Perform all optimizations that do not involve a space-speed tradeoff. Default -O0
-    '-fvisibility=hidden', # Make all symbols hidden, unless specified (private, static, public, etc)]
-    '-s',  # Strip all symbols from the binary
-    ]
-### General Defines
-# ::::::::::::::::::
-rls.defines += ['NDEBUG']
-### Libraries
-# ::::::::::::::::
-#### Defines
-#### Linking
-#### Include Paths
-# Platform/Architecture specific
-# ::::::::::::::::::::::::::::::
-if x86: rls.ccflags += ['-march=i586', '-mtune=i686']
-if arm: rls.ccflags += ['-march=armv7-a']
-
-
-## Debug Env
-# ::::::::::::::
-###############
-dbg = base.clone()
-dbg.ctype = 'debug'
-### Compiler FLAGS
-# ::::::::::::::
-dbg.ccflags += CCFLAGS_dbg
-dbg.ccflags += [
-    '-Og', # Optimize -O1, but without incompatible debugging flags. Best option for fast building + debug
-    '-g3', # Generate Debug information, including all extras
-    ]
-### General Defines
-# ::::::::::::::::::
-dbg.defines += ['DEBUG', '_DEBUG']
-### Libraries
-# ::::::::::::::::
-#### Defines
-#### Linking
-#### Include Paths
-# Platform/Architecture specific
-# ::::::::::::::::::::::::::::::
-
-## Game Library Env
-# ::::::::::::::::::
-#####################
-envCG = Environment() # cgame library environment
-envSG = Environment() # sgame library environment
-envUI = Environment() # ui library environment
-### Compiler FLAGS
-# ::::::::::::::
-### General Defines
-# ::::::::::::::::::
-### Libraries
-# ::::::::::::::::
-#### Defines
-#### Linking
-#### Include Paths
-# Platform/Architecture specific
-# ::::::::::::::::::::::::::::::
-
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
-############################################################
-
-
-###############
 # Source Code
 # ::::::::::::
 ######################
-# All of these are relative to the src folder. But they won't contain the folder in the string
-#   aka     srcDir + clDir+'/file.c' ==    /absolute/to/src/cldir/file.c
-# Client
-srcClient = getGlob(srcDir, clDir+'/*.c' )
-srcServer = getGlob(srcDir, svDir+'/*.c' )
-srcCommon = getGlob(srcDir, qcmDir+'/*.c')
-srcBot    = getGlob(srcDir, botDir+'/*.c')
+# Client 
+#::::::::
+srcClient = getGlob(engineDir, clDir+'/*.c' )   # All of these are relative to the src folder. But they won't contain the folder in the string
+srcServer = getGlob(engineDir, svDir+'/*.c' )   #   srcDir + clDir+'/file.c'  ==    /absolute/to/src/cldir/file.c
+srcCommon = getGlob(engineDir, qcmDir+'/*.c')
+srcBot    = getGlob(engineDir, botDir+'/*.c')
 # Renderer
-srcRendC  = getGlob(srcDir, rcDir+'/*.c')
-srcRend1  = getGlob(srcDir, r1Dir+'/*.c') + srcRendC
-srcRendV  = getGlob(srcDir, rvDir+'/*.c') + [f for f in srcRendC if f not in [rcDir+'/tr_image.c']]  #rendv = rendv + rendc - rendc_image (rc/tr_image.c)
-#srcRend2 = getGlob(srcDir, r2Dir+'/*.c') + srcRendC  # Disabled. Renderer2 is not used
+srcRendC  = getGlob(engineDir, rcDir+'/*.c')
+srcRend1  = getGlob(engineDir, r1Dir+'/*.c') + srcRendC
+srcRendV  = getGlob(engineDir, rvDir+'/*.c') + [f for f in srcRendC if f not in [rcDir+'/tr_image.c']]  #rendv = rendv + rendc - rendc_image (rc/tr_image.c)
+# Unsupported renderer
+srcRend2  = getGlob(engineDir, r2Dir+'/*.c') + srcRendC  # Disabled. Renderer2 is not used
 #objRend2str = """ %s/rend2/glsl/bokeh_fp.o, ETC, ETC """ % B  #todo: How do we compile *.glsl into *.o ?
-#if use_render_dlopen:   #Disabled. We are not using hotplug renderers
-#  srcRendDL = [??+'/q_shared.c', ??+'/puff.c', ??+'/q_math.c,]   #todo: Is this needed with SCons? Automatic resolution, or need to add this?
-#  srcRend1 += srcRendDL; srcRend2 += srcRendDL; srcRendV += srcRendDL
-
 ## Libraries
-srcJpeg   = getGlob(srcDir, jpgDir+'/*.c')
-srcSdl    = getGlob(srcDir, sdlDir+'/*.c')
+srcJpeg   = getGlob(engineDir, jpgDir+'/*.c')
+srcSdl    = getGlob(engineDir, sdlDir+'/*.c')
 ## Platform Specific
-srcUnix   = getGlob(srcDir, unxDir+'/*.c')
-srcWin    = getGlob(srcDir, winDir+'/*.c')
+srcUnix   = getGlob(engineDir, unxDir+'/*.c')
+srcWin    = getGlob(engineDir, winDir+'/*.c')
 ## Filters: Remove
 srcServer_rankings    = [svDir+'/sv_rankings.c']
 srcCommon_VMplatforms = [qcmDir+'/vm_x86.c', qcmDir+'/vm_armv7l.c', qcmDir+'/vm_aarch64.c']
@@ -433,52 +237,347 @@ srcVM_arm  = [qcmDir+'/vm_armv7l.c']
 srcVM_aa64 = [qcmDir+'/vm_aarch64.c']
 ### Libraries
 srcCurl = [clDir+'/cl_curl.c']
+## Shared Library dependencies
+srcShlib = [
+  qcmDir+'/q_math.c',
+  qcmDir+'/q_shared.c',
+  ]
 
-#todo: Code from ASM folder. Compile from .s to .o
-#if (trgArch == 'x86') and not mingw:
-#  srcAsm = [asmDir+'/snd_mix_mmx.s', asmDir+'/snd_mix_sse.s']
-
-## Target Sources (filtered)
-# :::::::::::::::::::::::::::
-#############################
-#srcAll = [file for file in srcAll if file not in srcFilter]  #Equivalent: srcAll = srcAll - srcFilter
-
-## Client Engine
-# :::::::::::::::
-#################
-
+# Target Sources: Client Engine
+#::::::::::::::::::::::::::::::
 srcEngine_cl = [f for f in srcClient if f not in srcCurl] \
              + [f for f in srcCommon if f not in srcCommon_VMplatforms] \
              + [f for f in srcServer if f not in srcServer_rankings] \
              + srcBot \
              + srcCurl + srcSdl
-
+## Add Platform Specific
+srcEngine_cl_lnx  = srcEngine_cl + srcLinux
+srcEngine_cl_win  = srcEngine_cl + srcWin
+## Add Renderers
+srcEngine_gl1_lnx = srcEngine_cl_lnx + srcRend1
+srcEngine_gl1_win = srcEngine_cl_win + srcRend1
+#srcEngine_gl2_lnx = srcEngine_cl_lnx + srcRend2 + srcRend2str
+#srcEngine_gl2_win = srcEngine_cl_win + srcRend2 + srcRend2str
+srcEngine_vk_lnx  = srcEngine_cl_lnx + srcRendV + srcLinux_qvk  #todo: use_vulkan_api filter needed?
+srcEngine_vk_win  = srcEngine_cl_win + srcRendV + srcWin_qvk    #todo: use_vulkan_api filter needed?
+if not use_opengl and not use_vulkan and not use_opengl2: sys.exit('::ERR No renderer has been defined.')
+## Add VM & local libs
+#if compile_VM:
+#  if posix or win:       srcEngine_cl += srcVM_x86
+#  if arm:                srcEngine_cl += srcVM_arm
+#  if arm64:              srcEngine_cl += srcVM_aa64
 #if not use_system_jpeg:  srcEngine_cl += srcJpeg  # Disabled. Always using system libraries
-#if not use_render_dlopen:                         # Disabled. Not using hotplug renderers
-if use_opengl:    srcEngine_cl += srcRend1  #TODO: Allow building multiple renderers at the same time
-elif use_vulkan:  srcEngine_cl += srcRendV
-elif use_opengl2: srcEngine_cl += srcRend2 + srcRend2str
-else: sys.exit('::ERR No renderer has been defined.')
-if use_vulkan_api:  srcEngine_cl += srcLinux_qvk  #TODO: Shouldn't this be default when building vulkan? Why a separate check??
-if compile_VM:
-  if posix or win:  srcEngine_cl += srcVM_x86
-  if arm:           srcEngine_cl += srcVM_arm
-  if arm64:         srcEngine_cl += srcVM_aa64
-if posix: srcEngine_cl += srcLinux
-#if mingw or win:
-#  srcEngine_cl += srcWin
-#  if use_vulkan_api: srcQ3 += srcWin_qvk
+
+
+# Target Sources: Game Client
+#:::::::::::::::::::::::::::::
+srcCGame = getGlob(gameDir, cgDir+'/*.c')
+## Filter: Add
+srcCGame_shared = [
+  sgDir+'/bg_misc.c',
+  sgDir+'/bg_pmove.c',
+  sgDir+'/bg_slidemove.c',
+  sgDir+'/bg_lib.c',
+  ]
+## Filters: Apply
+srcGame_cg = srcCGame + srcCGame_shared + srcShlib
+
+
+# Target Sources: Game Server
+#::::::::::::::::::::::::::::
+srcSGame = getGlob(gameDir, sgDir+'/*.c')
+## Filter: Remove
+srcSGame_rankings = [sgDir+'/g_rankings.c']
+## Filters: Apply
+srcGame_sg = [f for f in srcSGame if f not in srcSGame_rankings] + srcShlib
+
+
+# Target Sources: Game UI
+#:::::::::::::::::::::::::
+srcUI = getGlob(gameDir, uiDir+'/*.c')
+## Filter: Add
+srcUI_bg = [
+  sgDir+'/bg_misc.c',
+  sgDir+'/bg_lib.c',
+  ]
+## Filter: Remove
+srcUI_rankings = [
+  uiDir+'/ui_login.c',
+  uiDir+'/ui_rankings.c',
+  uiDir+'/ui_rankstatus.c',
+  uiDir+'/ui_signup.c',
+  uiDir+'/ui_specifyleague.c',
+  uiDir+'/ui_spreset.c',
+  ]
+## Filters: Apply
+srcGame_ui = [f for f in srcUI if f not in srcUI_rankings] + srcUI_bg + srcShlib
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
 
 
 ###############
-# Build Targets
-# ::::::::::::::::::::::::::
-############################
+# Construction Data
+#:::::::::::::::::::
+
+# Base: Build Data
+#::::::::::::::::::
+base = BuildObject()  # Don't use base.setup(). This just stores build data     # Superclass possible, but #todo(maybe)
+## Output data
+base.bindir   = binDir  # Folder where the binaries will be created
+## Compiler
+### CC FLAGS
+base.ccflags  = CCFLAGS_base
+base.ccflags += [
+      # Default in Q3 makefile:
+    '-Wall','-Wstrict-prototypes', 
+    #'-Wno-unused-result', #I don't think this is needed. Mark functions as void instead??
+    #'-pipe', # Used to be a performance increase back in the day. Probably unnoticeable now, and it can create issues
+    #'-Wimplicit', # Default in Q3, but implied by -Wall
+      # New by sOkam:
+    #'-std=c89', '-Wpedantic', '-pedantic', #'-pedantic-errors', # Enforce ISO C89 standard. Probably want 99
+    #'-Wdouble-promotion', # Warn when a float is treated as a double
+      # Recommended in tutorial:
+    #'-Wextra',#'-Werror',
+    #'-Wmissing-prototypes','-Wmisleading-indentation','-Wduplicated-cond','-Wold-style-definition',
+    #'-Wconversion','-Wshadow','-Winit-self','-Wfloat-equal','-Wcast-align=strict',
+    #'-Wformat-overflow=2','-Wformat-truncation=2', #'-Wformat', # Implied in -Wall
+    #'-fdiagnostics-format=text','-fdiagnostics-minimum-margin-width=5',#'-Wwrite-strings',
+    ]
+### General Defines
+base.defines = DFLAGS_base
+#compile_VM = True if trgArch in vmArchs else False   # Only compile VM if arch is compatible
+#if not compile_VM:   #todo: fix this for vm compatibility
+base.defines += ['NO_VM_COMPILED']
+if baseDir:         base.defines += [f'DEFAULT_BASEDIR="{baseDir}"']
+if use_vulkan_api:  base.defines += [ 'USE_VULKAN_API']
+base.defines += ['BOTLIB']
+### Libraries
+#### Defines
+# We are not using local headers at all. We use system libraries always. And we are not using dlopen versions of any
+#if use_local_headers:  base.defines += ['USE_LOCAL_HEADERS=1']  #TODO: Revisit this after first rls.game playtest
+base.defines += ['USE_PCRE']
+base.defines += ['USE_SYSTEM_JPEG']
+base.defines += ['USE_CURL']
+#### Linking
+base.libs     = LIBS_base     # Initialize to list (currently None)
+base.libs    += ['m']         # -lm
+base.ldflags  = LDFLAGS_base  # Initialize to list (currently None)
+base.ldflags += ['-Wl,--gc-sections', '-fvisibility=hidden']
+#### Include Paths
+base.ccpath   = CCPATH_base
+base.parse    = PARSE_base # Will be setup as env.ParseConfig('value')
+if posix:     base.parse += ['pkg-config --silence-errors --cflags-only-I sdl2']
+## Custom compiler name (non verbose)
+
+# Linux: Build Data
+#:::::::::::::::::::
+lnx = BuildObject()
+## Environment & System
+lnx.plat = 'posix'
+lnx.arch = 'x86_64'
+## Compiler
+lnx.defines += ['USE_ICON']
+#### Linking
+lnx.libs    += ['SDL2']      #TODO: Filter to only the client
+lnx.libs    += ['jpeg']      #TODO: Filter to only the client
+lnx.libs    += ['curl']      #TODO: Filter to only the client
+lnx.libs    += ['pcre']      #TODO: Filter to only the client
+lnx.libs    += ['dl']        # -ldl
+lnx.ldflags += ['-Wl,--hash-style=both']
+#### Include Paths
+lnx.ccpath  += ['/usr/include', '/usr/local/include']  #TODO: This shouldn't be needed, but.... is it?
+## Custom compiler name (non verbose)
+
+# Windows: Build Data
+#:::::::::::::::::::::
+win = BuildObject()
+## Environment & System
+win.plat     = 'win32'
+win.arch     = 'x86_64'
+## Compiler
+win.defines += ['USE_ICON']
+#if mingw: win.defines += ['CURL_STATICLIB']  #Default    elif mingw:
+# Memory addr nonsense fix
+win.libs     = []
+win.ldflags  = []
+
+# def DO_WINDRES (trg, src):  #TODO: How do we add Icon, q3.manifest and the other data defined in code/win32/win_resource.rc ??
+#   WINDRES_cmd -i src -o trg
+
+# Release: Build Data
+#:::::::::::::::::::::
+rls = BuildObject()
+## Compiler
+### Compiler FLAGS
+rls.ccflags += CCFLAGS_rls
+rls.ccflags += [
+    '-O2',                 # Perform all optimizations that do not involve a space-speed tradeoff. Default -O0
+    '-fvisibility=hidden', # Make all symbols hidden, unless specified (private, static, public, etc)]
+    '-s',                  # Strip all symbols from the binary
+    ]  #todo: Test and research -O3 and -Ofast. Could be faster than -O2. ** ioquake3 uses -O3 and -ffast-math everywhere
+rls.ctype = 'release'
+### General Defines
+rls.defines += ['NDEBUG']
+# Memory addr nonsense fix
+rls.libs     = []
+rls.ldflags  = []
+
+
+# Debug: Build Data
+#::::::::::::::::::
+dbg = BuildObject()
+## Compiler
+dbg.ctype = 'debug'
+### Compiler FLAGS
+dbg.ccflags += CCFLAGS_dbg
+dbg.ccflags += [
+    '-Og', # Optimize -O1, but without incompatible debugging flags. Best option for fast building + debug
+    '-g3', # Generate Debug information, including all extras
+    ]
+### General Defines
+dbg.defines += ['DEBUG', '_DEBUG']
+# Memory addr nonsense fix
+dbg.libs     = []
+dbg.ldflags  = []
+
+
+# Game Client: Build Object
+#:::::::::::::::::::::::::::
+cg         = base.clone()
+## Source code
+cg.src     = srcGame_cg
+cg.srcdir  = gameDir 
+# Custom compiler name (non verbose)
+cg.cStr    = 'cgame_CC'
+cg.lStr    = 'cgame_LD'
+# Output data
+cg.bintype = 'lib'
+# Add defines
+#cg.defines += ['CGAME']
+
+# Linux
+cgLnx = cg.merge(lnx)
+cgLnx.binname = f'cgame{cgLnx.arch}'
+cgLnx.defines += [f'ARCH_STRING="{cgLnx.arch}"']
+cgLnx_rls = cgLnx.merge(rls)
+cgLnx_dbg = cgLnx.merge(dbg)
+# Windows
+cgWin = cg.merge(win)
+cgWin.binname = f'cgame{cgWin.arch}'
+#cgWin.defines += [f'ARCH_STRING="{cgWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
+cgWin_rls = cgWin.merge(rls)
+cgWin_dbg = cgWin.merge(dbg)
+
+# Order SCons to setup with data
+cgLnx_rls.setup()
+cgLnx_dbg.setup()
+cgWin_rls.setup()
+cgWin_dbg.setup()
+
+
+# Game Server: Build Object
+#:::::::::::::::::::::::::::
+sg         = base.clone()
+## Source code
+sg.src     = srcGame_sg
+sg.srcdir  = gameDir 
+# Custom compiler name (non verbose)
+sg.cStr    = 'sgame_CC'
+sg.lStr    = 'sgame_LD'
+# Output data
+sg.bintype = 'lib'
+# Add defines
+#sg.defines += ['QAGAME']
+
+# Linux
+sgLnx = sg.merge(lnx)
+sgLnx.binname = f'qagame{sgLnx.arch}'
+sgLnx.defines += [f'ARCH_STRING="{sgLnx.arch}"']
+sgLnx_rls = sgLnx.merge(rls)
+sgLnx_dbg = sgLnx.merge(dbg)
+# Windows
+sgWin = sg.merge(win)
+sgWin.binname = f'qagame{sgWin.arch}'
+#sgWin.defines += [f'ARCH_STRING="{sgWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
+sgWin_rls = sgWin.merge(rls)
+sgWin_dbg = sgWin.merge(dbg)
+
+# Order SCons to setup with data
+sgLnx_rls.setup()
+sgLnx_dbg.setup()
+sgWin_rls.setup()
+sgWin_dbg.setup()
+
+
+# Game UI: Build Object
+#:::::::::::::::::::::::::::
+ui         = base.clone()
+## Source code
+ui.src     = srcGame_ui
+ui.srcdir  = gameDir 
+# Custom compiler name (non verbose)
+ui.cStr    = 'ui_CC'
+ui.lStr    = 'ui_LD'
+# Output data
+ui.bintype = 'lib'
+# Add defines
+#ui.defines += ['UI']
+
+# Linux
+uiLnx = ui.merge(lnx)
+uiLnx.binname = f'ui{uiLnx.arch}'
+uiLnx.defines += [f'ARCH_STRING="{uiLnx.arch}"']
+uiLnx_rls = uiLnx.merge(rls)
+uiLnx_dbg = uiLnx.merge(dbg)
+# Windows
+uiWin = sg.merge(win)
+uiWin.binname = f'ui{uiWin.arch}'
+#uiWin.defines += [f'ARCH_STRING="{uiWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
+uiWin_rls = uiWin.merge(rls)
+uiWin_dbg = uiWin.merge(dbg)
+
+# Order SCons to setup with data
+uiLnx_rls.setup()
+uiLnx_dbg.setup()
+uiWin_rls.setup()
+uiWin_dbg.setup()
+
+
+
+
+
+
+
+
+
+
+## TEST Build Objects
+# ::::::::::::::::::::
+# Target system
+trgPlatform = cliPlatform if cliPlatform else getLocal(trgPlatform, curPlatform) # Chooses cli if not empty, else script specified target, or else current host platform
+## Error Management
+if trgPlatform not in scPlatforms:    sys.exit(f'::ERR Trying to compile for a platform not supported by SCons: {trgPlatform}')
+if trgPlatform not in validPlatforms: sys.exit(f'::ERR Trying to compile for an unsupported platform: {trgPlatform}')
+## Architecture
+#if arm: trgArch = 'arm'   #todo: For arm support. Overrides previous x86 assumption 
+# Assumed x86/64 anytime we supply a platform. For amd64: we need to override from 'arch=' or trgArch from config, unless platform is not specified
+trgArch = cliArch if cliArch else getLocal(trgArch,  curArch)  # Chooses cli if not empty, else script specified target, or else current host arch
+trgBits = getBits(trgArch) if trgArch else curBits
+x64 = bool(trgBits==64)  
+x86 = not x64  # Opposite of x64. If we are not on 64bit, then we are on 32bit. One or the other
+xCompile = True if (trgPlatform != curPlatform) or (trgArch != curArch) else False
+# Platform/Architecture specific
+# ::::::::::::::::::::::::::::::
+trgArch_ext = None  #TODO: Remove this elsewhere
+if x64:      trgArch_ext = '.x64'  
+#if arm:      trgArch_ext = '.arm'
+#if arm64:    trgArch_ext = '.aarch64'
+ext_x64   = '.x64'
+ext_arm   = '.arm'
+ext_arm64 = '.aarch64'
+
 ## Definition
-#TODO: cName
 trgClient   = f'{cName}{trgArch_ext}'   #TODO: Move this inside the class
 trgDed      = f'{dName}{trgArch_ext}'
 #trgRendV    = f'{render_prefix}_vulkan_{SHLIBNAME}'
@@ -486,137 +585,52 @@ trgDed      = f'{dName}{trgArch_ext}'
 #trgRend2    = f'{render_prefix}_opengl2_{SHLIBNAME}'
 #trgRend2str = f'{binDir}/rend2/stringify'
 
-
-
-# Groups build, and aliases
-build_server = build_server or bool(server in COMMAND_LINE_TARGETS)
-trgBuildList = getCli(TRG)
-
-TARGETS = ['']
-if build_server:
-  TARGETS += f'{binDir}/{trgDed}'
-if build_client: 
-  TARGETS += f'{binDir}/{trgClient}'
-#  if use_render_dlopen:
-#    if use_opengl:  TARGETS += f'{binDir}/{trgRend1}'
-#    if use_opengl2: TARGETS += f'{binDir}/{trgRend2}'
-#    if use_vulkan:  TARGETS += f'{binDir}/{trgRendV}'
-## if use_ccache:      CC := f'ccache {CC}'  # Deprecated. Scons has a compiler cache system
-#if use_render_dlopen: CCFLAGS_rend = CCFLAGS_shlib
-#CCFLAGS_rend = f'{CCFLAGS_NOTshlib}'
-
-
-#TODO: Where do we put this ??
+# TEST Engine
 tst = dbg.clone()
 tst.plat = trgPlatform #TODO: Temporary test
 tst.arch = trgArch
 # Setup TEST build
 tst.src    = srcEngine_cl
-tst.srcdir = srcDir 
-tst.binname = 'tst-TEST'
-tst.bintype = 'bin'
+tst.srcdir = engineDir 
 # Custom compiler name (non verbose)
 tst.cStr = 'tst_CC'
 tst.lStr = 'tst_LD'
+# Output data
+tst.binname = f'{cName}.x64'
+tst.bintype = 'bin'
 # Order SCons to setup with data
-tst.setup()
+#tst.setup()
 
 
 
 
-## Construction
+# Skel Build Object
+#::::::::::::::::::
+skel = rls.clone()
+## Environment & System
+skel.plat     = '' # Target Platform. Assumes current if None
+skel.arch     = '' # Target Architecture. Assumes current if None
+## Source code
+skel.src      = [] # List of files that will be compiled
+skel.srcdir   = '' # Folder where the source code is taken from
+# Output data
+skel.bindir   = '' # Folder where the binaries will be created
+skel.binname  = '' # Base name of the binary  `name` will become `name-x64`
+skel.bintype  = '' # Output type of the file (executable or library)
+## Compiler
+skel.ctype    = '' # Performance type (release, debug, etc) (ctype = compiler type)
+skel.ccflags += [] # Flags to append to CCFLAGS
+skel.defines += [] # Flags to append to CPPDEFINES
+skel.libs    += [] # Flags to append to LIBS
+skel.ldflags += [] # Flags to append to LINKFLAGS
+skel.ccpath  += [] # Flags to append to CCPATH
+skel.parse   += [] # Will be setup as env.ParseConfig('value')
+## Custom compiler name (non verbose)
+skel.cStr     = '' # Format for CC compiler command. Assumes "CC" if None
+skel.lStr     = '' # Format for LD compiler command. Assumes "LD" if None
+## Order SCons to setup with data
+#skel.setup()
 
-# Builder Commands (Objects)
-# Equivalent to 
-#    Object(trg, src)
-# def DO_CC (trg, src):
-#  #CC_cmd CCFLAGS_NOTshlib CCFLAGS_trg -o trg -c src
-#  #compile(trg, src)
-
-# def DO_REND_CC (trg, src):
-#  compile(trg, src, cStr='REND_CC')
-#  #CC_cmd CCFLAGS_rend CCFLAGS_trg -o trg -c src
-
-# def DO_BOT_CC (trg, src):
-#  compile(trg, src, cStr='BOT_CC')
-#  #CC_cmd CCFLAGS_NOTshlib CCFLAGS_trg CCFLAGS_bot -DBOTLIB -o trg -c src
-
-# def DO_DED_CC (trg, src):
-#  compile(trg, src, cStr='DED_CC')
-#  #CC_cmd CCFLAGS_NOTshlib -DDEDICATED CCFLAGS_trg -o trg -c src
-
-# def DO_SHLIB_CC (trg,src):
-#  compile(trg, src, lib=True, cStr='SHLIB_CC')
-#  #CC_cmd CCFLAGS_trg CCFLAGS_shlib -o trg -c src
-
-
-
-#TODO: How to do these commands?
-# def DO_AS (trg, src):
-#  printIfSilent (f"AS {src}")
-#  ASMFLAGS_trg = '-DELF -x assembler-with-cpp'
-#  CC_cmd CCFLAGS_trg ASMFLAGS_trg -o trg -c src
-# def DO_REF_STR (trg, src, cmd):
-#  printIfSilent (f"REF_STR {src}")
-#  rm -f trg
-#  cmd src trg
-# def DO_WINDRES (trg, src):
-#  #TODO: How do we add Icon, q3.manifest and the other data defined in code/win32/win_resource.rc ??
-#  printIfSilent (f"WINDRES {src}")
-#  WINDRES_cmd -i src -o trg
-
-#SHLIBNAME         = getPrev(SHLIBNAME,          f'{trgArch}{SHLIBEXT}')
-
-# Client Objects
-#::::::::::::::::
-## Client
-#DO_AS      ( binDir/client/%.o,  asmDir/%.s  )
-#DO_CC      ( binDir/client/%.o,  clDir/%.c   )
-#DO_CC      ( binDir/client/%.o,  svDir/%.c   )
-#DO_CC      ( binDir/client/%.o,  qcmDir/%.c  )
-#DO_BOT_CC  ( binDir/client/%.o,  botDir/%.c  )
-## Client Libraries
-#DO_CC      ( binDir/client/%.o,  jpgDir/%.c  )
-#DO_CC      ( binDir/client/%.o,  sdlDir/%.c  )
-## Platform Specific
-#DO_CC      ( binDir/client/%.o,  unxDir/%.c  )
-#DO_CC      ( binDir/client/%.o,  winDir/%.c  )
-#DO_WINDRES ( binDir/client/%.o,  winDir/%.rc )
-## Renderer GL1
-#DO_REND_CC ( binDir/rend1/%.o,  r1Dir/%.c  )
-#DO_REND_CC ( binDir/rend1/%.o,  rcDir/%.c  )
-#DO_REND_CC ( binDir/rend1/%.o,  qcmDir/%.c )
-## Renderer VK
-#DO_REND_CC ( binDir/rendv/%.o,  rvDir/%.c  )
-#DO_REND_CC ( binDir/rendv/%.o,  rcDir/%.c  )
-#DO_REND_CC ( binDir/rendv/%.o,  qcmDir/%.c )
-## Renderer GL2
-#DO_REND_CC ( binDir/rend2/%.o,       r2Dir/%.c  )
-#DO_REND_CC ( binDir/rend2/%.o,       rcDir/%.c  )
-#DO_REND_CC ( binDir/rend2/%.o,       qcmDir/%.c )
-#DO_REF_STR ( binDir/rend2/glsl/%.c,  r2Dir/glsl/%.glsl,  trgRend2str_cmd )
-#DO_REND_CC ( binDir/rend2/glsl/%.o,  binDir/renderer2/glsl/%.c )
-
-# Client Binaries     #TODO: This compiled Objects before, change to binaries
-#::::::::::::::::
-#compile(srcAll, trg=lnkDir+'/'+cName, env=dbg)
-#compile(lnkDir+'/sub/hello.c', env=rls)
-
-# client binary
-#TODO: Convert to Compile statements
-#binDir/trgClient: objQ3
-#	CC_cmd -o THIS_trgFilename objQ3 LDFLAGS_client LDFLAGS_base
-
-# modular renderers
-#binDir/trgRend1: objRend1
-#	CC_cmd -o THIS_trgFilename objRend1 CCFLAGS_shlib LDFLAGS_shlib
-#binDir/trgRendV: objRendV
-#	CC_cmd -o THIS_trgFilename objRendV CCFLAGS_shlib LDFLAGS_shlib
-#env.Command(trg, src, act)  #TODO: Use this to create a special case build option, without creating a full builder
-#trgRend2str_cmd: srcDir/renderer2/stringify.c
-#	CC_cmd -o THIS_trgFilename srcDir/renderer2/stringify.c LDFLAGS_base
-#binDir/trgRend2: objRend2 objRend2str
-#	CC_cmd -o THIS_trgFilename objRend2 objRend2str CCFLAGS_shlib LDFLAGS_shlib
 
 
 #############################################################################
@@ -655,11 +669,20 @@ tst.setup()
 #	CC_cmd -o THIS_trgFilename objDed LDFLAGS_base
 #compile(lnkDir+'/'+trgDed, env=rls, cStr='DED_CC')
 
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+############################################################
 
-#############################################################################
-# MAIN TARGETS
-#############################################################################
+
+#########
+# Keywords
+#::::::::::::::::::
+###############################
+
 # TODO:  ?? Alias(trg) 
+
+# Groups build, and aliases
+build_server = build_server or bool(server in COMMAND_LINE_TARGETS)
+trgBuildList = getCli(TRG)
 
 # Compile Keywords
 ## Groups
@@ -709,35 +732,15 @@ tst.setup()
 #Alias('all', trgAll)
 #Alias('release', rlsDir)  #TODO: Define the binary name properly in this call
 #for it in build_default:  Default(it)  # Add every list element of build_default, to the Default targets to build (additive, doesn't replace)
-#debug:   
-#    @MAKE_cmd targets binDir=dbgDir CCFLAGS="CCFLAGS_trg CCFLAGS_debug" LDFLAGS="LDFLAGS_base LDFLAGS_debug" V=$(V)
-#release:
-#    @MAKE_cmd targets binDir=rlsDir CCFLAGS="CCFLAGS_trg CCFLAGS_release" V=$(V)
-
-# These functions allow us to generate rules for copying a list of files
-# into the base directory of the build; this is useful for bundling libs,
-# README files or whatever else
-# if build_client:  $(call GENERATE_COPY_TARGETS,$(CLIENT_EXTRA_FILES))
-
-# Create the build directories and tools, print out an informational message, then start building
-#targets: makedirs tools
-#   if TARGETS:
-#   MAKE_cmd TARGETS V=$(V)
 
 
-#############################################################################
-# MISC
-#############################################################################
-# Strip Symbols from Release builds
-#STRIP       = strip      # Remove symbols and sections from files
-#env.AddPostAction(target, action)
-#TODO: Compile release with -s flag
+#########
+# Install
+#::::::::::::::::::
+###############################
 
 #install: release
-#	@for it in TARGETS:
-#    if [ -f rlsDir{it} ]:
-#		INSTALL_cmd -D -m 0755 "rlsDir/{it}" "instDir/{it}";
-#        #STRIP_cmd "instDir/{it}";   #TODO: Compile release with -s flag, instead of Action(strip)
+#	INSTALL_cmd -m 0755
 #TODO: Install builder setup
 #rlsInstall = compile(objInstall)
 #rls.Install(rlsDir, rlsInstall)  # Install B into folder A
@@ -747,27 +750,8 @@ tst.setup()
 #doinstall @ instDir
 
 #TODO:
-#    Default   scons                Builds the targets set in the `build_default` list
-#    Debug     scons debug          Builds debug version only     (client+server+game).  Default when `build_default` is empty
-#    Distrib   scons distribute     Cross-compiles and builds release versions for all supported platforms.
-#    Release   scons release        Builds release version only   (client+server+game)
-#    Engine    scons engine         Builds only the engine code, without any game code
-#    Game      scons game           Builds only the game code (dynamic library), without the engine   (sgame, cgame, ui)
-#    Server    scons server         Builds only the dedicated server code (ded), without any client code
-#    All       scons all            Builds all targets (including debug and release versions of both). Doesn't install
 #    Install   scons install        Builds release version only, and installs it in the folder defined in the script.
 #              scons install=DIR    Same as `install`, but installs directly to `DIR` instead
-
-#############################################################################
-# DEPENDENCIES
-#############################################################################
-# Might not be needed
-#TODO: Figure out if we need ParseDepends
-# We shouldn't need this, unless the solvers fail to find the header files (they probably wont)
-
-#D_FILES = find . -name '*.d'
-#if !=  (strip D_FILES),)
-# include D_FILES
 
 
 # BuildInfo

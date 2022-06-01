@@ -1,0 +1,603 @@
+EXPORTS
+    AddPointToBounds @1
+    AngleDelta @2
+    AngleMod @3
+    AngleNormalize180 @4
+    AngleNormalize360 @5
+    AngleSubtract @6
+    AngleVectors @7
+    AnglesSubtract @8
+    AnglesToAxis @9
+    AxisClear @10
+    AxisCopy @11
+    BG_AddPredictableEventToPlayerstate @12
+    BG_CanItemBeGrabbed @13
+    BG_EvaluateTrajectory @14
+    BG_EvaluateTrajectoryDelta @15
+    BG_FindItem @16
+    BG_FindItemForHoldable @17
+    BG_FindItemForPowerup @18
+    BG_FindItemForWeapon @19
+    BG_PlayerStateToEntityState @20
+    BG_PlayerStateToEntityStateExtraPolate @21
+    BG_PlayerTouchesItem @22
+    BG_TouchJumpPad @23
+    BoundsIntersect @24
+    BoundsIntersectPoint @25
+    BoundsIntersectSphere @26
+    BoxOnPlaneSide @27
+    ByteToDir @28
+    CG_AddBufferedSound @29
+    CG_AddFadeRGB @30
+    CG_AddFragment @31
+    CG_AddLagometerFrameInfo @32
+    CG_AddLagometerSnapshotInfo @33
+    CG_AddLocalEntities @34
+    CG_AddMarks @35
+    CG_AddPacketEntities @36
+    CG_AddParticleShrapnel @37
+    CG_AddParticleToScene @38
+    CG_AddParticles @39
+    CG_AddPlayerWeapon @40
+    CG_AddRefEntityWithPowerups @41
+    CG_AddScorePlum @42
+    CG_AddViewWeapon @43
+    CG_AdjustFrom640 @44
+    CG_AdjustPositionForMover @45
+    CG_AllocLocalEntity @46
+    CG_AllocMark @47
+    CG_Argv @48
+    CG_Beam @49
+    CG_BigExplode @50
+    CG_Bleed @51
+    CG_BloodPool @52
+    CG_BloodTrail @53
+    CG_BubbleTrail @54
+    CG_BuildSolidList @55
+    CG_BuildSpectatorString @56
+    CG_Bullet @57
+    CG_CenterPrint @58
+    CG_CheckAmmo @59
+    CG_CheckChangedPredictableEvents @60
+    CG_CheckEvents @61
+    CG_CheckLocalSounds @62
+    CG_CheckPlayerstateEvents @63
+    CG_ClearParticles @64
+    CG_ColorForHealth @65
+    CG_ConfigString @66
+    CG_ConsoleCommand @67
+    CG_CreateRotationMatrix @68
+    CG_CrosshairPlayer @69
+    CG_CustomSound @70
+    CG_DamageFeedback @71
+    CG_Draw3DModel @72
+    CG_DrawActive @73
+    CG_DrawActiveFrame @74
+    CG_DrawBigString @75
+    CG_DrawBigStringColor @76
+    CG_DrawChar @77
+    CG_DrawFlagModel @78
+    CG_DrawHead @79
+    CG_DrawInformation @80
+    CG_DrawOldScoreboard @81
+    CG_DrawPic @82
+    CG_DrawRect @83
+    CG_DrawSides @84
+    CG_DrawSmallString @85
+    CG_DrawSmallStringColor @86
+    CG_DrawStringExt @87
+    CG_DrawStrlen @88
+    CG_DrawTeamBackground @89
+    CG_DrawTopBottom @90
+    CG_DrawTourneyScoreboard @91
+    CG_DrawWeaponSelect @92
+    CG_EntityEvent @93
+    CG_Error @94
+    CG_EventHandling @95
+    CG_ExecuteNewServerCommands @96
+    CG_FadeColor @97
+    CG_FillRect @98
+    CG_FireWeapon @99
+    CG_FragmentBounceMark @100
+    CG_FragmentBounceSound @101
+    CG_FreeLocalEntity @102
+    CG_FreeMarkPoly @103
+    CG_GetColorForHealth @104
+    CG_GibPlayer @105
+    CG_GrappleTrail @106
+    CG_ImpactMark @107
+    CG_Init @108
+    CG_InitConsoleCommands @109
+    CG_InitLocalEntities @110
+    CG_InitMarkPolys @111
+    CG_KeyEvent @112
+    CG_LastAttacker @113
+    CG_LaunchExplode @114
+    CG_LaunchGib @115
+    CG_LightVerts @116
+    CG_LoadDeferredPlayers @117
+    CG_LoadingClient @118
+    CG_LoadingItem @119
+    CG_LoadingString @120
+    CG_MakeExplosion @121
+    CG_MissileHitPlayer @122
+    CG_MissileHitWall @123
+    CG_MouseEvent @124
+    CG_NewClientInfo @125
+    CG_NewParticleArea @126
+    CG_NextWeapon_f @127
+    CG_OilSlickRemove @128
+    CG_OutOfAmmoChange @129
+    CG_PainEvent @130
+    CG_ParseServerinfo @131
+    CG_ParticleBloodCloud @132
+    CG_ParticleBubble @133
+    CG_ParticleBulletDebris @134
+    CG_ParticleDust @135
+    CG_ParticleExplosion @136
+    CG_ParticleImpactSmokePuff @137
+    CG_ParticleMisc @138
+    CG_ParticleSmoke @139
+    CG_ParticleSnow @140
+    CG_ParticleSnowFlurry @141
+    CG_ParticleSparks @142
+    CG_Particle_Bleed @143
+    CG_Particle_OilParticle @144
+    CG_Particle_OilSlick @145
+    CG_PlaceString @146
+    CG_Player @147
+    CG_PointContents @148
+    CG_PositionEntityOnTag @149
+    CG_PositionRotatedEntityOnTag @150
+    CG_PredictPlayerState @151
+    CG_PrevWeapon_f @152
+    CG_Printf @153
+    CG_ProcessSnapshots @154
+    CG_RailTrail @155
+    CG_ReflectVelocity @156
+    CG_RegisterCvars @157
+    CG_RegisterItemVisuals @158
+    CG_RegisterWeapon @159
+    CG_ResetPlayerEntity @160
+    CG_Respawn @161
+    CG_RotatePoint @162
+    CG_ScorePlum @163
+    CG_SetConfigValues @164
+    CG_SetEntitySoundPosition @165
+    CG_SetInitialSnapshot @166
+    CG_ShaderStateChanged @167
+    CG_ShotgunFire @168
+    CG_Shutdown @169
+    CG_SmokePuff @170
+    CG_SnowLink @171
+    CG_SpawnEffect @172
+    CG_StartMusic @173
+    CG_TargetCommand_f @174
+    CG_TeamColor @175
+    CG_TestGun_f @176
+    CG_TestModelNextFrame_f @177
+    CG_TestModelNextSkin_f @178
+    CG_TestModelPrevFrame_f @179
+    CG_TestModelPrevSkin_f @180
+    CG_TestModel_f @181
+    CG_TileClear @182
+    CG_Trace @183
+    CG_Tracer @184
+    CG_TransitionPlayerState @185
+    CG_TransposeMatrix @186
+    CG_UpdateCvars @187
+    CG_WaterLevel @188
+    CG_Weapon_f @189
+    CG_ZoomDown_f @190
+    CG_ZoomUp_f @191
+    COM_BeginParseSession @192
+    COM_CompareExtension @193
+    COM_Compress @194
+    COM_DefaultExtension @195
+    COM_GetCurrentParseLine @196
+    COM_GetExtension @197
+    COM_MatchToken @198
+    COM_Parse @199
+    COM_ParseError @200
+    COM_ParseExt @201
+    COM_ParseWarning @202
+    COM_SkipPath @203
+    COM_StripExtension @204
+    ClampChar @205
+    ClampShort @206
+    ClearBounds @207
+    ColorBytes3 @208
+    ColorBytes4 @209
+    Com_Clamp @210
+    Com_Error @211
+    Com_HexStrToInt @212
+    Com_Printf @213
+    Com_SkipCharset @214
+    Com_SkipTokens @215
+    Com_TruncateLongString @216
+    Com_sprintf @217
+    CopyLongSwap @218
+    CopyShortSwap @219
+    DirToByte @220
+    FloatNoSwap @221
+    FloatSwap @222
+    Info_NextPair @223
+    Info_RemoveKey @224
+    Info_RemoveKey_Big @225
+    Info_SetValueForKey @226
+    Info_SetValueForKey_Big @227
+    Info_Validate @228
+    Info_ValueForKey @229
+    LerpAngle @230
+    Long64NoSwap @231
+    Long64Swap @232
+    LongNoSwap @233
+    LongSwap @234
+    MakeNormalVectors @235
+    MatrixMultiply @236
+    NormalizeColor @237
+    PASSFLOAT @238
+    PM_AddEvent @239
+    PM_AddTouchEnt @240
+    PM_ClipVelocity @241
+    PM_SlideMove @242
+    PM_StepSlideMove @243
+    PM_UpdateViewAngles @244
+    Parse1DMatrix @245
+    Parse2DMatrix @246
+    Parse3DMatrix @247
+    PerpendicularVector @248
+    PlaneFromPoints @249
+    Pmove @250
+    PmoveSingle @251
+    ProjectPointOnPlane @252
+    Q_CleanStr @253
+    Q_CountChar @254
+    Q_IsColorString @255
+    Q_PrintStrlen @256
+    Q_acos @257
+    Q_crandom @258
+    Q_fabs @259
+    Q_isalpha @260
+    Q_isanumber @261
+    Q_isintegral @262
+    Q_islower @263
+    Q_isnan @264
+    Q_isprint @265
+    Q_isupper @266
+    Q_log2 @267
+    Q_pown @268
+    Q_rand @269
+    Q_random @270
+    Q_rsqrt @271
+    Q_strcat @272
+    Q_stricmp @273
+    Q_stricmpn @274
+    Q_stristr @275
+    Q_strlwr @276
+    Q_strncmp @277
+    Q_strncpyz @278
+    Q_strupr @279
+    Q_vsnprintf @280
+    RadiusFromBounds @281
+    RotateAroundDirection @282
+    RotatePointAroundVector @283
+    SetPlaneSignbits @284
+    ShortNoSwap @285
+    ShortSwap @286
+    SkipBracedSection @287
+    SkipRestOfLine @288
+    UI_DrawBannerString @289
+    UI_DrawProportionalString @290
+    UI_ProportionalSizeScale @291
+    UI_ProportionalStringWidth @292
+    ValidBloodPool @293
+    Vector4Scale @294
+    VectorMAM @295
+    VectorNormalize @296
+    VectorNormalize2 @297
+    VectorRotate @298
+    _DotProduct @299
+    _VectorAdd @300
+    _VectorCopy @301
+    _VectorMA @302
+    _VectorScale @303
+    _VectorSubtract @304
+    active_particles @305 DATA
+    axisDefault @306 DATA
+    bg_itemlist @307 DATA
+    bg_numItems @308 DATA
+    bytedirs @309 DATA
+    c_pmove @310 DATA
+    cg @311 DATA
+    cg_activeLocalEntities @312 DATA
+    cg_activeMarkPolys @313 DATA
+    cg_addMarks @314 DATA
+    cg_animSpeed @315 DATA
+    cg_autoswitch @316 DATA
+    cg_blood @317 DATA
+    cg_bobpitch @318 DATA
+    cg_bobroll @319 DATA
+    cg_bobup @320 DATA
+    cg_brassTime @321 DATA
+    cg_buildScript @322 DATA
+    cg_cameraMode @323 DATA
+    cg_cameraOrbit @324 DATA
+    cg_cameraOrbitDelay @325 DATA
+    cg_centertime @326 DATA
+    cg_crosshairHealth @327 DATA
+    cg_crosshairSize @328 DATA
+    cg_crosshairX @329 DATA
+    cg_crosshairY @330 DATA
+    cg_customSoundNames @331 DATA
+    cg_debugAnim @332 DATA
+    cg_debugEvents @333 DATA
+    cg_debugPosition @334 DATA
+    cg_deferPlayers @335 DATA
+    cg_draw2D @336 DATA
+    cg_draw3dIcons @337 DATA
+    cg_drawAmmoWarning @338 DATA
+    cg_drawAttacker @339 DATA
+    cg_drawCrosshair @340 DATA
+    cg_drawCrosshairNames @341 DATA
+    cg_drawFPS @342 DATA
+    cg_drawFriend @343 DATA
+    cg_drawGun @344 DATA
+    cg_drawIcons @345 DATA
+    cg_drawRewards @346 DATA
+    cg_drawSnapshot @347 DATA
+    cg_drawStatus @348 DATA
+    cg_drawTeamOverlay @349 DATA
+    cg_drawTimelimit @350 DATA
+    cg_entities @351 DATA
+    cg_errorDecay @352 DATA
+    cg_footsteps @353 DATA
+    cg_forceModel @354 DATA
+    cg_fov @355 DATA
+    cg_freeLocalEntities @356 DATA
+    cg_freeMarkPolys @357 DATA
+    cg_gibs @358 DATA
+    cg_gun_frame @359 DATA
+    cg_gun_x @360 DATA
+    cg_gun_y @361 DATA
+    cg_gun_z @362 DATA
+    cg_hudFiles @363 DATA
+    cg_ignore @364 DATA
+    cg_items @365 DATA
+    cg_lagometer @366 DATA
+    cg_localEntities @367 DATA
+    cg_markPolys @368 DATA
+    cg_noPlayerAnims @369 DATA
+    cg_noProjectileTrail @370 DATA
+    cg_nopredict @371 DATA
+    cg_oldPlasma @372 DATA
+    cg_oldRail @373 DATA
+    cg_oldRocket @374 DATA
+    cg_paused @375 DATA
+    cg_pmove_msec @376 DATA
+    cg_predictItems @377 DATA
+    cg_railTrailTime @378 DATA
+    cg_runpitch @379 DATA
+    cg_runroll @380 DATA
+    cg_scorePlum @381 DATA
+    cg_shadows @382 DATA
+    cg_showmiss @383 DATA
+    cg_simpleItems @384 DATA
+    cg_smoothClients @385 DATA
+    cg_stats @386 DATA
+    cg_swingSpeed @387 DATA
+    cg_synchronousClients @388 DATA
+    cg_teamChatHeight @389 DATA
+    cg_teamChatTime @390 DATA
+    cg_teamChatsOnly @391 DATA
+    cg_teamOverlayUserinfo @392 DATA
+    cg_thirdPerson @393 DATA
+    cg_thirdPersonAngle @394 DATA
+    cg_thirdPersonRange @395 DATA
+    cg_timescale @396 DATA
+    cg_timescaleFadeEnd @397 DATA
+    cg_timescaleFadeSpeed @398 DATA
+    cg_tracerChance @399 DATA
+    cg_tracerLength @400 DATA
+    cg_tracerWidth @401 DATA
+    cg_trueLightning @402 DATA
+    cg_viewsize @403 DATA
+    cg_weapons @404 DATA
+    cg_zoomFov @405 DATA
+    cgs @406 DATA
+    cl_numparticles @407 DATA
+    colorBlack @408 DATA
+    colorBlue @409 DATA
+    colorCyan @410 DATA
+    colorDkGrey @411 DATA
+    colorGreen @412 DATA
+    colorLtGrey @413 DATA
+    colorMagenta @414 DATA
+    colorMdGrey @415 DATA
+    colorRed @416 DATA
+    colorWhite @417 DATA
+    colorYellow @418 DATA
+    dllEntry @419
+    drawTeamOverlayModificationCount @420 DATA
+    eventnames @421 DATA
+    forceModelModificationCount @422 DATA
+    free_particles @423 DATA
+    g_color_table @424 DATA
+    hud_speed @425 DATA
+    hud_speed_x @426 DATA
+    hud_speed_y @427 DATA
+    hud_timerActive_x @428 DATA
+    hud_timerActive_y @429 DATA
+    hud_timerBest_x @430 DATA
+    hud_timerBest_y @431 DATA
+    initparticles @432 DATA
+    lagometer @433 DATA
+    numSortedTeamPlayers @434 DATA
+    oldtime @435 DATA
+    osdf_init @436
+    osdf_initialized @437 DATA
+    osdf_move @438
+    particles @439 DATA
+    phy_air_accel @440 DATA
+    phy_air_basespeed @441 DATA
+    phy_air_decel @442 DATA
+    phy_air_decelAngle @443 DATA
+    phy_air_speedscalar @444 DATA
+    phy_aircontrol @445 DATA
+    phy_aircontrol_amount @446 DATA
+    phy_aircontrol_power @447 DATA
+    phy_airstrafe_accel @448 DATA
+    phy_airstrafe_basespeed @449 DATA
+    phy_crouch_scale @450 DATA
+    phy_fly_accel @451 DATA
+    phy_fly_friction @452 DATA
+    phy_friction @453 DATA
+    phy_fw_accelerate @454 DATA
+    phy_ground_accel @455 DATA
+    phy_ground_basespeed @456 DATA
+    phy_input_scalefix @457 DATA
+    phy_jump_auto @458 DATA
+    phy_jump_dj_time @459 DATA
+    phy_jump_dj_velocity @460 DATA
+    phy_jump_type @461 DATA
+    phy_jump_velocity @462 DATA
+    phy_movetype @463 DATA
+    phy_slidemove_type @464 DATA
+    phy_snapvelocity @465 DATA
+    phy_spectator_friction @466 DATA
+    phy_stopspeed @467 DATA
+    phy_water_accel @468 DATA
+    phy_water_friction @469 DATA
+    phy_water_scale @470 DATA
+    pm @471 DATA
+    pm_accelerate @472 DATA
+    pm_airaccelerate @473 DATA
+    pm_duckScale @474 DATA
+    pm_flightfriction @475 DATA
+    pm_flyaccelerate @476 DATA
+    pm_friction @477 DATA
+    pm_spectatorfriction @478 DATA
+    pm_stopspeed @479 DATA
+    pm_swimScale @480 DATA
+    pm_wateraccelerate @481 DATA
+    pm_waterfriction @482 DATA
+    pml @483 DATA
+    pmove_fixed @484 DATA
+    pmove_msec @485 DATA
+    q1_AirMoveQW @486
+    q1_CheckDuck @487
+    q1_overbounce_scale @488 DATA
+    q3a_Accelerate @489
+    q3a_SlideMove @490
+    q3a_StepSlideMove @491
+    q3a_VectorReflect @492
+    q3a_cpm @493
+    q3a_vq1 @494
+    q3a_vq3 @495
+    rforward @496 DATA
+    rright @497 DATA
+    rup @498 DATA
+    s_jump_interval @499 DATA
+    sortedTeamPlayers @500 DATA
+    systemChat @501 DATA
+    teamChat1 @502 DATA
+    teamChat2 @503 DATA
+    testPrintFloat @504
+    testPrintInt @505
+    trap_AddCommand @506
+    trap_Argc @507
+    trap_Args @508
+    trap_Argv @509
+    trap_CIN_DrawCinematic @510
+    trap_CIN_PlayCinematic @511
+    trap_CIN_RunCinematic @512
+    trap_CIN_SetExtents @513
+    trap_CIN_StopCinematic @514
+    trap_CM_BoxTrace @515
+    trap_CM_CapsuleTrace @516
+    trap_CM_InlineModel @517
+    trap_CM_LoadMap @518
+    trap_CM_MarkFragments @519
+    trap_CM_NumInlineModels @520
+    trap_CM_PointContents @521
+    trap_CM_TempBoxModel @522
+    trap_CM_TempCapsuleModel @523
+    trap_CM_TransformedBoxTrace @524
+    trap_CM_TransformedCapsuleTrace @525
+    trap_CM_TransformedPointContents @526
+    trap_Cvar_Register @527
+    trap_Cvar_Set @528
+    trap_Cvar_Update @529
+    trap_Cvar_VariableStringBuffer @530
+    trap_Error @531
+    trap_FS_FCloseFile @532
+    trap_FS_FOpenFile @533
+    trap_FS_Read @534
+    trap_FS_Seek @535
+    trap_FS_Write @536
+    trap_GetCurrentCmdNumber @537
+    trap_GetCurrentSnapshotNumber @538
+    trap_GetEntityToken @539
+    trap_GetGameState @540
+    trap_GetGlconfig @541
+    trap_GetServerCommand @542
+    trap_GetSnapshot @543
+    trap_GetUserCmd @544
+    trap_Key_GetCatcher @545
+    trap_Key_GetKey @546
+    trap_Key_IsDown @547
+    trap_Key_SetCatcher @548
+    trap_MemoryRemaining @549
+    trap_Milliseconds @550
+    trap_PC_AddGlobalDefine @551
+    trap_PC_FreeSource @552
+    trap_PC_LoadSource @553
+    trap_PC_ReadToken @554
+    trap_PC_SourceFileAndLine @555
+    trap_Print @556
+    trap_R_AddAdditiveLightToScene @557
+    trap_R_AddLightToScene @558
+    trap_R_AddPolyToScene @559
+    trap_R_AddPolysToScene @560
+    trap_R_AddRefEntityToScene @561
+    trap_R_ClearScene @562
+    trap_R_DrawStretchPic @563
+    trap_R_LerpTag @564
+    trap_R_LightForPoint @565
+    trap_R_LoadWorldMap @566
+    trap_R_ModelBounds @567
+    trap_R_RegisterFont @568
+    trap_R_RegisterModel @569
+    trap_R_RegisterShader @570
+    trap_R_RegisterShaderNoMip @571
+    trap_R_RegisterSkin @572
+    trap_R_RemapShader @573
+    trap_R_RenderScene @574
+    trap_R_SetColor @575
+    trap_R_inPVS @576
+    trap_RealTime @577
+    trap_RemoveCommand @578
+    trap_S_AddLoopingSound @579
+    trap_S_AddRealLoopingSound @580
+    trap_S_ClearLoopingSounds @581
+    trap_S_RegisterSound @582
+    trap_S_Respatialize @583
+    trap_S_StartBackgroundTrack @584
+    trap_S_StartLocalSound @585
+    trap_S_StartSound @586
+    trap_S_StopBackgroundTrack @587
+    trap_S_StopLoopingSound @588
+    trap_S_UpdateEntityPosition @589
+    trap_SendClientCommand @590
+    trap_SendConsoleCommand @591
+    trap_SetUserCmdValue @592
+    trap_SnapVector @593
+    trap_UpdateScreen @594
+    ui_Vspeed @595 DATA
+    va @596
+    vec3_origin @597 DATA
+    vectoangles @598
+    vforward @599 DATA
+    vmMain @600
+    vright @601 DATA
+    vup @602 DATA

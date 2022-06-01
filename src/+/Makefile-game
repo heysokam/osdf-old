@@ -1,0 +1,52 @@
+#############################################################################
+## BASEQ3 CGAME
+#############################################################################
+
+Q3CGOBJ = 
+Q3CGVMOBJ = $(Q3CGOBJ_:%.o=%.asm)
+
+SHLIBNAME=$(ARCH).$(SHLIBEXT)
+
+define DO_CGAME_CC
+$(Q)$(CC) $(BASEGAME_CFLAGS) -DCGAME $(SHLIBCFLAGS) $(CFLAGS) $(OPTIMIZEVM) -o $@ -c $<
+endef
+
+outDir/cgame$(SHLIBNAME): $(Q3CGOBJ)
+	$(Q)$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(Q3CGOBJ)
+
+
+#############################################################################
+## BASEQ3 GAME
+#############################################################################
+
+
+Q3GOBJ = $(Q3GOBJ_) 
+Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
+
+$(B)/$(BASEGAME)/qagame$(SHLIBNAME): $(Q3GOBJ)
+	$(echo_cmd) "LD $@"
+	$(Q)$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(Q3GOBJ)
+
+define DO_GAME_CC
+$(Q)$(CC) $(BASEGAME_CFLAGS) -DQAGAME $(SHLIBCFLAGS) $(CFLAGS) $(OPTIMIZEVM) -o $@ -c $<
+$(Q)$(DO_QVM_DEP)
+endef
+
+
+#############################################################################
+## BASEQ3 UI
+#############################################################################
+
+Q3UIOBJ = $(Q3UIOBJ_) $(B)/$(TEAMARENA)/ui/ui_syscalls.o
+Q3UIVMOBJ = $(Q3UIOBJ_:%.o=%.asm)
+
+$(B)/$(BASEGAME)/ui$(SHLIBNAME): $(Q3UIOBJ)
+	$(echo_cmd) "LD $@"
+	$(Q)$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(Q3UIOBJ)
+
+define DO_UI_CC
+$(echo_cmd) "UI_CC $<"
+$(Q)$(CC) $(BASEGAME_CFLAGS) -DUI $(SHLIBCFLAGS) $(CFLAGS) $(OPTIMIZEVM) -o $@ -c $<
+$(Q)$(DO_QVM_DEP)
+endef
+

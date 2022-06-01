@@ -13,9 +13,11 @@ cName             = 'osdf'
 dName             = cName+'.ded'
 render_prefix     = cName
 # Directories
-rootDir           = os.getcwd()                # Absolute
-srcDir            = rootDir+'/code'            # MUST be absolute
-binDir            = rootDir+'/bin'
+rootDir           = '.' #os.getcwd()           # Must be relative. Was Absolute
+srcDir            = '.'                        # This MUST be relative to the SConstruct file.
+engineDir         = srcDir+'/engine'           # Repository for engine code
+gameDir           = srcDir+'/game'             # Repository for gamecode
+binDir            = rootDir+'/bin'             # Output root folder where binaries will be compiled to
 instDir           = rootDir+'/install-'+cName  # Default linux:  '/usr/local/games/quake3'
 baseDir           = None                       #TODO: what is this DEFAULT_BASEDIR value used for?
 # Select what to build
@@ -46,9 +48,9 @@ if render_default == 'vulkan':  use_vulkan  = use_vulkan_api = True
 #use_curl_dlopen   = False if mingw else True  # Disabled. Curl hotplug is not needed   # Force false for mingw
 
 # Versioning
-verFile           = srcDir+'/qcommon/q_shared.h'  # File where the version will be searched for. If changed, version won't be searched for in the right file
-verMacro          = 'Q3_VERSION'                  # Macro name of the version value. If changed, version won't be found in the file
-version           = getVersion(verFile,verMacro)  # If this is changed, we overwrite the project's version defined in the source code
+verFile           = engineDir+'/qcommon/q_shared.h'  # File where the version will be searched for. If changed, version won't be searched for in the right file
+verMacro          = 'Q3_VERSION'                     # Macro name of the version value. If changed, version won't be found in the file
+version           = getVersion(verFile,verMacro)     # If this is changed, we overwrite the project's version defined in the source code
 
 # SCons config
 ## General
@@ -69,27 +71,28 @@ dbgDir = binDir+f'/debug-{trgPlatform}-{trgArch}'    #TODO: Switch trgDir
 rlsDir = binDir+f'/release-{trgPlatform}-{trgArch}'  #TODO: Switch trgDir
 #trgDir = binDir+f'/{trgType}-{trgPlatform}-{trgArch}'  # ex:   release-posix-x86_64
 # Engine src folders      #  relative to srcDir, we need multiple links (virtual copies) for SCons. absolute = srcDir+'/folder'
-asmDir = '/asm'
 clDir  = '/client'
 svDir  = '/server'
 rcDir  = '/rendc'
-r1Dir  = '/renderer'
-r2Dir  = '/renderer2'
+r1Dir  = '/rend1'
+r2Dir  = '/rend2'
 rvDir  = '/rendv'
 sdlDir = '/sdl'
 qcmDir = '/qcommon'
 unxDir = '/unix'
 winDir = '/win32'
 botDir = '/botlib'
+# Gamecode src folders
+cgDir  = '/cgame'
+sgDir  = '/sgame'
 uiDir  = '/ui'
-jpgDir = '/libjpeg'
-# Gamecode src folders       #TODO: Port from ioq3 Makefile
-# cgDir  = lnkDir+'/cgame'
-# gDir   = lnkDir+'/game'    #TODO: '/game/sgame'
-# quiDir = lnkDir+'/q3_ui'
-# LCC Compiler tools folder
+# LCC Compiler tools folder     #TODO: Port from ioq3 Makefile
 # toolDir= lnkDir+'/tools'
 # lccDir = lnkDir+toolDir+'/lcc'
+# Not used
+asmDir = '/asm'
+tuiDir = '/ui_ta'
+jpgDir = '/libjpeg'
 
 ## Compiler Flags
 # ::::::::::::::::
@@ -103,6 +106,7 @@ DFLAGS_base  = [] # Preprocessor flags, defined on compilation. (CPPDEFINES, -D 
 CCPATH_base  = [] # Include folders (CPPPATH, `-I` without prefix)
 LIBS_base    = [] # Libraries that will be included
 LDFLAGS_base = [] # Flags for the linker (LINKFLAGS)
+PARSE_base   = [] # Commands to parse with ParseConfig('cmd arg1 arg2')
 
 
 

@@ -1,0 +1,1161 @@
+EXPORTS
+    AIEnter_Battle_Chase @1
+    AIEnter_Battle_Fight @2
+    AIEnter_Battle_NBG @3
+    AIEnter_Battle_Retreat @4
+    AIEnter_Battle_SuicidalFight @5
+    AIEnter_Intermission @6
+    AIEnter_Observer @7
+    AIEnter_Respawn @8
+    AIEnter_Seek_ActivateEntity @9
+    AIEnter_Seek_LTG @10
+    AIEnter_Seek_NBG @11
+    AIEnter_Stand @12
+    AINode_Battle_Chase @13
+    AINode_Battle_Fight @14
+    AINode_Battle_NBG @15
+    AINode_Battle_Retreat @16
+    AINode_Intermission @17
+    AINode_Observer @18
+    AINode_Respawn @19
+    AINode_Seek_ActivateEntity @20
+    AINode_Seek_LTG @21
+    AINode_Seek_NBG @22
+    AINode_Stand @23
+    AddPointToBounds @24
+    AddRemap @25
+    AddScore @26
+    AddTeamScore @27
+    AddTournamentPlayer @28
+    AddTournamentQueue @29
+    Add_Ammo @30
+    AdjustTournamentScores @31
+    AimAtTarget @32
+    AngleDelta @33
+    AngleDifference @34
+    AngleMod @35
+    AngleNormalize180 @36
+    AngleNormalize360 @37
+    AngleSubtract @38
+    AngleVectors @39
+    AnglesSubtract @40
+    AnglesToAxis @41
+    AxisClear @42
+    AxisCopy @43
+    BFG_Fire @44
+    BG_AddPredictableEventToPlayerstate @45
+    BG_CanItemBeGrabbed @46
+    BG_EvaluateTrajectory @47
+    BG_EvaluateTrajectoryDelta @48
+    BG_FindItem @49
+    BG_FindItemForHoldable @50
+    BG_FindItemForPowerup @51
+    BG_FindItemForWeapon @52
+    BG_PlayerStateToEntityState @53
+    BG_PlayerStateToEntityStateExtraPolate @54
+    BG_PlayerTouchesItem @55
+    BG_TouchJumpPad @56
+    BeginIntermission @57
+    Blocked_Door @58
+    BodySink @59
+    BotAI @60
+    BotAIBlocked @61
+    BotAILoadMap @62
+    BotAIPredictObstacles @63
+    BotAIRegularUpdate @64
+    BotAISetup @65
+    BotAISetupClient @66
+    BotAIShutdown @67
+    BotAIShutdownClient @68
+    BotAIStartFrame @69
+    BotAI_BotInitialChat @70
+    BotAI_GetClientState @71
+    BotAI_GetEntityState @72
+    BotAI_GetSnapshotEntity @73
+    BotAI_Print @74
+    BotAI_Trace @75
+    BotAddressedToBot @76
+    BotAggression @77
+    BotAimAtEnemy @78
+    BotAlternateRoute @79
+    BotAttackMove @80
+    BotBattleUseItems @81
+    BotCTFCarryingFlag @82
+    BotCTFOrders @83
+    BotCTFOrders_BothFlagsAtBase @84
+    BotCTFOrders_BothFlagsNotAtBase @85
+    BotCTFOrders_EnemyFlagNotAtBase @86
+    BotCTFOrders_FlagNotAtBase @87
+    BotCTFRetreatGoals @88
+    BotCTFSeekGoals @89
+    BotCanAndWantsToRocketJump @90
+    BotChangeViewAngle @91
+    BotChangeViewAngles @92
+    BotChatTest @93
+    BotChatTime @94
+    BotChat_Death @95
+    BotChat_EndLevel @96
+    BotChat_EnemySuicide @97
+    BotChat_EnterGame @98
+    BotChat_ExitGame @99
+    BotChat_HitNoDeath @100
+    BotChat_HitNoKill @101
+    BotChat_HitTalking @102
+    BotChat_Kill @103
+    BotChat_Random @104
+    BotChat_StartLevel @105
+    BotCheckAir @106
+    BotCheckAttack @107
+    BotCheckConsoleMessages @108
+    BotCheckEvents @109
+    BotCheckForGrenades @110
+    BotCheckItemPickup @111
+    BotCheckSnapshot @112
+    BotChooseWeapon @113
+    BotClearActivateGoalStack @114
+    BotClearPath @115
+    BotClientTravelTimeToGoal @116
+    BotCreateGroup @117
+    BotCreateWayPoint @118
+    BotDeathmatchAI @119
+    BotDontAvoid @120
+    BotDumpNodeSwitches @121
+    BotEnableActivateGoalAreas @122
+    BotEnemyFlag @123
+    BotEnemyFlagCarrierVisible @124
+    BotEntityInfo @125
+    BotEntityVisible @126
+    BotFeelingBad @127
+    BotFindEnemy @128
+    BotFindWayPoint @129
+    BotFirstClientInRankings @130
+    BotFreeWaypoints @131
+    BotFuncButtonActivateGoal @132
+    BotFuncDoorActivateGoal @133
+    BotGPSToPosition @134
+    BotGetActivateGoal @135
+    BotGetAirGoal @136
+    BotGetAlternateRouteGoal @137
+    BotGetItemLongTermGoal @138
+    BotGetItemTeamGoal @139
+    BotGetLongTermGoal @140
+    BotGetMessageTeamGoal @141
+    BotGetPatrolWaypoints @142
+    BotGetTeamMateTaskPreference @143
+    BotGetTime @144
+    BotGoCamp @145
+    BotGoForActivateGoal @146
+    BotGoForAir @147
+    BotGoForPowerups @148
+    BotGoalForBSPEntity @149
+    BotHasPersistantPowerupAndWeapon @150
+    BotInLavaOrSlime @151
+    BotInitLibrary @152
+    BotInitWaypoints @153
+    BotInputToUserCommand @154
+    BotInterbreedBots @155
+    BotInterbreedEndMatch @156
+    BotInterbreeding @157
+    BotIntermission @158
+    BotIsDead @159
+    BotIsFirstInRankings @160
+    BotIsGoingToActivateEntity @161
+    BotIsLastInRankings @162
+    BotIsObserver @163
+    BotLastClientInRankings @164
+    BotLongTermGoal @165
+    BotMapScripts @166
+    BotMapTitle @167
+    BotMatchMessage @168
+    BotMatch_AttackEnemyBase @169
+    BotMatch_CTF @170
+    BotMatch_Camp @171
+    BotMatch_CheckPoint @172
+    BotMatch_DefendKeyArea @173
+    BotMatch_Dismiss @174
+    BotMatch_EnterGame @175
+    BotMatch_FormationSpace @176
+    BotMatch_GetFlag @177
+    BotMatch_GetItem @178
+    BotMatch_HelpAccompany @179
+    BotMatch_JoinSubteam @180
+    BotMatch_Kill @181
+    BotMatch_LeadTheWay @182
+    BotMatch_LeaveSubteam @183
+    BotMatch_NewLeader @184
+    BotMatch_Patrol @185
+    BotMatch_ReturnFlag @186
+    BotMatch_RushBase @187
+    BotMatch_StartTeamLeaderShip @188
+    BotMatch_StopTeamLeaderShip @189
+    BotMatch_Suicide @190
+    BotMatch_TaskPreference @191
+    BotMatch_WhatAreYouDoing @192
+    BotMatch_WhatIsMyCommand @193
+    BotMatch_WhereAreYou @194
+    BotMatch_WhichTeam @195
+    BotMatch_WhoIsTeamLeader @196
+    BotModelMinsMaxs @197
+    BotNearbyGoal @198
+    BotNearestVisibleItem @199
+    BotNumActivePlayers @200
+    BotNumTeamMates @201
+    BotOppositeTeam @202
+    BotPointAreaNum @203
+    BotPopFromActivateGoalStack @204
+    BotPrintActivateGoalInfo @205
+    BotPrintTeamGoal @206
+    BotPushOntoActivateGoalStack @207
+    BotRandomMove @208
+    BotRandomOpponentName @209
+    BotRandomWeaponName @210
+    BotReachedGoal @211
+    BotReadSessionData @212
+    BotRecordNodeSwitch @213
+    BotRefuseOrder @214
+    BotRememberLastOrderedTask @215
+    BotReportStatus @216
+    BotResetNodeSwitches @217
+    BotResetState @218
+    BotRoamGoal @219
+    BotSameTeam @220
+    BotSayTeamOrder @221
+    BotSayTeamOrderAlways @222
+    BotSayVoiceTeamOrder @223
+    BotScheduleBotThink @224
+    BotSelectActivateWeapon @225
+    BotSetEntityNumForGoal @226
+    BotSetEntityNumForGoalWithActivator @227
+    BotSetEntityNumForGoalWithModel @228
+    BotSetInfoConfigString @229
+    BotSetLastOrderedTask @230
+    BotSetMovedir @231
+    BotSetTeamMateTaskPreference @232
+    BotSetTeamStatus @233
+    BotSetTeleportTime @234
+    BotSetUserInfo @235
+    BotSetupAlternativeRouteGoals @236
+    BotSetupDeathmatchAI @237
+    BotSetupForMovement @238
+    BotShutdownDeathmatchAI @239
+    BotSortTeamMatesByBaseTravelTime @240
+    BotSortTeamMatesByTaskPreference @241
+    BotSynonymContext @242
+    BotTeam @243
+    BotTeamAI @244
+    BotTeamFlag @245
+    BotTeamFlagCarrier @246
+    BotTeamFlagCarrierVisible @247
+    BotTeamGoals @248
+    BotTeamLeader @249
+    BotTeamOrders @250
+    BotTeamplayReport @251
+    BotTestAAS @252
+    BotTriggerMultipleActivateGoal @253
+    BotUpdateBattleInventory @254
+    BotUpdateInfoConfigStrings @255
+    BotUpdateInput @256
+    BotUpdateInventory @257
+    BotValidChatPosition @258
+    BotValidTeamLeader @259
+    BotVisibleEnemies @260
+    BotVisibleTeamMatesAndEnemies @261
+    BotVoiceChat @262
+    BotVoiceChatCommand @263
+    BotVoiceChatOnly @264
+    BotVoiceChat_Camp @265
+    BotVoiceChat_Defend @266
+    BotVoiceChat_DefendFlag @267
+    BotVoiceChat_Dummy @268
+    BotVoiceChat_FollowFlagCarrier @269
+    BotVoiceChat_FollowMe @270
+    BotVoiceChat_GetFlag @271
+    BotVoiceChat_Offense @272
+    BotVoiceChat_Patrol @273
+    BotVoiceChat_ReturnFlag @274
+    BotVoiceChat_StartLeader @275
+    BotVoiceChat_StopLeader @276
+    BotVoiceChat_WantOnDefense @277
+    BotVoiceChat_WantOnOffense @278
+    BotVoiceChat_WhoIsLeader @279
+    BotWantsToCamp @280
+    BotWantsToChase @281
+    BotWantsToHelp @282
+    BotWantsToRetreat @283
+    BotWeaponNameForMeansOfDeath @284
+    BotWriteInterbreeded @285
+    BotWriteSessionData @286
+    BoundsIntersect @287
+    BoundsIntersectPoint @288
+    BoundsIntersectSphere @289
+    BoxOnPlaneSide @290
+    BroadcastTeamChange @291
+    BuildShaderStateConfig @292
+    Bullet_Fire @293
+    ByteToDir @294
+    COM_BeginParseSession @295
+    COM_CompareExtension @296
+    COM_Compress @297
+    COM_DefaultExtension @298
+    COM_GetCurrentParseLine @299
+    COM_GetExtension @300
+    COM_MatchToken @301
+    COM_Parse @302
+    COM_ParseError @303
+    COM_ParseExt @304
+    COM_ParseWarning @305
+    COM_SkipPath @306
+    COM_StripExtension @307
+    CalcMuzzlePoint @308
+    CalcMuzzlePointOrigin @309
+    CalculateRanks @310
+    CanDamage @311
+    CheatsOk @312
+    CheckAlmostCapture @313
+    CheckAlmostScored @314
+    CheckArmor @315
+    CheckCvars @316
+    CheckExitRules @317
+    CheckGauntletAttack @318
+    CheckIntermissionExit @319
+    CheckTeamLeader @320
+    CheckTeamStatus @321
+    CheckTeamVote @322
+    CheckTournament @323
+    CheckVote @324
+    ClampChar @325
+    ClampShort @326
+    ClearBounds @327
+    ClearRegisteredItems @328
+    ClientBegin @329
+    ClientCommand @330
+    ClientConnect @331
+    ClientDisconnect @332
+    ClientEndFrame @333
+    ClientEvents @334
+    ClientForString @335
+    ClientFromName @336
+    ClientImpacts @337
+    ClientInactivityTimer @338
+    ClientIntermissionThink @339
+    ClientName @340
+    ClientNumberFromString @341
+    ClientOnSameTeamFromName @342
+    ClientRespawn @343
+    ClientSkin @344
+    ClientSpawn @345
+    ClientThink @346
+    ClientThink_real @347
+    ClientTimerActions @348
+    ClientUserinfoChanged @349
+    Cmd_CallTeamVote_f @350
+    Cmd_CallVote_f @351
+    Cmd_FollowCycle_f @352
+    Cmd_Follow_f @353
+    Cmd_GameCommand_f @354
+    Cmd_Give_f @355
+    Cmd_God_f @356
+    Cmd_Kill_f @357
+    Cmd_LevelShot_f @358
+    Cmd_Noclip_f @359
+    Cmd_Notarget_f @360
+    Cmd_Score_f @361
+    Cmd_SetViewpos_f @362
+    Cmd_Stats_f @363
+    Cmd_TeamTask_f @364
+    Cmd_TeamVote_f @365
+    Cmd_Team_f @366
+    Cmd_Vote_f @367
+    Cmd_Where_f @368
+    ColorBytes3 @369
+    ColorBytes4 @370
+    Com_Clamp @371
+    Com_Error @372
+    Com_HexStrToInt @373
+    Com_Printf @374
+    Com_SkipCharset @375
+    Com_SkipTokens @376
+    Com_TruncateLongString @377
+    Com_sprintf @378
+    ConcatArgs @379
+    ConsoleCommand @380
+    CopyLongSwap @381
+    CopyShortSwap @382
+    CopyToBodyQue @383
+    DeathmatchScoreboardMessage @384
+    DebugLine @385
+    DirToByte @386
+    Drop_Item @387
+    EasyClientName @388
+    EntityCarriesFlag @389
+    EntityHasQuad @390
+    EntityIsChatting @391
+    EntityIsDead @392
+    EntityIsInvisible @393
+    EntityIsShooting @394
+    ExitLevel @395
+    FindClientByName @396
+    FindEnemyByName @397
+    FindHumanTeamLeader @398
+    FindIntermissionPoint @399
+    FinishSpawningItem @400
+    FireWeapon @401
+    FloatNoSwap @402
+    FloatSwap @403
+    G_AddEvent @404
+    G_AddPredictableEvent @405
+    G_AddRandomBot @406
+    G_AddSpawnVarToken @407
+    G_Alloc @408
+    G_BotConnect @409
+    G_BounceItem @410
+    G_BounceMissile @411
+    G_BounceProjectile @412
+    G_CallSpawn @413
+    G_CheckBotSpawn @414
+    G_CheckMinimumPlayers @415
+    G_CheckProxMinePosition @416
+    G_CheckTeamItems @417
+    G_CountBotPlayers @418
+    G_CountBotPlayersByName @419
+    G_CountHumanPlayers @420
+    G_CreateRotationMatrix @421
+    G_Damage @422
+    G_EntitiesFree @423
+    G_Error @424
+    G_ExplodeMissile @425
+    G_FilterPacket @426
+    G_Find @427
+    G_FindConfigstringIndex @428
+    G_FindTeams @429
+    G_FreeEntity @430
+    G_GetArenaInfoByMap @431
+    G_GetBotInfoByName @432
+    G_GetBotInfoByNumber @433
+    G_InitBots @434
+    G_InitGame @435
+    G_InitGentity @436
+    G_InitMemory @437
+    G_InitSessionData @438
+    G_InitWorldSession @439
+    G_ItemDisabled @440
+    G_KillBox @441
+    G_LogPrintf @442
+    G_MissileImpact @443
+    G_ModelIndex @444
+    G_MoverPush @445
+    G_MoverTeam @446
+    G_NewString @447
+    G_ParseField @448
+    G_ParseInfos @449
+    G_ParseSpawnVars @450
+    G_PickTarget @451
+    G_Printf @452
+    G_ProcessIPBans @453
+    G_RadiusDamage @454
+    G_ReadSessionData @455
+    G_RegisterCvars @456
+    G_RemapTeamShaders @457
+    G_RemoveQueuedBotBegin @458
+    G_RemoveRandomBot @459
+    G_RotatePoint @460
+    G_RunClient @461
+    G_RunFrame @462
+    G_RunItem @463
+    G_RunMissile @464
+    G_RunMover @465
+    G_RunThink @466
+    G_Say @467
+    G_SelectRandomBotInfo @468
+    G_SetClientSound @469
+    G_SetMovedir @470
+    G_SetOrigin @471
+    G_ShutdownGame @472
+    G_Sound @473
+    G_SoundIndex @474
+    G_Spawn @475
+    G_SpawnEntitiesFromString @476
+    G_SpawnFloat @477
+    G_SpawnGEntityFromSpawnVars @478
+    G_SpawnInt @479
+    G_SpawnItem @480
+    G_SpawnString @481
+    G_SpawnVector @482
+    G_TeamCommand @483
+    G_TempEntity @484
+    G_TestEntityPosition @485
+    G_TouchTriggers @486
+    G_TransposeMatrix @487
+    G_TryPushingEntity @488
+    G_TryPushingProxMine @489
+    G_UpdateCvars @490
+    G_UseTargets @491
+    G_WriteClientSessionData @492
+    G_WriteSessionData @493
+    GibEntity @494
+    InFieldOfVision @495
+    Info_NextPair @496
+    Info_RemoveKey @497
+    Info_RemoveKey_Big @498
+    Info_SetValueForKey @499
+    Info_SetValueForKey_Big @500
+    Info_Validate @501
+    Info_ValueForKey @502
+    InitBodyQue @503
+    InitMover @504
+    InitShooter @505
+    InitTrigger @506
+    LaunchItem @507
+    LerpAngle @508
+    LogAccuracyHit @509
+    LogExit @510
+    Long64NoSwap @511
+    Long64Swap @512
+    LongNoSwap @513
+    LongSwap @514
+    LookAtKiller @515
+    MakeNormalVectors @516
+    MatchTeam @517
+    MatrixMultiply @518
+    MoveClientToIntermission @519
+    NormalizeColor @520
+    NumBots @521
+    NumPlayersOnSameTeam @522
+    OnSameTeam @523
+    OtherTeam @524
+    PASSFLOAT @525
+    PM_AddEvent @526
+    PM_AddTouchEnt @527
+    PM_ClipVelocity @528
+    PM_SlideMove @529
+    PM_StepSlideMove @530
+    PM_UpdateViewAngles @531
+    P_DamageFeedback @532
+    P_WorldEffects @533
+    Parse1DMatrix @534
+    Parse2DMatrix @535
+    Parse3DMatrix @536
+    PerpendicularVector @537
+    PickTeam @538
+    Pickup_Ammo @539
+    Pickup_Armor @540
+    Pickup_Health @541
+    Pickup_Holdable @542
+    Pickup_Powerup @543
+    Pickup_Team @544
+    Pickup_Weapon @545
+    PlaneFromPoints @546
+    Pmove @547
+    PmoveSingle @548
+    PrintTeam @549
+    ProjectPointOnPlane @550
+    Q_CleanStr @551
+    Q_CountChar @552
+    Q_IsColorString @553
+    Q_PrintStrlen @554
+    Q_acos @555
+    Q_crandom @556
+    Q_fabs @557
+    Q_isalpha @558
+    Q_isanumber @559
+    Q_isintegral @560
+    Q_islower @561
+    Q_isnan @562
+    Q_isprint @563
+    Q_isupper @564
+    Q_log2 @565
+    Q_pown @566
+    Q_rand @567
+    Q_random @568
+    Q_rsqrt @569
+    Q_strcat @570
+    Q_stricmp @571
+    Q_stricmpn @572
+    Q_stristr @573
+    Q_strlwr @574
+    Q_strncmp @575
+    Q_strncpyz @576
+    Q_strupr @577
+    Q_vsnprintf @578
+    RadiusFromBounds @579
+    RaySphereIntersections @580
+    Reached_BinaryMover @581
+    Reached_Train @582
+    RegisterItem @583
+    RemoveColorEscapeSequences @584
+    RemoveTournamentLoser @585
+    RemoveTournamentWinner @586
+    RespawnItem @587
+    ReturnToPos1 @588
+    RotateAroundDirection @589
+    RotatePointAroundVector @590
+    SP_func_bobbing @591
+    SP_func_button @592
+    SP_func_door @593
+    SP_func_pendulum @594
+    SP_func_plat @595
+    SP_func_rotating @596
+    SP_func_static @597
+    SP_func_timer @598
+    SP_func_train @599
+    SP_info_camp @600
+    SP_info_notnull @601
+    SP_info_null @602
+    SP_info_player_deathmatch @603
+    SP_info_player_intermission @604
+    SP_info_player_start @605
+    SP_item_botroam @606
+    SP_light @607
+    SP_misc_model @608
+    SP_misc_portal_camera @609
+    SP_misc_portal_surface @610
+    SP_misc_teleporter_dest @611
+    SP_path_corner @612
+    SP_shooter_grenade @613
+    SP_shooter_plasma @614
+    SP_shooter_rocket @615
+    SP_target_delay @616
+    SP_target_give @617
+    SP_target_kill @618
+    SP_target_laser @619
+    SP_target_location @620
+    SP_target_position @621
+    SP_target_print @622
+    SP_target_push @623
+    SP_target_relay @624
+    SP_target_remove_powerups @625
+    SP_target_score @626
+    SP_target_speaker @627
+    SP_target_startTimer @628
+    SP_target_stopTimer @629
+    SP_target_teleporter @630
+    SP_team_CTF_blueplayer @631
+    SP_team_CTF_bluespawn @632
+    SP_team_CTF_redplayer @633
+    SP_team_CTF_redspawn @634
+    SP_trigger_always @635
+    SP_trigger_hurt @636
+    SP_trigger_multiple @637
+    SP_trigger_push @638
+    SP_trigger_teleport @639
+    SP_worldspawn @640
+    SaveRegisteredItems @641
+    ScoreIsTied @642
+    ScorePlum @643
+    SelectCTFSpawnPoint @644
+    SelectInitialSpawnPoint @645
+    SelectNearestDeathmatchSpawnPoint @646
+    SelectRandomDeathmatchSpawnPoint @647
+    SelectRandomFurthestSpawnPoint @648
+    SelectRandomTeamSpawnPoint @649
+    SelectSpawnPoint @650
+    SelectSpectatorSpawnPoint @651
+    SendPendingPredictableEvents @652
+    SendScoreboardMessageToAllClients @653
+    SetClientViewAngle @654
+    SetLeader @655
+    SetMoverState @656
+    SetPlaneSignbits @657
+    SetScore @658
+    SetTeam @659
+    ShortNoSwap @660
+    ShortSwap @661
+    ShotgunPattern @662
+    ShotgunPellet @663
+    SkipBracedSection @664
+    SkipRestOfLine @665
+    SnapVectorTowards @666
+    SortRanks @667
+    SpawnModelsOnVictoryPads @668
+    SpawnPlatTrigger @669
+    SpectatorClientEndFrame @670
+    SpectatorThink @671
+    SpotWouldTelefrag @672
+    StopFollowing @673
+    StringIsInteger @674
+    Svcmd_AbortPodium_f @675
+    Svcmd_AddBot_f @676
+    Svcmd_AddIP_f @677
+    Svcmd_BotList_f @678
+    Svcmd_EntityList_f @679
+    Svcmd_ForceTeam_f @680
+    Svcmd_GameMem_f @681
+    Svcmd_RemoveIP_f @682
+    TeamColorString @683
+    TeamCount @684
+    TeamLeader @685
+    TeamName @686
+    TeamPlayIsOn @687
+    Team_CaptureFlagSound @688
+    Team_CheckDroppedItem @689
+    Team_CheckHurtCarrier @690
+    Team_DroppedFlagThink @691
+    Team_ForceGesture @692
+    Team_FragBonuses @693
+    Team_FreeEntity @694
+    Team_GetLocation @695
+    Team_GetLocationMsg @696
+    Team_InitGame @697
+    Team_ResetFlag @698
+    Team_ResetFlags @699
+    Team_ReturnFlag @700
+    Team_ReturnFlagSound @701
+    Team_SetFlagStatus @702
+    Team_TakeFlagSound @703
+    Team_TouchEnemyFlag @704
+    Team_TouchOurFlag @705
+    TeamplayInfoMessage @706
+    TeleportPlayer @707
+    Think_BeginMoving @708
+    Think_MatchTeam @709
+    Think_SetupTrainTargets @710
+    Think_SpawnNewDoorTrigger @711
+    Think_Target_Delay @712
+    TossClientItems @713
+    Touch_Button @714
+    Touch_DoorTrigger @715
+    Touch_Item @716
+    Touch_Multi @717
+    Touch_Plat @718
+    Touch_PlatCenterTrigger @719
+    UpdateTournamentInfo @720
+    Use_BinaryMover @721
+    Use_Item @722
+    Use_Multi @723
+    Use_Shooter @724
+    Use_Target_Delay @725
+    Use_Target_Give @726
+    Use_Target_Print @727
+    Use_Target_Score @728
+    Use_Target_Speaker @729
+    Use_target_push @730
+    Use_target_remove_powerups @731
+    Use_target_startTimer @732
+    Use_target_stopTimer @733
+    Vector4Scale @734
+    VectorMAM @735
+    VectorNormalize @736
+    VectorNormalize2 @737
+    VectorRotate @738
+    Weapon_Gauntlet @739
+    Weapon_GrapplingHook_Fire @740
+    Weapon_HookFree @741
+    Weapon_HookThink @742
+    Weapon_LightningFire @743
+    Weapon_Plasmagun_Fire @744
+    Weapon_RocketLauncher_Fire @745
+    _DotProduct @746
+    _VectorAdd @747
+    _VectorCopy @748
+    _VectorMA @749
+    _VectorScale @750
+    _VectorSubtract @751
+    altroutegoals_setup @752 DATA
+    axisDefault @753 DATA
+    bg_itemlist @754 DATA
+    bg_numItems @755 DATA
+    blue_altroutegoals @756 DATA
+    blue_numaltroutegoals @757 DATA
+    body_die @758
+    bot_challenge @759 DATA
+    bot_developer @760 DATA
+    bot_fastchat @761 DATA
+    bot_grapple @762 DATA
+    bot_interbreed @763 DATA
+    bot_interbreedbots @764 DATA
+    bot_interbreedchar @765 DATA
+    bot_interbreedcycle @766 DATA
+    bot_interbreedmatchcount @767 DATA
+    bot_interbreedwrite @768 DATA
+    bot_memorydump @769 DATA
+    bot_minplayers @770 DATA
+    bot_nochat @771 DATA
+    bot_pause @772 DATA
+    bot_predictobstacles @773 DATA
+    bot_report @774 DATA
+    bot_rocketjump @775 DATA
+    bot_saveroutingcache @776 DATA
+    bot_testclusters @777 DATA
+    bot_testrchat @778 DATA
+    bot_testsolid @779 DATA
+    bot_thinktime @780 DATA
+    botai_freewaypoints @781 DATA
+    botai_waypoints @782 DATA
+    botstates @783 DATA
+    bytedirs @784 DATA
+    c_pmove @785 DATA
+    colorBlack @786 DATA
+    colorBlue @787 DATA
+    colorCyan @788 DATA
+    colorDkGrey @789 DATA
+    colorGreen @790 DATA
+    colorLtGrey @791 DATA
+    colorMagenta @792 DATA
+    colorMdGrey @793 DATA
+    colorRed @794 DATA
+    colorWhite @795 DATA
+    colorYellow @796 DATA
+    ctf_blueflag @797 DATA
+    ctf_redflag @798 DATA
+    ctftaskpreferences @799 DATA
+    dllEntry @800
+    eventnames @801 DATA
+    fields @802 DATA
+    fire_bfg @803
+    fire_grapple @804
+    fire_grenade @805
+    fire_plasma @806
+    fire_rocket @807
+    floattime @808 DATA
+    func_timer_think @809
+    func_timer_use @810
+    g_allowVote @811 DATA
+    g_banIPs @812 DATA
+    g_blood @813 DATA
+    g_capturelimit @814 DATA
+    g_cheats @815 DATA
+    g_clients @816 DATA
+    g_color_table @817 DATA
+    g_debugAlloc @818 DATA
+    g_debugDamage @819 DATA
+    g_debugMove @820 DATA
+    g_dedicated @821 DATA
+    g_dmflags @822 DATA
+    g_doWarmup @823 DATA
+    g_entities @824 DATA
+    g_filterBan @825 DATA
+    g_forcerespawn @826 DATA
+    g_fraglimit @827 DATA
+    g_friendlyFire @828 DATA
+    g_gametype @829 DATA
+    g_inactivity @830 DATA
+    g_listEntity @831 DATA
+    g_localTeamPref @832 DATA
+    g_logfile @833 DATA
+    g_logfileSync @834 DATA
+    g_maxGameClients @835 DATA
+    g_maxclients @836 DATA
+    g_motd @837 DATA
+    g_needpass @838 DATA
+    g_numArenas @839 DATA
+    g_password @840 DATA
+    g_podiumDist @841 DATA
+    g_podiumDrop @842 DATA
+    g_rankings @843 DATA
+    g_restarted @844 DATA
+    g_smoothClients @845 DATA
+    g_spSkill @846 DATA
+    g_synchronousClients @847 DATA
+    g_teamAutoJoin @848 DATA
+    g_teamForceBalance @849 DATA
+    g_timelimit @850 DATA
+    g_warmup @851 DATA
+    g_weaponRespawn @852 DATA
+    g_weaponTeamRespawn @853 DATA
+    gametype @854 DATA
+    hurt_touch @855
+    hurt_use @856
+    itemRegistered @857 DATA
+    lastteleport_origin @858 DATA
+    lastteleport_time @859 DATA
+    level @860 DATA
+    locateCamera @861
+    max_bspmodelindex @862 DATA
+    modNames @863 DATA
+    multi_trigger @864
+    multi_wait @865
+    neutralObelisk @866 DATA
+    nodeswitch @867 DATA
+    notleader @868 DATA
+    numbots @869 DATA
+    numnodeswitches @870 DATA
+    osdf_init @871
+    osdf_initialized @872 DATA
+    osdf_move @873
+    phy_air_accel @874 DATA
+    phy_air_basespeed @875 DATA
+    phy_air_decel @876 DATA
+    phy_air_decelAngle @877 DATA
+    phy_air_speedscalar @878 DATA
+    phy_aircontrol @879 DATA
+    phy_aircontrol_amount @880 DATA
+    phy_aircontrol_power @881 DATA
+    phy_airstrafe_accel @882 DATA
+    phy_airstrafe_basespeed @883 DATA
+    phy_crouch_scale @884 DATA
+    phy_fly_accel @885 DATA
+    phy_fly_friction @886 DATA
+    phy_friction @887 DATA
+    phy_fw_accelerate @888 DATA
+    phy_gravity @889 DATA
+    phy_ground_accel @890 DATA
+    phy_ground_basespeed @891 DATA
+    phy_haste_factor @892 DATA
+    phy_input_scalefix @893 DATA
+    phy_jump_auto @894 DATA
+    phy_jump_dj_time @895 DATA
+    phy_jump_dj_velocity @896 DATA
+    phy_jump_type @897 DATA
+    phy_jump_velocity @898 DATA
+    phy_knockback @899 DATA
+    phy_movetype @900 DATA
+    phy_overbounce_scale @901 DATA
+    phy_quad_factor @902 DATA
+    phy_rocket_damage @903 DATA
+    phy_rocket_speed @904 DATA
+    phy_rocket_splashDamage @905 DATA
+    phy_rocket_splashRadius @906 DATA
+    phy_slidemove_type @907 DATA
+    phy_snapvelocity @908 DATA
+    phy_spectator_friction @909 DATA
+    phy_speed @910 DATA
+    phy_stopspeed @911 DATA
+    phy_water_accel @912 DATA
+    phy_water_friction @913 DATA
+    phy_water_scale @914 DATA
+    player_die @915
+    pm @916 DATA
+    pm_accelerate @917 DATA
+    pm_airaccelerate @918 DATA
+    pm_duckScale @919 DATA
+    pm_flightfriction @920 DATA
+    pm_flyaccelerate @921 DATA
+    pm_friction @922 DATA
+    pm_spectatorfriction @923 DATA
+    pm_stopspeed @924 DATA
+    pm_swimScale @925 DATA
+    pm_wateraccelerate @926 DATA
+    pm_waterfriction @927 DATA
+    pml @928 DATA
+    pmove_fixed @929 DATA
+    pmove_msec @930 DATA
+    podium1 @931 DATA
+    podium2 @932 DATA
+    podium3 @933 DATA
+    pushed @934 DATA
+    pushed_p @935 DATA
+    q1_AirMoveQW @936
+    q1_CheckDuck @937
+    q1_overbounce_scale @938 DATA
+    q3a_Accelerate @939
+    q3a_SlideMove @940
+    q3a_StepSlideMove @941
+    q3a_VectorReflect @942
+    q3a_cpm @943
+    q3a_vq1 @944
+    q3a_vq3 @945
+    red_altroutegoals @946 DATA
+    red_numaltroutegoals @947 DATA
+    regularupdate_time @948 DATA
+    remapCount @949 DATA
+    remappedShaders @950 DATA
+    s_jump_interval @951 DATA
+    spawns @952 DATA
+    stristr @953
+    target_kill_use @954
+    target_laser_off @955
+    target_laser_on @956
+    target_laser_start @957
+    target_laser_think @958
+    target_laser_use @959
+    target_relay_use @960
+    target_teleporter_use @961
+    teamgame @962 DATA
+    trap_AAS_AlternativeRouteGoals @963
+    trap_AAS_AreaInfo @964
+    trap_AAS_AreaReachability @965
+    trap_AAS_AreaTravelTimeToGoalArea @966
+    trap_AAS_BBoxAreas @967
+    trap_AAS_EnableRoutingArea @968
+    trap_AAS_EntityInfo @969
+    trap_AAS_FloatForBSPEpairKey @970
+    trap_AAS_Initialized @971
+    trap_AAS_IntForBSPEpairKey @972
+    trap_AAS_NextBSPEntity @973
+    trap_AAS_PointAreaNum @974
+    trap_AAS_PointContents @975
+    trap_AAS_PointReachabilityAreaIndex @976
+    trap_AAS_PredictClientMovement @977
+    trap_AAS_PredictRoute @978
+    trap_AAS_PresenceTypeBoundingBox @979
+    trap_AAS_Swimming @980
+    trap_AAS_Time @981
+    trap_AAS_TraceAreas @982
+    trap_AAS_ValueForBSPEpairKey @983
+    trap_AAS_VectorForBSPEpairKey @984
+    trap_AdjustAreaPortalState @985
+    trap_AreasConnected @986
+    trap_Argc @987
+    trap_Argv @988
+    trap_BotAddAvoidSpot @989
+    trap_BotAllocChatState @990
+    trap_BotAllocGoalState @991
+    trap_BotAllocMoveState @992
+    trap_BotAllocWeaponState @993
+    trap_BotAllocateClient @994
+    trap_BotAvoidGoalTime @995
+    trap_BotChatLength @996
+    trap_BotChooseBestFightWeapon @997
+    trap_BotChooseLTGItem @998
+    trap_BotChooseNBGItem @999
+    trap_BotDumpAvoidGoals @1000
+    trap_BotDumpGoalStack @1001
+    trap_BotEmptyGoalStack @1002
+    trap_BotEnterChat @1003
+    trap_BotFindMatch @1004
+    trap_BotFreeCharacter @1005
+    trap_BotFreeChatState @1006
+    trap_BotFreeClient @1007
+    trap_BotFreeGoalState @1008
+    trap_BotFreeItemWeights @1009
+    trap_BotFreeMoveState @1010
+    trap_BotFreeWeaponState @1011
+    trap_BotGetChatMessage @1012
+    trap_BotGetLevelItemGoal @1013
+    trap_BotGetMapLocationGoal @1014
+    trap_BotGetNextCampSpotGoal @1015
+    trap_BotGetSecondGoal @1016
+    trap_BotGetServerCommand @1017
+    trap_BotGetSnapshotEntity @1018
+    trap_BotGetTopGoal @1019
+    trap_BotGetWeaponInfo @1020
+    trap_BotGoalName @1021
+    trap_BotInitLevelItems @1022
+    trap_BotInitMoveState @1023
+    trap_BotInitialChat @1024
+    trap_BotInterbreedGoalFuzzyLogic @1025
+    trap_BotItemGoalInVisButNotVisible @1026
+    trap_BotLibDefine @1027
+    trap_BotLibLoadMap @1028
+    trap_BotLibSetup @1029
+    trap_BotLibShutdown @1030
+    trap_BotLibStartFrame @1031
+    trap_BotLibTest @1032
+    trap_BotLibUpdateEntity @1033
+    trap_BotLibVarGet @1034
+    trap_BotLibVarSet @1035
+    trap_BotLoadCharacter @1036
+    trap_BotLoadChatFile @1037
+    trap_BotLoadItemWeights @1038
+    trap_BotLoadWeaponWeights @1039
+    trap_BotMatchVariable @1040
+    trap_BotMoveInDirection @1041
+    trap_BotMoveToGoal @1042
+    trap_BotMovementViewTarget @1043
+    trap_BotMutateGoalFuzzyLogic @1044
+    trap_BotNextConsoleMessage @1045
+    trap_BotNumConsoleMessages @1046
+    trap_BotNumInitialChats @1047
+    trap_BotPopGoal @1048
+    trap_BotPredictVisiblePosition @1049
+    trap_BotPushGoal @1050
+    trap_BotQueueConsoleMessage @1051
+    trap_BotReachabilityArea @1052
+    trap_BotRemoveConsoleMessage @1053
+    trap_BotRemoveFromAvoidGoals @1054
+    trap_BotReplaceSynonyms @1055
+    trap_BotReplyChat @1056
+    trap_BotResetAvoidGoals @1057
+    trap_BotResetAvoidReach @1058
+    trap_BotResetGoalState @1059
+    trap_BotResetLastAvoidReach @1060
+    trap_BotResetMoveState @1061
+    trap_BotResetWeaponState @1062
+    trap_BotSaveGoalFuzzyLogic @1063
+    trap_BotSetAvoidGoalTime @1064
+    trap_BotSetChatGender @1065
+    trap_BotSetChatName @1066
+    trap_BotTouchingGoal @1067
+    trap_BotUpdateEntityItems @1068
+    trap_BotUserCommand @1069
+    trap_Characteristic_BFloat @1070
+    trap_Characteristic_BInteger @1071
+    trap_Characteristic_Float @1072
+    trap_Characteristic_Integer @1073
+    trap_Characteristic_String @1074
+    trap_Cvar_Register @1075
+    trap_Cvar_Set @1076
+    trap_Cvar_Update @1077
+    trap_Cvar_VariableIntegerValue @1078
+    trap_Cvar_VariableStringBuffer @1079
+    trap_Cvar_VariableValue @1080
+    trap_DebugPolygonCreate @1081
+    trap_DebugPolygonDelete @1082
+    trap_DropClient @1083
+    trap_EA_Action @1084
+    trap_EA_Attack @1085
+    trap_EA_Command @1086
+    trap_EA_Crouch @1087
+    trap_EA_DelayedJump @1088
+    trap_EA_EndRegular @1089
+    trap_EA_Gesture @1090
+    trap_EA_GetInput @1091
+    trap_EA_Jump @1092
+    trap_EA_Move @1093
+    trap_EA_MoveBack @1094
+    trap_EA_MoveDown @1095
+    trap_EA_MoveForward @1096
+    trap_EA_MoveLeft @1097
+    trap_EA_MoveRight @1098
+    trap_EA_MoveUp @1099
+    trap_EA_ResetInput @1100
+    trap_EA_Respawn @1101
+    trap_EA_Say @1102
+    trap_EA_SayTeam @1103
+    trap_EA_SelectWeapon @1104
+    trap_EA_Talk @1105
+    trap_EA_Use @1106
+    trap_EA_View @1107
+    trap_EntitiesInBox @1108
+    trap_EntityContact @1109
+    trap_EntityContactCapsule @1110
+    trap_Error @1111
+    trap_FS_FCloseFile @1112
+    trap_FS_FOpenFile @1113
+    trap_FS_GetFileList @1114
+    trap_FS_Read @1115
+    trap_FS_Seek @1116
+    trap_FS_Write @1117
+    trap_GeneticParentsAndChildSelection @1118
+    trap_GetConfigstring @1119
+    trap_GetEntityToken @1120
+    trap_GetServerinfo @1121
+    trap_GetUsercmd @1122
+    trap_GetUserinfo @1123
+    trap_InPVS @1124
+    trap_InPVSIgnorePortals @1125
+    trap_LinkEntity @1126
+    trap_LocateGameData @1127
+    trap_Milliseconds @1128
+    trap_PC_FreeSource @1129
+    trap_PC_LoadSource @1130
+    trap_PC_ReadToken @1131
+    trap_PC_SourceFileAndLine @1132
+    trap_PointContents @1133
+    trap_Print @1134
+    trap_RealTime @1135
+    trap_SendConsoleCommand @1136
+    trap_SendServerCommand @1137
+    trap_SetBrushModel @1138
+    trap_SetConfigstring @1139
+    trap_SetUserinfo @1140
+    trap_SnapVector @1141
+    trap_StringContains @1142
+    trap_Trace @1143
+    trap_TraceCapsule @1144
+    trap_UnifyWhiteSpaces @1145
+    trap_UnlinkEntity @1146
+    trigger_always_think @1147
+    trigger_push_touch @1148
+    trigger_teleporter_touch @1149
+    tv @1150
+    va @1151
+    vec3_origin @1152 DATA
+    vectoangles @1153
+    vectoyaw @1154
+    vmMain @1155
+    voiceCommands @1156 DATA
+    vtos @1157
+    weapon_grenadelauncher_fire @1158
+    weapon_railgun_fire @1159
+    weapon_supershotgun_fire @1160
