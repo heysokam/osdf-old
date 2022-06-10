@@ -1,0 +1,19 @@
+s = [
+{"name":"s_ambient", "value": "1"}
+{"name":"s_device", "value": "default"}
+{"name":"s_doppler", "value": "1"}
+{"name":"s_initsound", "value": "1"}
+{"name":"s_khz", "value": "22"}
+{"name":"s_mixAhead", "value": "0.2"}
+{"name":"s_mixOffset", "value": "0"}
+{"name":"s_musicvolume", "value": "0.25"}
+{"name":"s_muteWhenMinimized", "value": "0"}
+{"name":"s_muteWhenUnfocused", "value": "0"}
+{"name":"s_sdlBits", "value": "16"}
+{"name":"s_sdlChannels", "value": "2"}
+{"name":"s_sdlDevSamps", "value": "0"}
+{"name":"s_sdlMixSamps", "value": "0"}
+{"name":"s_show", "value": "0"}
+{"name":"s_testsound", "value": "0"}
+{"name":"s_volume", "value": "0.1"}
+]

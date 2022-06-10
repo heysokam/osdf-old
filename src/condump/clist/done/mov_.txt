@@ -1,0 +1,5 @@
+
+05:53:19
+05:53:19 803 total cvars
+05:53:19 803 cvar indexes
+05:53:19 Dumped console text to clist/mov_.txt.

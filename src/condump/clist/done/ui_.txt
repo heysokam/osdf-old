@@ -1,0 +1,22 @@
+ui = [
+{"name":"ui_bigFont", "value": "0.4"}
+{"name":"ui_browserGameType", "value": "0"}
+{"name":"ui_browserMaster", "value": "1"}
+{"name":"ui_browserShowEmpty", "value": "0"}
+{"name":"ui_browserShowFull", "value": "0"}
+{"name":"ui_browserSortKey", "value": "4"}
+{"name":"ui_cdkeychecked", "value": "0"}
+{"name":"ui_ctf_capturelimit", "value": "8"}
+{"name":"ui_ctf_friendly", "value": "0"}
+{"name":"ui_ctf_timelimit", "value": "30"}
+{"name":"ui_ffa_fraglimit", "value": "20"}
+{"name":"ui_ffa_timelimit", "value": "0"}
+{"name":"ui_singlePlayerActive", "value": "0"}
+{"name":"ui_smallFont", "value": "0.25"}
+{"name":"ui_spSelection", "value": ""}
+{"name":"ui_team_fraglimit", "value": "0"}
+{"name":"ui_team_friendly", "value": "1"}
+{"name":"ui_team_timelimit", "value": "20"}
+{"name":"ui_tourney_fraglimit", "value": "0"}
+{"name":"ui_tourney_timelimit", "value": "15"}
+]

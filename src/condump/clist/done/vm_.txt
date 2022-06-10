@@ -1,0 +1,6 @@
+vm = [
+{"name":"vm_cgame", "value": "0"}
+{"name":"vm_game", "value": "2"}
+{"name":"vm_rtChecks", "value": "15"}
+{"name":"vm_ui", "value": "2"}
+]

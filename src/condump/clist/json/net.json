@@ -1,0 +1,16 @@
+net = [
+{"name":"net_dropsim", "value": ""}
+{"name":"net_enabled", "value": "3"}
+{"name":"net_ip", "value": "0.0.0.0"}
+{"name":"net_ip6", "value": "::"}
+{"name":"net_mcast6addr", "value": "ff04::696f:7175:616b:6533"}
+{"name":"net_mcast6iface", "value": ""}
+{"name":"net_port", "value": "27960"}
+{"name":"net_port6", "value": "27960"}
+{"name":"net_qport", "value": "26467"}
+{"name":"net_socksEnabled", "value": "0"}
+{"name":"net_socksPassword", "value": ""}
+{"name":"net_socksPort", "value": "1080"}
+{"name":"net_socksServer", "value": ""}
+{"name":"net_socksUsername", "value": ""}
+]

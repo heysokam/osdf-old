@@ -1,0 +1,3 @@
+ttycon = [
+{"name":"ttycon_ansicolor", "value": "0"}
+]

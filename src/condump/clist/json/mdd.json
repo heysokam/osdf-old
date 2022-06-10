@@ -1,0 +1,37 @@
+cg = [
+{"name":"mdd_timer_xywh", "value": "295 240 50 8"}
+{"name":"mdd_timer_outline_w", "value": "0.2"}
+{"name":"mdd_timer_outline_rgba", "value": "1 1 1 1"}
+{"name":"mdd_timer_item_w", "value": "3"}
+{"name":"mdd_timer_item_rgba", "value": "1 1 0 1"}
+{"name":"mdd_timer_gb_rgba", "value": "1 0 0 1"}
+{"name":"mdd_timer", "value": "1"}
+{"name":"mdd_snap_yh", "value": "182 1.5"}
+{"name":"mdd_snap_min_speed", "value": "495"}
+{"name":"mdd_snap_hl_def_rgba", "value": "0 1 1 .8"}
+{"name":"mdd_snap_def_rgba", "value": "0 1 1 .4"}
+{"name":"mdd_snap_alt_rgba", "value": "0 0 0 0"}
+{"name":"mdd_snap", "value": "0b10010"}
+{"name":"mdd_pitch_rgba", "value": "1 0 1 1"}
+{"name":"mdd_pitch", "value": "71.8 68"}
+{"name":"mdd_jump_text_xh", "value": "-320 15"}
+{"name":"mdd_jump_graph_xywh", "value": "317 210 6 20"}
+{"name":"mdd_jump_graph_rgbaPreJump", "value": "0 1 1 .4"}
+{"name":"mdd_jump_graph_rgbaPostJump", "value": "0 1 1 .4"}
+{"name":"mdd_jump_graph_rgba", "value": ".5 .5 .5 .4"}
+{"name":"mdd_jump_graph_outline_w", "value": "0"}
+{"name":"mdd_jump", "value": "3"}
+{"name":"mdd_gl_path_rgba", "value": "0.25 0.25 0.25 1"}
+{"name":"mdd_gl_path_preview_draw", "value": "0"}
+{"name":"mdd_fov", "value": "115"}
+{"name":"mdd_compass", "value": "0"}
+{"name":"mdd_cgaz_yh", "value": "183 4"}
+{"name":"mdd_cgaz_trueness", "value": "0b010"}
+{"name":"mdd_cgaz_speed", "value": "1"}
+{"name":"mdd_cgaz_rgbaTurnZone", "value": "1 1 1 .1"}
+{"name":"mdd_cgaz_rgbaPartialAccel", "value": "1 1 1 .7"}
+{"name":"mdd_cgaz_rgbaNoAccel", "value": "1 1 1 .0"}
+{"name":"mdd_cgaz_rgbaFullAccel", "value": "1 .3 0 1"}
+{"name":"mdd_cgaz", "value": "0b1"}
+{"name":"mdd_ammo", "value": "0"}
+]

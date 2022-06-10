@@ -1,0 +1,925 @@
+bot = [
+{"name":"bot_aasoptimize", "value": "0"}
+{"name":"bot_challenge", "value": "0"}
+{"name":"bot_debug", "value": "0"}
+{"name":"bot_developer", "value": "0"}
+{"name":"bot_enable", "value": "0"}
+{"name":"bot_fastchat", "value": "0"}
+{"name":"bot_forceclustering", "value": "0"}
+{"name":"bot_forcereachability", "value": "0"}
+{"name":"bot_forcewrite", "value": "0"}
+{"name":"bot_grapple", "value": "0"}
+{"name":"bot_groundonly", "value": "1"}
+{"name":"bot_interbreedbots", "value": "10"}
+{"name":"bot_interbreedchar", "value": ""}
+{"name":"bot_interbreedcycle", "value": "20"}
+{"name":"bot_interbreedwrite", "value": ""}
+{"name":"bot_maxdebugpolys", "value": "2"}
+{"name":"bot_minplayers", "value": "0"}
+{"name":"bot_nochat", "value": "0"}
+{"name":"bot_pause", "value": "0"}
+{"name":"bot_reachability", "value": "0"}
+{"name":"bot_reloadcharacters", "value": "0"}
+{"name":"bot_report", "value": "0"}
+{"name":"bot_rocketjump", "value": "1"}
+{"name":"bot_saveroutingcache", "value": "0"}
+{"name":"bot_testclusters", "value": "0"}
+{"name":"bot_testichat", "value": "0"}
+{"name":"bot_testrchat", "value": "0"}
+{"name":"bot_testsolid", "value": "0"}
+{"name":"bot_thinktime", "value": "100"}
+{"name":"bot_visualizejumppads", "value": "0"}
+]
+cg = [
+{"name":"cg_autoswitch", "value": "1"}
+{"name":"cg_bobpitch ", "value":"0"}
+{"name":"cg_bobroll ", "value": "0"}
+{"name":"cg_bobup ", "value": "0"}
+{"name":"cg_brassTime", "value": "2500"}
+{"name":"cg_cameraOrbit", "value": "0"}
+{"name":"cg_cameraOrbitDelay", "value": "50"}
+{"name":"cg_centertime", "value": "1"}
+{"name":"cg_crosshairColor", "value": "7"}
+{"name":"cg_crosshairHealth", "value": "0"}
+{"name":"cg_crosshairSize", "value": "20"}
+{"name":"cg_crosshairX", "value": "0"}
+{"name":"cg_crosshairY", "value": "0"}
+{"name":"cg_deferPlayers", "value": "1"}
+{"name":"cg_draw", "value":2D "1"}
+{"name":"cg_draw", "value":3dIcons "1"}
+{"name":"cg_drawAmmoWarning", "value": "1"}
+{"name":"cg_drawAttacker", "value": "1"}
+{"name":"cg_drawCrosshair", "value": "5"}
+{"name":"cg_drawCrosshairNames", "value": "1"}
+{"name":"cg_drawFriend", "value": "1"}
+{"name":"cg_drawIcons", "value": "1"}
+{"name":"cg_drawRewards", "value": "1"}
+{"name":"cg_drawSnapshot", "value": "0"}
+{"name":"cg_drawStatus", "value": "1"}
+{"name":"cg_drawTeamOverlay", "value": "0"}
+{"name":"cg_drawTime", "value": "0"}
+{"name":"cg_drawTimer", "value": "0"}
+{"name":"cg_drawdamage", "value": "1"}
+{"name":"cg_drawfps", "value": "0"}
+{"name":"cg_drawgun", "value": "1"}
+{"name":"cg_footsteps", "value": "1"}
+{"name":"cg_forceModel", "value": "0"}
+{"name":"cg_fov", "value": "115"}
+{"name":"cg_gibs", "value": "0"}
+{"name":"cg_gunX", "value": "7"}
+{"name":"cg_lagometer", "value": "0"}
+{"name":"cg_lagometer_x", "value": "1"}
+{"name":"cg_lagometer_y", "value": "1"}
+{"name":"cg_marks", "value": "1"}
+{"name":"cg_muzzleFlash", "value": "1"}
+{"name":"cg_noDamageKick", "value": "0"}
+{"name":"cg_noFallKick", "value": "0"}
+{"name":"cg_noProjectileTrail", "value": "0"}
+{"name":"cg_noTaunt", "value": "0"}
+{"name":"cg_noVoiceChats", "value": "0"}
+{"name":"cg_noVoiceText", "value": "0"}
+{"name":"cg_nochatbeep", "value": "1"}
+{"name":"cg_oldPlasma", "value": "1"}
+{"name":"cg_oldRail", "value": "1"}
+{"name":"cg_oldRocket", "value": "1"}
+{"name":"cg_predictItems", "value": "1"}
+{"name":"cg_railTrailTime", "value": "2337"}
+{"name":"cg_runpitch", "value": "0"}
+{"name":"cg_runroll", "value": "0"}
+{"name":"cg_scorePlums", "value": "1"}
+{"name":"cg_shadows", "value": "1"}
+{"name":"cg_simpleItems", "value": "0"}
+{"name":"cg_smoothClients", "value": "0"}
+{"name":"cg_stereoSeparation", "value": "0"}
+{"name":"cg_teamChatHeight", "value": "0"}
+{"name":"cg_teamChatTime", "value": "3000"}
+{"name":"cg_teamChatsOnly", "value": "0"}
+{"name":"cg_thirdPerson", "value": "0"}
+{"name":"cg_thirdPersonAngle", "value": "0"}
+{"name":"cg_thirdPersonRange", "value": "40"}
+{"name":"cg_trueLightning", "value": "1.000"}
+{"name":"cg_viewsize", "value": "100"}
+{"name":"cg_zoomfov", "value": "22.5"}
+]
+client = [
+{"name":"cl_allowDownload", "value": "0"}
+{"name":"cl_anglespeedkey", "value": "1.5"}
+{"name":"cl_anonymous", "value": "0"}
+{"name":"cl_autoNudge", "value": "0"}
+{"name":"cl_autoRecordDemo", "value": "0"}
+{"name":"cl_aviFrameRate", "value": "25"}
+{"name":"cl_aviMotionJpeg", "value": "1"}
+{"name":"cl_aviPipeFormat", "value": "-preset medium -crf 23 -vcodec libx264 -flags +cgop -pix_fmt yuv420p -bf 2 -codec:a aac -strict -2 -b:a 160k -r:a 22050 -movflags faststart"}
+{"name":"cl_cURLLib", "value": "libcurl.so.4"}
+{"name":"cl_conColor", "value": "60 60 70 220"}
+{"name":"cl_consoleKeys", "value": "~ ` 0x7e 0x60"}
+{"name":"cl_debugMove", "value": "0"}
+{"name":"cl_forceavidemo", "value": "0"}
+{"name":"cl_freelook", "value": "1"}
+{"name":"cl_guid", "value": "E9F6BA555C3B0F0CA299AF5CF331211F"}
+{"name":"cl_guidServerUniq", "value": "1"}
+{"name":"cl_lanForcePackets", "value": "1"}
+{"name":"cl_mapAutoDownload", "value": "1"}
+{"name":"cl_maxPing", "value": "800"}
+{"name":"cl_maxpackets", "value": "125"}
+{"name":"cl_motd", "value": "0"}
+{"name":"cl_motdString", "value": ""}
+{"name":"cl_mouseAccel", "value": "0"}
+{"name":"cl_mouseAccelOffset", "value": "5"}
+{"name":"cl_mouseAccelStyle", "value": "0"}
+{"name":"cl_nodelta", "value": "0"}
+{"name":"cl_noprint", "value": "0"}
+{"name":"cl_packetdelay", "value": "0"}
+{"name":"cl_packetdup", "value": "1"}
+{"name":"cl_paused", "value": "0"}
+{"name":"cl_pitchspeed", "value": "140"}
+{"name":"cl_reconnectArgs", "value": "140.82.4.154:27962"}
+{"name":"cl_run", "value": "1"}
+{"name":"cl_running", "value": "1"}
+{"name":"cl_serverStatusResendTime", "value": "750"}
+{"name":"cl_showSend", "value": "0"}
+{"name":"cl_showTimeDelta", "value": "0"}
+{"name":"cl_showmouserate", "value": "0"}
+{"name":"cl_shownet", "value": "0"}
+{"name":"cl_snaphud_h", "value": "8"}
+{"name":"cl_snaphud_y", "value": "248"}
+{"name":"cl_timeNudge", "value": "0"}
+{"name":"cl_timeout", "value": "200"}
+{"name":"cl_yawspeed", "value": "140"}
+]
+cmd = [
+{"name":"cmdlist"}
+{"name":"wait"}
+{"name":"clear"}
+{"name":"condump"}
+{"name":"cvarlist"}
+{"name":"exec"}
+{"name":"s_info"}
+{"name":"s_stop"}
+{"name":"s_list"}
+{"name":"stopmusic"}
+{"name":"music"}
+{"name":"play"}
+{"name":"in_restart"}
+{"name":"minimize"}
+{"name":"vkinfo"}
+{"name":"gfxinfo"}
+{"name":"screenshotBMP"}
+{"name":"screenshotJPEG"}
+{"name":"screenshot"}
+{"name":"modellist"}
+{"name":"skinlist"}
+{"name":"shaderlist"}
+{"name":"imagelist"}
+{"name":"vid_restart"}
+{"name":"net_restart"}
+{"name":"modelist"}
+{"name":"dlmap"}
+{"name":"download"}
+{"name":"systeminfo"}
+{"name":"serverinfo"}
+{"name":"stopvideo"}
+{"name":"video-pipe"}
+{"name":"video"}
+{"name":"model"}
+{"name":"fs_referencedList"}
+{"name":"fs_openedList"}
+{"name":"showip"}
+{"name":"serverstatus"}
+{"name":"ping"}
+{"name":"rcon"}
+{"name":"globalservers"}
+{"name":"localservers"}
+{"name":"reconnect"}
+{"name":"connect"}
+{"name":"stoprecord"}
+{"name":"cinematic"}
+{"name":"demo"}
+{"name":"record"}
+{"name":"disconnect"}
+{"name":"snd_restart"}
+{"name":"clientinfo"}
+{"name":"configstrings"}
+{"name":"cmd"}
+{"name":"-mlook"}
+{"name":"+mlook"}
+{"name":"-button15"}
+{"name":"+button15"}
+{"name":"-button14"}
+{"name":"+button14"}
+{"name":"-button13"}
+{"name":"+button13"}
+{"name":"-button12"}
+{"name":"+button12"}
+{"name":"-button11"}
+{"name":"+button11"}
+{"name":"-button10"}
+{"name":"+button10"}
+{"name":"-button9"}
+{"name":"+button9"}
+{"name":"-button8"}
+{"name":"+button8"}
+{"name":"-button7"}
+{"name":"+button7"}
+{"name":"-button6"}
+{"name":"+button6"}
+{"name":"-button5"}
+{"name":"+button5"}
+{"name":"-button4"}
+{"name":"+button4"}
+{"name":"-button3"}
+{"name":"+button3"}
+{"name":"-button2"}
+{"name":"+button2"}
+{"name":"-button1"}
+{"name":"+button1"}
+{"name":"-button0"}
+{"name":"+button0"}
+{"name":"-attack"}
+{"name":"+attack"}
+{"name":"-speed"}
+{"name":"+speed"}
+{"name":"-moveright"}
+{"name":"+moveright"}
+{"name":"-moveleft"}
+{"name":"+moveleft"}
+{"name":"-strafe"}
+{"name":"+strafe"}
+{"name":"-lookdown"}
+{"name":"+lookdown"}
+{"name":"-lookup"}
+{"name":"+lookup"}
+{"name":"-back"}
+{"name":"+back"}
+{"name":"-forward"}
+{"name":"+forward"}
+{"name":"-right"}
+{"name":"+right"}
+{"name":"-left"}
+{"name":"+left"}
+{"name":"-movedown"}
+{"name":"+movedown"}
+{"name":"-moveup"}
+{"name":"+moveup"}
+{"name":"centerview"}
+{"name":"pcre_version"}
+{"name":"messagemode4"}
+{"name":"messagemode3"}
+{"name":"messagemode2"}
+{"name":"messagemode"}
+{"name":"toggleconsole"}
+{"name":"clearnotify"}
+{"name":"filtercmd"}
+{"name":"filter"}
+{"name":"killserver"}
+{"name":"spdevmap"}
+{"name":"spmap"}
+{"name":"devvq3"}
+{"name":"devcpm"}
+{"name":"devmap"}
+{"name":"vq3"}
+{"name":"cpm"}
+{"name":"map"}
+{"name":"sectorlist"}
+{"name":"map_restart"}
+{"name":"dumpuser"}
+{"name":"status"}
+{"name":"clientkick"}
+{"name":"kick"}
+{"name":"heartbeat"}
+{"name":"vminfo"}
+{"name":"vmprofile"}
+{"name":"game_restart"}
+{"name":"writeconfig"}
+{"name":"changeVectors"}
+{"name":"quit"}
+{"name":"meminfo"}
+{"name":"bind"}
+{"name":"unbind"}
+{"name":"seta"}
+{"name":"set"}
+{"name":"unbindall"}
+{"name":"fs_restart"}
+{"name":"which"}
+{"name":"lsof"}
+{"name":"touchFile"}
+{"name":"fdir"}
+{"name":"dir"}
+{"name":"path"}
+{"name":"bindlist"}
+{"name":"echo"
+{"name":"vstr"}
+{"name":"execq"}
+{"name":"cvar_trim"}
+{"name":"cvar_restart"}
+{"name":"cvar_modified"}
+{"name":"varfunc"}
+{"name":"unset"}
+{"name":"reset"}
+{"name":"setu"}
+{"name":"sets"}
+{"name":"toggle"}
+{"name":"print"}
+]
+com = [
+{"name":"com_MaxFPS", "value": "125"
+{"name":"com_affinityMask", "value": "0"
+{"name":"com_blood", "value": "0"
+{"name":"com_buildScript", "value": "0"
+{"name":"com_cameraMode", "value": "0"
+{"name":"com_errorMessage", "value": ""
+{"name":"com_hunkMegs", "value": "512"
+{"name":"com_introplayed", "value": "1"
+{"name":"com_maxfpsunfocused", "value": "125"
+{"name":"com_showtrace", "value": "0"
+{"name":"com_skipIdLogo", "value": "1"
+{"name":"com_soundMegs", "value": "8"
+{"name":"com_speeds", "value": "0"
+{"name":"com_yieldCPU", "value": "1"
+{"name":"com_zoneMegs", "value": "12"
+]
+con = [
+{"name":"con_filter", "value": "1"}
+{"name":"con_filter0", "value": ""}
+{"name":"con_filter1", "value": ""}
+{"name":"con_filter2", "value": ""}
+{"name":"con_filter3", "value": ""}}
+{"name":"con_filter4", "value": ""}
+{"name":"con_filter5", "value": ""}
+{"name":"con_filter6", "value": ""}
+{"name":"con_filter7", "value": ""}
+{"name":"con_filter8", "value": ""}
+{"name":"con_filter9", "value": ""}
+{"name":"con_height", "value": "0.5"}
+{"name":"con_heightAlt", "value": "1.0"}
+{"name":"con_heightCtrl", "value": "0.25"}
+{"name":"con_heightShift", "value": "0.5"}
+{"name":"con_notifykeep", "value": "1"}
+{"name":"con_notifylines", "value": "18"}
+{"name":"con_notifytime", "value": "30"}
+{"name":"con_notifyx", "value": "1"}
+{"name":"con_notifyxy_enable", "value": "1"}
+{"name":"con_notifyy", "value": "0"}
+{"name":"con_opacity", "value": "0.5"}
+{"name":"con_rgb", "value": "0"}
+{"name":"con_scale", "value": "1"}
+{"name":"con_timedisplay", "value": "3"}
+{"name":"con_timestamp", "value": "1"}
+{"name":"con_togglespeed", "value": "3"}
+{"name":"con_useshader", "value": "0"}
+]
+df = [
+{"name":"df_accel_AdjustMaxSpeed", "value": "1"}
+{"name":"df_accel_Draw", "value": "0"}
+{"name":"df_accel_FontSize", "value": "7"}
+{"name":"df_accel_HistoryResetSpeed", "value": "100"}
+{"name":"df_accel_Mode", "value": "0"}
+{"name":"df_accel_OffsetX", "value": "0"}
+{"name":"df_accel_OffsetY", "value": "0"}
+{"name":"df_accel_Output", "value": "0"}
+{"name":"df_accel_Scale", "value": "-1.2"}
+{"name":"df_ar_format", "value": "$map.$-route[$gt.$phys.$-mode]$m.$-s.$-ms($pl.$plc)"}
+{"name":"df_ar_speedcapture_format", "value": "0"}
+{"name":"df_ar_stopdelay", "value": "3000"}
+{"name":"df_ar_verbose", "value": "0"}
+{"name":"df_autorecord", "value": "3"}
+{"name":"df_checkpoints", "value": "2"}
+{"name":"df_chs0_DisplayType", "value": "0"}
+{"name":"df_chs0_Draw", "value": "1"}
+{"name":"df_chs0_FontColor", "value": "7"}
+{"name":"df_chs0_FontShadow", "value": "0"}
+{"name":"df_chs0_FontSize", "value": "6"}
+{"name":"df_chs0_FontTransparency", "value": "1.000"}
+{"name":"df_chs0_LabelColor", "value": "7"}
+{"name":"df_chs0_OffsetX", "value": "0"}
+{"name":"df_chs0_OffsetY", "value": "0"}
+{"name":"df_chs1_ComboSeparator", "value": "|"}
+{"name":"df_chs1_DisplayType", "value": "2"}
+{"name":"df_chs1_Draw", "value": "1"}
+{"name":"df_chs1_EnableCombos", "value": "0"}
+{"name":"df_chs1_FontColor", "value": "7"}
+{"name":"df_chs1_FontShadow", "value": "0"}
+{"name":"df_chs1_FontSize", "value": "14"}
+{"name":"df_chs1_FontTransparency", "value": "1.000"}
+{"name":"df_chs1_Info1", "value": "0"}
+{"name":"df_chs1_Info2", "value": "0"}
+{"name":"df_chs1_Info3", "value": "0"}
+{"name":"df_chs1_Info4", "value": "0"}
+{"name":"df_chs1_Info5", "value": "1"}
+{"name":"df_chs1_Info6", "value": "0"}
+{"name":"df_chs1_Info7", "value": "0"}
+{"name":"df_chs1_Info8", "value": "0"}
+{"name":"df_chs1_LabelColor", "value": "7"}
+{"name":"df_chs1_LabelType", "value": "0"}
+{"name":"df_chs1_OffsetX", "value": "13.5"}
+{"name":"df_chs1_OffsetY", "value": "20"}
+{"name":"df_chs2_ComboSeparator", "value": "/"}
+{"name":"df_chs2_DisplayType", "value": "1"}
+{"name":"df_chs2_Draw", "value": "1"}
+{"name":"df_chs2_EnableCombos", "value": "1"}
+{"name":"df_chs2_FontColor", "value": "7"}
+{"name":"df_chs2_FontShadow", "value": "1"}
+{"name":"df_chs2_FontSize", "value": "7"}
+{"name":"df_chs2_FontTransparency", "value": "1.000"}
+{"name":"df_chs2_Info1", "value": "140"}
+{"name":"df_chs2_Info2", "value": "141"}
+{"name":"df_chs2_Info3", "value": "0"}
+{"name":"df_chs2_Info4", "value": "0"}
+{"name":"df_chs2_Info5", "value": "0"}
+{"name":"df_chs2_Info6", "value": "0"}
+{"name":"df_chs2_Info7", "value": "0"}
+{"name":"df_chs2_Info8", "value": "0"}
+{"name":"df_chs2_LabelColor", "value": "8"}
+{"name":"df_chs2_LabelType", "value": "1"}
+{"name":"df_chs2_OffsetX", "value": "-312"}
+{"name":"df_chs2_OffsetY", "value": "220"}
+{"name":"df_chs2_info2_draw", "value": "0"}
+{"name":"df_chs_UsePredicted", "value": "0"}
+{"name":"df_cl_alwaysDrawItems", "value": "1"}
+{"name":"df_cl_fastRespawn", "value": "1"}
+{"name":"df_competition", "value": ""}
+{"name":"df_country", "value": "Spain"}
+{"name":"df_demos_CamOffsetAngleX", "value": "0"}
+{"name":"df_demos_CamOffsetAngleY", "value": "0"}
+{"name":"df_demos_CamOffsetAngleZ", "value": "0"}
+{"name":"df_demos_CamOffsetPositionX", "value": "0"}
+{"name":"df_demos_CamOffsetPositionY", "value": "0"}
+{"name":"df_demos_CamOffsetPositionZ", "value": "0"}
+{"name":"df_demos_CamOffsetRadiusF", "value": "0"}
+{"name":"df_demos_CamOffsetRadiusR", "value": "0"}
+{"name":"df_demos_CamOffsetRadiusU", "value": "0"}
+{"name":"df_demos_CamSeqMode", "value": ""}
+{"name":"df_demos_CamSeqPosition", "value": ""}
+{"name":"df_demos_CamSeqSpeed", "value": ""}
+{"name":"df_demos_CameraMode", "value": "0"}
+{"name":"df_demos_CameraTransitionSpeed", "value": "50"}
+{"name":"df_demos_CurrentListVars", "value": "0 0"}
+{"name":"df_demos_CurrentPath", "value": ""}
+{"name":"df_demos_HideLocalEntities", "value": "0"}
+{"name":"df_demos_HidePacketEntities", "value": "0"}
+{"name":"df_demos_ModSupport", "value": "0"}
+{"name":"df_demos_ReplayDrawMask", "value": "32767"}
+{"name":"df_demos_ReplayFilename", "value": "$demoname"}
+{"name":"df_demos_ReplayMode", "value": "1"}
+{"name":"df_demos_Seek", "value": "0.00"}
+{"name":"df_demos_UICompatibility", "value": "1"}
+{"name":"df_demos_UnlockThirdPersonPitch", "value": "0"}
+{"name":"df_demos_exitAfterPlayback", "value": "0"}
+{"name":"df_demos_validation", "value": "0"}
+{"name":"df_drawBestTime", "value": "1"}
+{"name":"df_drawCheckpointEvents", "value": "0"}
+{"name":"df_drawCheckpointStats", "value": "1"}
+{"name":"df_drawJumpmeters", "value": "0"}
+{"name":"df_drawSpeed", "value": "0"}
+{"name":"df_gametype", "value": "0"}
+{"name":"df_ghost1_PlayCameraMode", "value": "0"}
+{"name":"df_ghost1_PlayDrawMissiles", "value": "2"}
+{"name":"df_ghost1_PlayDrawPlayer", "value": "3"}
+{"name":"df_ghost1_PlayLoop", "value": "0"}
+{"name":"df_ghost1_PlayTimescale", "value": "1.0"}
+{"name":"df_ghost1_RecordFileFormat", "value": "2"}
+{"name":"df_ghost1_RecordInterval", "value": "50"}
+{"name":"df_ghost1_RecordView", "value": "0"}
+{"name":"df_ghost2_PlayCameraMode", "value": "0"}
+{"name":"df_ghost2_PlayDrawMissiles", "value": "2"}
+{"name":"df_ghost2_PlayDrawPlayer", "value": "3"}
+{"name":"df_ghost2_PlayLoop", "value": "0"}
+{"name":"df_ghost2_PlayTimescale", "value": "1.0"}
+{"name":"df_ghost2_RecordFileFormat", "value": "2"}
+{"name":"df_ghost2_RecordInterval", "value": "50"}
+{"name":"df_ghost2_RecordView", "value": "0"}
+{"name":"df_ghosts_CheckPVS", "value": "1"}
+{"name":"df_ghosts_Command", "value": ""}
+{"name":"df_ghosts_DrawOutput", "value": "0"}
+{"name":"df_ghosts_FileExtension", "value": ""}
+{"name":"df_ghosts_LiveAmmo", "value": "0"}
+{"name":"df_ghosts_MiniviewBorderSize", "value": "4"}
+{"name":"df_ghosts_MiniviewCameraMode", "value": "1"}
+{"name":"df_ghosts_MiniviewDrawGun", "value": "1"}
+{"name":"df_ghosts_MiniviewFOV", "value": "90"}
+{"name":"df_ghosts_MiniviewOffsetX", "value": "235"}
+{"name":"df_ghosts_MiniviewOffsetY", "value": "-155"}
+{"name":"df_ghosts_MiniviewSize", "value": "25"}
+{"name":"df_ghosts_NoDrawRadius", "value": "200"}
+{"name":"df_ghosts_SelfMissilesOnly", "value": "1"}
+{"name":"df_ghosts_SpriteInfo", "value": ""}
+{"name":"df_ghosts_SpriteSize", "value": "8"}
+{"name":"df_ghosts_automode", "value": "4"}
+{"name":"df_ghosts_automodeMP", "value": "1"}
+{"name":"df_ghosts_miniviewdraw", "value": "0"}
+{"name":"df_hook_Type", "value": "0"}
+{"name":"df_hud", "value": "1"}
+{"name":"df_hud_3DIcons", "value": "1"}
+{"name":"df_hud_cgaz", "value": "0"}
+{"name":"df_hud_cgaz_opacity", "value": "0.3"}
+{"name":"df_hud_cgaz_ypos", "value": "246"}
+{"name":"df_hud_color", "value": "8"}
+{"name":"df_hud_colorRGB", "value": ""}
+{"name":"df_hud_colorwarning", "value": "0"}
+{"name":"df_hud_drawSpectFollow", "value": "2"}
+{"name":"df_hud_drawStatus", "value": "1"}
+{"name":"df_hud_fontcolor", "value": "7"}
+{"name":"df_hud_fontcolorRGB", "value": ""}
+{"name":"df_hud_fontshadow", "value": "1"}
+{"name":"df_hud_forceteamcolors", "value": "1"}
+{"name":"df_hud_frameTransparency", "value": "0"}
+{"name":"df_hud_scoreboard_showSpectators", "value": "1"}
+{"name":"df_hud_scoreboard_size", "value": "0"}
+{"name":"df_hud_transparency", "value": "0.250"}
+{"name":"df_hud_videocapture_enable", "value": "0"}
+{"name":"df_hud_videocapture_fontcolor", "value": "7"}
+{"name":"df_hud_videocapture_fontjustify", "value": "0"}
+{"name":"df_hud_videocapture_fontshadow", "value": "1"}
+{"name":"df_hud_videocapture_fontsize", "value": "16"}
+{"name":"df_hud_videocapture_x", "value": "320"}
+{"name":"df_hud_videocapture_y", "value": "240"}
+{"name":"df_keymaps", "value": "0"}
+{"name":"df_keymaps_back", "value": ""}
+{"name":"df_keymaps_forward", "value": ""}
+{"name":"df_keymaps_movedown", "value": ""}
+{"name":"df_keymaps_moveleft", "value": ""}
+{"name":"df_keymaps_moveright", "value": ""}
+{"name":"df_keymaps_moveup", "value": ""}
+{"name":"df_lg_Knockback", "value": "0"}
+{"name":"df_mode_fastcaps", "value": "2"}
+{"name":"df_mode_tricksmode", "value": "2"}
+{"name":"df_mp_InterferenceOff", "value": "3"}
+{"name":"df_mp_NoDrawRadius", "value": "100"}
+{"name":"df_mp_TrackPlayerNum", "value": "-1"}
+{"name":"df_name", "value": "sOkam!"}
+{"name":"df_ndm_damage", "value": "0"}
+{"name":"df_ndm_itemsSpawn", "value": "1"}
+{"name":"df_ndm_nomover", "value": "0"}
+{"name":"df_ndm_nopad", "value": "0"}
+{"name":"df_ndm_noteleport", "value": "0"}
+{"name":"df_ndm_powerups", "value": "0"}
+{"name":"df_ndm_timer_checkpoint", "value": ""}
+{"name":"df_ndm_timer_start", "value": ""}
+{"name":"df_ndm_timer_stop", "value": ""}
+{"name":"df_ndm_weaponsPickup", "value": "0"}
+{"name":"df_ndm_weaponsSet", "value": "1022"}
+{"name":"df_noEndOfRunStats", "value": "1"}
+{"name":"df_ob_AllSlopes", "value": "0"}
+{"name":"df_ob_Fast", "value": "1"}
+{"name":"df_ob_KillOBs", "value": "0"}
+{"name":"df_ob_OffsetStartPosZ", "value": "0.00"}
+{"name":"df_ob_OffsetStopPosZ", "value": "0.00"}
+{"name":"df_player_SmokeTrails", "value": "0.00"}
+{"name":"df_player_Sprites", "value": "1"}
+{"name":"df_promode", "value": "0"}
+{"name":"df_script_onJoinTeam", "value": "0"}
+{"name":"df_script_onMapLoad", "value": "0"}
+{"name":"df_script_onRespawn", "value": "0"}
+{"name":"df_sound_flagGrabbing", "value": "0"}
+{"name":"df_sound_leadChanges", "value": "1"}
+{"name":"df_sv_script_idleCfg", "value": ""}
+{"name":"df_sv_script_idleDelay", "value": "50"}
+{"name":"df_tieOverwrites", "value": "1"}
+{"name":"df_transitions", "value": ""}
+{"name":"df_ui_CursorColor", "value": "0.50 0.80 1.00 1.00"}
+{"name":"df_ui_CustomMenu", "value": "2"}
+{"name":"df_ui_DisplayCVarName", "value": "1"}
+{"name":"df_ui_ListbarColor", "value": "1.00 0.00 0.00 0.30"}
+{"name":"df_ui_PulseColor", "value": "1.00 1.00 1.00 1.00"}
+{"name":"df_ui_StatusColor", "value": "1.00 1.00 1.00 1.00"}
+{"name":"df_ui_TextColorBig", "value": "1.00 0.00 0.00 1.00"}
+{"name":"df_ui_TextColorDisabled", "value": "0.50 0.50 0.50 1.00"}
+{"name":"df_ui_TextColorHighlight", "value": "1.00 1.00 0.00 1.00"}
+{"name":"df_ui_TextColorLabel", "value": "1.00 1.00 0.00 1.00"}
+{"name":"df_ui_TextColorMedium", "value": "0.00 0.00 1.00 1.00"}
+{"name":"df_ui_TextColorValue", "value": "1.00 0.00 0.00 1.00"}
+{"name":"df_unit", "value": "0"}
+{"name":"df_varHelpers_DrawOutput", "value": "0"}
+{"name":"df_vote_allowVotes", "value": "1"}
+{"name":"df_vote_allow_clientkick", "value": "1"}
+{"name":"df_vote_allow_devmap", "value": "1"}
+{"name":"df_vote_allow_gametype", "value": "0"}
+{"name":"df_vote_allow_interference", "value": "0"}
+{"name":"df_vote_allow_kick", "value": "1"}
+{"name":"df_vote_allow_killobs", "value": "1"}
+{"name":"df_vote_allow_map", "value": "1"}
+{"name":"df_vote_allow_map_restart", "value": "1"}
+{"name":"df_vote_allow_mode", "value": "1"}
+{"name":"df_vote_allow_nextmap", "value": "1"}
+{"name":"df_vote_allow_promode", "value": "1"}
+{"name":"df_vote_maxVotes", "value": "5"}
+{"name":"df_vote_passVoteOnRatio", "value": ".6"}
+{"name":"df_vote_voteDelay", "value": "30"}
+]
+fs = [
+{"name":"fs_basegame", "value": "baseq3"}
+{"name":"fs_basepath", "value": "/app/vg/defrag"}
+{"name":"fs_copyfiles", "value": "0"}
+{"name":"fs_debug", "value": "0"}
+{"name":"fs_excludeReference", "value": ""}
+{"name":"fs_game", "value": "defrag"}
+{"name":"fs_homepath", "value": "/home/sokam/.q3a"}
+{"name":"fs_steampath", "value": ""}
+]
+g = [
+{"name":"g_allowVote", "value": "1"}
+{"name":"g_arenasFile", "value": ""}
+{"name":"g_banIPs", "value": ""}
+{"name":"g_botsFile", "value": ""}
+{"name":"g_filterBan", "value": "1"}
+{"name":"g_friendlyFire", "value": "0"}
+{"name":"g_gametype", "value": "0"}
+{"name":"g_killWallbug", "value": "1"}
+{"name":"g_log", "value": "games.log"}
+{"name":"g_logSync", "value": "0"}
+{"name":"g_maxGameClients", "value": "0"}
+{"name":"g_spAwards", "value": ""}
+{"name":"g_spScores1", "value": ""}
+{"name":"g_spScores2", "value": ""}
+{"name":"g_spScores3", "value": ""}
+{"name":"g_spScores4", "value": ""}
+{"name":"g_spScores5", "value": ""}
+{"name":"g_spSkill", "value": "2"}
+{"name":"g_spVideos", "value": ""}
+{"name":"g_synchronousClients", "value": "1"}
+{"name":"g_teamAutoJoin", "value": "0"}
+{"name":"g_teamForceBalance", "value": "0"}
+{"name":"g_warmup", "value": "20"}
+]
+in = [
+{"name":"in_keyboardDebug", "value": "0"}
+{"name":"in_mouse", "value": "1"}
+{"name":"in_nograb", "value": "0"}
+]
+cg = [
+{"name":"mdd_timer_xywh", "value": "295 240 50 8"}
+{"name":"mdd_timer_outline_w", "value": "0.2"}
+{"name":"mdd_timer_outline_rgba", "value": "1 1 1 1"}
+{"name":"mdd_timer_item_w", "value": "3"}
+{"name":"mdd_timer_item_rgba", "value": "1 1 0 1"}
+{"name":"mdd_timer_gb_rgba", "value": "1 0 0 1"}
+{"name":"mdd_timer", "value": "1"}
+{"name":"mdd_snap_yh", "value": "182 1.5"}
+{"name":"mdd_snap_min_speed", "value": "495"}
+{"name":"mdd_snap_hl_def_rgba", "value": "0 1 1 .8"}
+{"name":"mdd_snap_def_rgba", "value": "0 1 1 .4"}
+{"name":"mdd_snap_alt_rgba", "value": "0 0 0 0"}
+{"name":"mdd_snap", "value": "0b10010"}
+{"name":"mdd_pitch_rgba", "value": "1 0 1 1"}
+{"name":"mdd_pitch", "value": "71.8 68"}
+{"name":"mdd_jump_text_xh", "value": "-320 15"}
+{"name":"mdd_jump_graph_xywh", "value": "317 210 6 20"}
+{"name":"mdd_jump_graph_rgbaPreJump", "value": "0 1 1 .4"}
+{"name":"mdd_jump_graph_rgbaPostJump", "value": "0 1 1 .4"}
+{"name":"mdd_jump_graph_rgba", "value": ".5 .5 .5 .4"}
+{"name":"mdd_jump_graph_outline_w", "value": "0"}
+{"name":"mdd_jump", "value": "3"}
+{"name":"mdd_gl_path_rgba", "value": "0.25 0.25 0.25 1"}
+{"name":"mdd_gl_path_preview_draw", "value": "0"}
+{"name":"mdd_fov", "value": "115"}
+{"name":"mdd_compass", "value": "0"}
+{"name":"mdd_cgaz_yh", "value": "183 4"}
+{"name":"mdd_cgaz_trueness", "value": "0b010"}
+{"name":"mdd_cgaz_speed", "value": "1"}
+{"name":"mdd_cgaz_rgbaTurnZone", "value": "1 1 1 .1"}
+{"name":"mdd_cgaz_rgbaPartialAccel", "value": "1 1 1 .7"}
+{"name":"mdd_cgaz_rgbaNoAccel", "value": "1 1 1 .0"}
+{"name":"mdd_cgaz_rgbaFullAccel", "value": "1 .3 0 1"}
+{"name":"mdd_cgaz", "value": "0b1"}
+{"name":"mdd_ammo", "value": "0"}
+]
+m = [
+{"name":"m_filter", "value": "0"}
+{"name":"m_forward", "value": "0.25"}
+{"name":"m_menuSensitivity", "value": "1"}
+{"name":"m_pitch", "value": "0.022"}
+{"name":"m_side", "value": "0.25"}
+{"name":"m_yaw", "value": "0.022"}
+]
+net = [
+{"name":"net_dropsim", "value": ""}
+{"name":"net_enabled", "value": "3"}
+{"name":"net_ip", "value": "0.0.0.0"}
+{"name":"net_ip6", "value": "::"}
+{"name":"net_mcast6addr", "value": "ff04::696f:7175:616b:6533"}
+{"name":"net_mcast6iface", "value": ""}
+{"name":"net_port", "value": "27960"}
+{"name":"net_port6", "value": "27960"}
+{"name":"net_qport", "value": "26467"}
+{"name":"net_socksEnabled", "value": "0"}
+{"name":"net_socksPassword", "value": ""}
+{"name":"net_socksPort", "value": "1080"}
+{"name":"net_socksServer", "value": ""}
+{"name":"net_socksUsername", "value": ""}
+]
+r = [
+{"name":"r_OverbrightBits", "value": "1"}
+{"name":"r_allowExtensions", "value": "1"}
+{"name":"r_allowSoftwareGL", "value": "0"}
+{"name":"r_ambientScale", "value": "0.6"}
+{"name":"r_aviMotionJpegQuality", "value": "90"}
+{"name":"r_bloom", "value": "0"}
+{"name":"r_bloom_filter_size", "value": "20"}
+{"name":"r_bloom_intensity", "value": "0.03"}
+{"name":"r_bloom_modulate", "value": "1"}
+{"name":"r_bloom_passes", "value": "8"}
+{"name":"r_bloom_reflection", "value": "2"}
+{"name":"r_bloom_threshold", "value": "0.8"}
+{"name":"r_clear", "value": "1"}
+{"name":"r_colorMipLevels", "value": "0"}
+{"name":"r_colorbits", "value": "32"}
+{"name":"r_customHeight", "value": "1024"}
+{"name":"r_customPixelAspect", "value": "1"}
+{"name":"r_customWidth", "value": "1600"}
+{"name":"r_debugSort", "value": "0"}
+{"name":"r_debugSurface", "value": "0"}
+{"name":"r_debuglight", "value": "0"}
+{"name":"r_defaultImage", "value": ""}
+{"name":"r_depthbits", "value": "32"}
+{"name":"r_detailtextures", "value": "1"}
+{"name":"r_device", "value": "-1"}
+{"name":"r_directedScale", "value": "1"}
+{"name":"r_displayRefresh", "value": "0"}
+{"name":"r_dither", "value": "0"}
+{"name":"r_dlightBacks", "value": "1"}
+{"name":"r_dlightIntensity", "value": "1.0"}
+{"name":"r_dlightMode", "value": "2"}
+{"name":"r_dlightSaturation", "value": "1"}
+{"name":"r_dlightScale", "value": "0.5"
+{"name":"r_drawBuffer", "value": "GL_BACK"}
+{"name":"r_drawSun", "value": "1"}
+{"name":"r_drawentities", "value": "1"}
+{"name":"r_drawworld", "value": "1"}
+{"name":"r_dynamiclight", "value": "1"}
+{"name":"r_ext_alpha_to_coverage", "value": "0"}
+{"name":"r_ext_compiled_vertex_array", "value": "1"}
+{"name":"r_ext_compressed_textures", "value": "0"}
+{"name":"r_ext_max_anisotropy", "value": "2"}
+{"name":"r_ext_multisample", "value": "4"}
+{"name":"r_ext_multitexture", "value": "1"}
+{"name":"r_ext_supersample", "value": "0"}
+{"name":"r_ext_texture_env_add", "value": "1"}
+{"name":"r_ext_texture_filter_anisotropic", "value": "0"}
+{"name":"r_facePlaneCull", "value": "1"}
+{"name":"r_fastsky", "value": "0"}
+{"name":"r_fbo", "value": "1"}
+{"name":"r_finish", "value": "0"}
+{"name":"r_flareCoeff", "value": "150"}
+{"name":"r_flareFade", "value": "10"}
+{"name":"r_flareSize", "value": "40"}
+{"name":"r_flares", "value": "0"}
+{"name":"r_fullbright", "value": "0"}
+{"name":"r_fullscreen", "value": "0"}
+{"name":"r_gamma", "value": "1"}
+{"name":"r_glDriver", "value": "libGL.so.1"}
+{"name":"r_greyscale", "value": "0"}
+{"name":"r_hdr", "value": "1"}
+{"name":"r_ignoreGLErrors", "value": "1"}
+{"name":"r_ignorehwgamma", "value": "0"}
+{"name":"r_inGameVideo", "value": "1"}
+{"name":"r_intensity", "value": "1"}
+{"name":"r_lightmap", "value": "0"}
+{"name":"r_lockpvs", "value": "0"}
+{"name":"r_lodCurveError", "value": "250"}
+{"name":"r_lodbias", "value": "-2"}
+{"name":"r_lodscale", "value": "5"}
+{"name":"r_mapGreyScale", "value": "0"}
+{"name":"r_mapOverbrightBits", "value": "2"}
+{"name":"r_marksOnTriangleMeshes", "value": "0"}
+{"name":"r_maxpolys", "value": "8192"}
+{"name":"r_maxpolyverts", "value": "32768"}
+{"name":"r_mergeLightmaps", "value": "1"}
+{"name":"r_mode", "value": "-2"}
+{"name":"r_modeFullscreen", "value": ""}
+{"name":"r_neatsky", "value": "1"}
+{"name":"r_nobind", "value": "0"}
+{"name":"r_noborder", "value": "0"}
+{"name":"r_nocull", "value": "0"}
+{"name":"r_nocurves", "value": "0"}
+{"name":"r_nomip", "value": "1"}
+{"name":"r_noportals", "value": "0"}
+{"name":"r_norefresh", "value": "0"}
+{"name":"r_novis", "value": "0"}
+{"name":"r_offsetfactor", "value": "-2"}
+{"name":"r_offsetunits", "value": "-1"}
+{"name":"r_picmip", "value": "0"}
+{"name":"r_portalOnly", "value": "0"}
+{"name":"r_presentBits", "value": "24"}
+{"name":"r_printShaders", "value": "0"}
+{"name":"r_railCoreWidth", "value": "12"}
+{"name":"r_railSegmentLength", "value": "32"}
+{"name":"r_railWidth", "value": "32"}
+{"name":"r_renderHeight", "value": "600"}
+{"name":"r_renderScale", "value": "0"}
+{"name":"r_renderWidth", "value": "800"}
+{"name":"r_renderslicksurfaces", "value": "1"}
+{"name":"r_roundImagesDown", "value": "0"}
+{"name":"r_saveFontData", "value": "0"}
+{"name":"r_screenshotJpegQuality", "value": "90"}
+{"name":"r_showImages", "value": "0"}
+{"name":"r_showcluster", "value": "0"}
+{"name":"r_shownormals", "value": "0"}
+{"name":"r_showsky", "value": "0"}
+{"name":"r_showtris", "value": "0"}
+{"name":"r_simpleMipMaps", "value": "0"}
+{"name":"r_singleShader", "value": "0"}
+{"name":"r_skipBackEnd", "value": "0"}
+{"name":"r_speeds", "value": "0"}
+{"name":"r_stencilbits", "value": "8"}
+{"name":"r_stereoEnabled", "value": "0"}
+{"name":"r_stereoSeparation", "value": "64"}
+{"name":"r_subdivisions", "value": "4"}
+{"name":"r_swapInterval", "value": "0"}
+{"name":"r_textureMode", "value": "GL_LINEAR_MIPMAP_LINEAR"}
+{"name":"r_texturebits", "value": "32"}
+{"name":"r_vbo", "value": "1"}
+{"name":"r_vertexLight", "value": "0"}
+{"name":"r_znear", "value": "4"}
+{"name":"r_zproj", "value": "64"}
+]
+s = [
+{"name":"s_ambient", "value": "1"}
+{"name":"s_device", "value": "default"}
+{"name":"s_doppler", "value": "1"}
+{"name":"s_initsound", "value": "1"}
+{"name":"s_khz", "value": "22"}
+{"name":"s_mixAhead", "value": "0.2"}
+{"name":"s_mixOffset", "value": "0"}
+{"name":"s_musicvolume", "value": "0.25"}
+{"name":"s_muteWhenMinimized", "value": "0"}
+{"name":"s_muteWhenUnfocused", "value": "0"}
+{"name":"s_sdlBits", "value": "16"}
+{"name":"s_sdlChannels", "value": "2"}
+{"name":"s_sdlDevSamps", "value": "0"}
+{"name":"s_sdlMixSamps", "value": "0"}
+{"name":"s_show", "value": "0"}
+{"name":"s_testsound", "value": "0"}
+{"name":"s_volume", "value": "0.1"}
+]
+sv = [
+{"name":"sv_allowDownload", "value": "1"}
+{"name":"sv_cheats", "value": "1"}
+{"name":"sv_clientTLD", "value": "0"}
+{"name":"sv_dlRate", "value": "100"}
+{"name":"sv_dlURL", "value": ""}
+{"name":"sv_filter", "value": "filter.txt"}
+{"name":"sv_floodProtect", "value": "1"}
+{"name":"sv_fps", "value": "125"}
+{"name":"sv_hostname", "value": "noname"}
+{"name":"sv_keywords", "value": ""}
+{"name":"sv_killserver", "value": "0"}
+{"name":"sv_lanForceRate", "value": "1"}
+{"name":"sv_levelTimeReset", "value": "1"}
+{"name":"sv_mapChecksum", "value": ""}
+{"name":"sv_master1", "value": "master.quake3arena.com"}
+{"name":"sv_master2", "value": "master.ioquake3.org"}
+{"name":"sv_master3", "value": "master.maverickservers.com"}
+{"name":"sv_master4", "value": ""}
+{"name":"sv_master5", "value": ""}
+{"name":"sv_maxRate", "value": "0"}
+{"name":"sv_maxclients", "value": "8"}
+{"name":"sv_maxclientsPerIP", "value": "3"}
+{"name":"sv_minRate", "value": "0"}
+{"name":"sv_noReferencedPaks", "value": "1"}
+{"name":"sv_packetdelay", "value": "0"}
+{"name":"sv_padPackets", "value": "0"}
+{"name":"sv_pakNames", "value": ""}
+{"name":"sv_paks", "value": ""}
+{"name":"sv_paused", "value": "0"}
+{"name":"sv_privateClients", "value": "0"}
+{"name":"sv_privatePassword", "value": ""}
+{"name":"sv_pure", "value": "0"}
+{"name":"sv_reconnectlimit", "value": "3"}
+{"name":"sv_referencedPakNames", "value": ""}
+{"name":"sv_referencedPaks", "value": ""}
+{"name":"sv_running", "value": "0"}
+{"name":"sv_serverid", "value": "0"}
+{"name":"sv_timeout", "value": "200"}
+{"name":"sv_zombietime", "value": "2"}
+]
+ttycon = [
+{"name":"ttycon_ansicolor", "value": "0"}
+]
+ui = [
+{"name":"ui_bigFont", "value": "0.4"}
+{"name":"ui_browserGameType", "value": "0"}
+{"name":"ui_browserMaster", "value": "1"}
+{"name":"ui_browserShowEmpty", "value": "0"}
+{"name":"ui_browserShowFull", "value": "0"}
+{"name":"ui_browserSortKey", "value": "4"}
+{"name":"ui_cdkeychecked", "value": "0"}
+{"name":"ui_ctf_capturelimit", "value": "8"}
+{"name":"ui_ctf_friendly", "value": "0"}
+{"name":"ui_ctf_timelimit", "value": "30"}
+{"name":"ui_ffa_fraglimit", "value": "20"}
+{"name":"ui_ffa_timelimit", "value": "0"}
+{"name":"ui_singlePlayerActive", "value": "0"}
+{"name":"ui_smallFont", "value": "0.25"}
+{"name":"ui_spSelection", "value": ""}
+{"name":"ui_team_fraglimit", "value": "0"}
+{"name":"ui_team_friendly", "value": "1"}
+{"name":"ui_team_timelimit", "value": "20"}
+{"name":"ui_tourney_fraglimit", "value": "0"}
+{"name":"ui_tourney_timelimit", "value": "15"}
+]
+vm = [
+{"name":"vm_cgame", "value": "0"}
+{"name":"vm_game", "value": "2"}
+{"name":"vm_rtChecks", "value": "15"}
+{"name":"vm_ui", "value": "2"}
+]

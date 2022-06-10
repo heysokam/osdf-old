@@ -13,7 +13,7 @@ cName             = 'osdf'
 dName             = cName+'.ded'
 render_prefix     = cName
 # Directories
-rootDir           = '.' #os.getcwd()           # Must be relative. Was Absolute
+rootDir           = '..'                       # Must be relative. Was Absolute
 srcDir            = '.'                        # This MUST be relative to the SConstruct file.
 engineDir         = srcDir+'/engine'           # Repository for engine code
 gameDir           = srcDir+'/game'             # Repository for gamecode
@@ -21,31 +21,24 @@ binDir            = rootDir+'/bin'             # Output root folder where binari
 instDir           = rootDir+'/install-'+cName  # Default linux:  '/usr/local/games/quake3'
 baseDir           = None                       #TODO: what is this DEFAULT_BASEDIR value used for?
 # Select what to build
-build_client      = True
-build_server      = True
-build_default     = ['debug',]   # List of targets to build by default
+build_default     = []#['release','debug',]   # List of targets to build by default. Will use debug if empty
 # Select what systems to compile
+use_local_jpeg    = True   # Links to local jpeg (windows only). Binaries are hard to find
+use_local_pcre    = True   # Links to local pcre (windows only). Binaries are hard to find
 #use_sdl           = True  # Disabled. Always True
 #use_curl          = True  # Disabled. Always True
-#use_pcre          = True  # Disabled. Always True
-#use_system_jpeg   = True  # Disabled. Always True
 #use_local_headers = False # Disabled. Always False 
 #use_ccache        = True  # Deprecated. Scons has a compiler cache system
-#genDependencies   = True   #TODO: This might not be needed at all. Chapter 6.5. ParseDepends should only be used if the scanners fail (they probably wont)
 # Render compile settings
 render_default    = 'opengl' # valid options: opengl, vulkan, opengl2
 use_opengl        = True
 use_opengl2       = False
 use_vulkan        = True
 use_vulkan_api    = use_vulkan #Default: True   #TODO: What is this used for?
-#use_render_dlopen = False  # Disabled. We are not using renderer hotplug. Default is True
-#if not use_render_dlopen:    # Disabled. We are not using renderer hotplug
 use_opengl= use_opengl2= use_vulkan= use_vulkan_api= False
 if render_default == 'opengl':  use_opengl  = True
 if render_default == 'opengl2': use_opengl2 = True
 if render_default == 'vulkan':  use_vulkan  = use_vulkan_api = True
-# Others
-#use_curl_dlopen   = False if mingw else True  # Disabled. Curl hotplug is not needed   # Force false for mingw
 
 # Versioning
 verFile           = engineDir+'/qcommon/q_shared.h'  # File where the version will be searched for. If changed, version won't be searched for in the right file
@@ -82,6 +75,10 @@ qcmDir = '/qcommon'
 unxDir = '/unix'
 winDir = '/win32'
 botDir = '/botlib'
+# Libraries
+libDir  = '/lib'
+jpgDir  = libDir+'/jpeg'
+pcreDir = libDir+'/pcre'
 # Gamecode src folders
 cgDir  = '/cgame'
 sgDir  = '/sgame'
@@ -92,13 +89,11 @@ uiDir  = '/ui'
 # Not used
 asmDir = '/asm'
 tuiDir = '/ui_ta'
-jpgDir = '/libjpeg'
 
 ## Compiler Flags
 # ::::::::::::::::
 ##################
-# Added by AppendUnique. Doesn't matter if there are duplicates in each
-#  err when = None
+# Added by AppendUnique. Doesn't matter if there are duplicates in each    # err when = None
 CCFLAGS_base = [] # Will be used in all targets
 CCFLAGS_rls  = [] # Optimization CCFLAGS. Will be used in Release versions
 CCFLAGS_dbg  = [] # Debug CCFLAGS. Will be used in Debug versions

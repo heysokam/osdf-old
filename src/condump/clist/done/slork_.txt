@@ -1,0 +1,5 @@
+
+05:53:21
+05:53:21 803 total cvars
+05:53:21 803 cvar indexes
+05:53:21 Dumped console text to clist/slork_.txt.

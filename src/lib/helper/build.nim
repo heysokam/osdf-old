@@ -1,17 +1,29 @@
 import os, parseopt, strutils, strformat
 import ./bash as sh
+
 # Command line option parsing
+func getOpt*(c:string):bool =
+  result = false # default output is false, unless the opt is found
+  var args = initOptParser(commandLineParams())
+  for kind, key, val in args.getOpt():
+    if kind in [cmdShortOption]:
+      if key in [c]: result = true
 func getBuildType*():string =
   var args = initOptParser(commandLineParams())
   for kind, key, val in args.getOpt():
-    if kind in [cmdShortOption, cmdLongOption]:
+    if kind in [cmdLongOption, cmdShortOption]:
       if key in ["build", "b"]: result = val
-func verbose*():bool =
+func isVerbose*():bool =
   result = false # default output is false, unless the opt is found
   var args = initOptParser(commandLineParams())
   for kind, key, val in args.getOpt():
     if kind in [cmdLongOption, cmdShortOption]:
       if key in ["verbose", "v"]: result = true
+func isLinux*():bool=
+  result=false; when defined(posix):   result = true
+func   isWin*():bool= 
+  result=false; when defined(windows): result = true
+
 # Revision Number management
 proc setRevNum*(v:int, f:string)=
   if not dirExists(splitFile(f).dir): sh.md splitFile(f).dir

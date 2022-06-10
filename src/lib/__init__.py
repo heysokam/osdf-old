@@ -3,4 +3,4 @@
 #                                     (aka `./../SConstruct` file in our case)
 #
 # todo: any possible method to remove it?
-# maybe doing something wtih sys.path
+# maybe doing something with sys.path

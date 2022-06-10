@@ -1,0 +1,10 @@
+fs = [
+{"name":"fs_basegame", "value": "baseq3"}
+{"name":"fs_basepath", "value": "/app/vg/defrag"}
+{"name":"fs_copyfiles", "value": "0"}
+{"name":"fs_debug", "value": "0"}
+{"name":"fs_excludeReference", "value": ""}
+{"name":"fs_game", "value": "defrag"}
+{"name":"fs_homepath", "value": "/home/sokam/.q3a"}
+{"name":"fs_steampath", "value": ""}
+]

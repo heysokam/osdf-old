@@ -1,5 +1,6 @@
 import os
 import os.path
+import sys
 
 import SCons.Action
 import SCons.Builder
@@ -7,22 +8,21 @@ import SCons.Tool
 import SCons.Util
 
 # Prefixes to search for:
-pfx64 = ['x86_64-w64-mingw32-']
+pfx64 = ['mingw-w64-','x86_64-w64-mingw32-', 'amd64-mingw32msvc-']
 pfx32 = ['mingw32-',
-         'i386-mingw32msvc-',
-         'i486-mingw32msvc-',
-         'i586-mingw32msvc-',
-         'i686-mingw32msvc-',
-         'i686-pc-mingw32-',
-         'i686-w64-mingw32-', ]
-prefixes = pfx64 #+ pfx32     #TODO: mingw32 support?
-def _find(env):
+         'i386-mingw32msvc-', 'i486-mingw32msvc-', 'i586-mingw32msvc-',
+         'i686-mingw32msvc-', 'i686-pc-mingw32-',  'i686-w64-mingw32-', ]
+#prefixes = pfx64 #+ pfx32
+def _find(env,bits):
+  if   bits == 64: prefixes = pfx64
+  elif bits == 32: prefixes = pfx32
+  else: sys.exit(f'::ERR Trying to find an incorrect bit value for MinGW environment')
   for prefix in prefixes:
     # First search in the SCons path and then the OS path:
     if env.WhereIs(prefix + "gcc") or SCons.Util.WhereIs(prefix + "gcc"):
       return prefix
   return ""
-def exists(env): return bool(_find(env))
+def exists(env,bits): return bool(_find(env,bits))
 
 
 # Define the generator function
@@ -71,9 +71,9 @@ res_builder = SCons.Builder.Builder(action=res_action, suffix=".o", source_scann
 SCons.Tool.SourceFileScanner.add_scanner(".rc", SCons.Defaults.CScan)
 
 
-def setup(env):
+def setup(env,bits):
   # Search for mingw, and add it to the environment PATH
-  mingw_prefix = _find(env)
+  mingw_prefix = _find(env,bits)
   if mingw_prefix:
     mingw_dir = os.path.dirname(env.WhereIs(mingw_prefix + "gcc") or SCons.Util.WhereIs(mingw_prefix + "gcc"))
     # The mingw bin directory must be added to the path:
@@ -81,7 +81,7 @@ def setup(env):
     if not path: path = []
     if SCons.Util.is_String(path): path = path.split(os.pathsep)
     env["ENV"]["PATH"] = os.pathsep.join([mingw_dir] + path)
-  if not exists(env): import sys; sys.exit(f'::ERR Trying to setup mingw for env: {env}, but MinGW wasnt found.')
+  if not exists(env,bits): import sys; sys.exit(f'::ERR Trying to setup mingw for env: {env}, but MinGW wasnt found.')
   # Most of mingw is the same as gcc and friends...
   gnu_tools = ["gcc", "g++", "gnulink", "ar", "gas"]
   for tool in gnu_tools: SCons.Tool.Tool(tool)(env)
@@ -129,9 +129,9 @@ def setup(env):
 # Usage:   mingw.NewEnvironment() 
 #   Returns an environment configured for mingw
 from SCons.Script import Environment
-def NewEnvironment():
+def NewEnvironment(bits):
   env = SCons.Script.Environment()
-  setup(env)
+  setup(env,bits)
   return env
 
 

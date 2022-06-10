@@ -10,7 +10,7 @@ scPlatforms    = ['posix', 'win32', 'cygwin', 'darwin', 'aix', 'hpux', 'irix', '
 scArchs        = { 64:['x86_64','amd64'], 32:['x86','arm']}
 def mkTruArch(bits,dic):  # Creates and returns a list of (64 or 32) platform aliases contained within the values of `dic`
   #explanation            [val.iterable (for sublist in list_of_lists:  for val in sublist: if     condition:                    )]
-  if   bits == 64: return [val           for key,lst in dic.items()     for val in lst      if not any(ch.isdigit() for ch in val)],  # Dictionary value = list of 64bit platforms
+  if   bits == 64: return [val           for key,lst in dic.items()     for val in lst      if not any(ch.isdigit() for ch in val)]  # Dictionary value = list of 64bit platforms
   elif bits == 32: return [val           for key,lst in dic.items()     for val in lst      if     any(ch.isdigit() for ch in val)]  # Dictionary value = list of 32bit platforms
   else: sys.exit('::ERR Unsupported bits input for the function mkTruArch')
 truPlatform    = {'win32':['w','win','w32','win32'],                   # Accepted win32 aliases in p=X, platform=X
@@ -64,12 +64,27 @@ def getCliPlatform(): return getCliPlatform_tru()
 def getCliPlatform_arg():  # Gets the raw alias, from CLI argument `p=` or `platform=` IF its valid. Else, None
   plat = ARGUMENTS.get('p') if ARGUMENTS.get('p') else ARGUMENTS.get('platform')
   if not plat: return None  # Skip checking if not supplied
-  if plat not in [alias  for key,lst in truPlatforms.items()  for alias in lst]:  sys.exit(f'ERR:: Invalid alias: p={plat}. Not supported in this script')
+  if plat not in [alias  for key,lst in truPlatform.items()  for alias in lst]:  sys.exit(f'ERR:: Invalid alias: p={plat}. Not supported in this script')
   return plat
 def getCliPlatform_tru():  # Converts alias to SCons supported architecture
   plat = getCliPlatform_arg()
   return getKey(plat,truPlatform)
 
+# Supported Lists
+validPlatforms = ['posix', ]  #TODO: 'win32' #todo: x86', 'mingw32', 'mingw64','darwin', 'aarch64'.  They depend on the toolchain, just need specific config
+validArchs     = ['x86_64',]  # amd64 defaults to x86_64, unless specified.   #todo: 'x86', 'arm', 'arm64'
+validTargets   = ['release','debug',     'distribute', 'all',
+                  'engine', 'engine-dbg','engine-dist',
+                  # 'server', 'server-dbg','server-dist',  #TODO: 'server',
+                  'game',   'game-dbg',  'game-dist']
+# Aliases
+  # Q3 renames  (not using them, keeping only as reference for future support implementation)
+  # q3Platforms  = ['x86_64', 'x86', 'mingw32', 'mingw64','darwin', 'aarch64']
+  # remaps:        'arm64':'aarch64',  'mingw32'+'i386':'x86',   'cygwin':'mingw32',   'arm':'aarch64'
+  # q3Archs      = ['i86pc','x86','x86_64','x64']
+  # remaps:        'i86pc':'x86',   'x86_64'or'x64':'x86_64'
+# Other
+vmArchs         = ['x86_64', 'x86', 'arm', 'aarch64'] # List of architectures compatible with vm compiling  #TEMP: Q3 names. fix this
 def getCliTargets(): # Returns a list of valid targets, with error checking
   if not cliTarg(): return None # Skip empty from check, so that it doesn't err
   result = ['']
@@ -106,11 +121,6 @@ def getCur(v):
   return switch.get(v,None)
 
 # SCons Helpers
-#def compile(obj, trg=None, env=DefaultEnvironment(), lib=False, cStr=None, lStr=None):   # Alias for readability
-#  if cStr: env.Replace(CCCOMSTR=f'{cStr} $SOURCES')
-#  if lStr: env.Replace(LINKCOMSTR=f'{lStr} $TARGET : $SOURCES')
-#  if lib: env.SharedLibrary(trg, obj)
-#  else:   env.Program(trg, obj)
 # This is the SCons way of specifying an output folder for binaries. We are just abstracting away the confusion :shrug:
 def LinkDir(src, trg):  # trg=src :: Make trg a virtual copy of src
   VariantDir(trg,src, duplicate=0)
@@ -167,30 +177,31 @@ class BuildInfo:   # Build Information that will be printed on console
 # Build Object Class
 #class BuildData:    #todo (maybe):  figuring out super() for cloning was stupid hard, compared to the benefit
 class BuildObject:
-  def __init__(self, src=None, srcdir=None, bindir=None, binname=None, bintype=None, \
-               ctype='', ccflags=[], defines=[], libs=[], ldflags=[], ccpath=[], parse=[], \
-               env=None, cStr='', lStr='', \
-               plat='', arch='' ):
-    # Target                         * Mandatory    
-    self.src     = src          # * List of files that will be compiled
-    self.srcdir  = srcdir       # * Folder where the source code is taken from
-    self.bindir  = bindir       # * Folder where the binaries will be created
-    self.binname = binname      # * Base name of the binary  `name` will become `name-x64`
-    self.bintype = bintype      # * Output type of the file (executable or library)
-    # Compiler                       - Optional
-    self.ctype   = ctype        # - Performance type (release, debug, etc) (ctype = compiler type)
-    self.ccflags = ccflags      # - Flags to append to CCFLAGS
-    self.defines = defines      # - Flags to append to CPPDEFINES
-    self.libs    = libs         # - Flags to append to LIBS
-    self.ldflags = ldflags      # - Flags to append to LINKFLAGS
-    self.ccpath  = ccpath       # - Flags to append to CCPATH
-    self.parse   = parse        # - Will be setup as env.ParseConfig('value')
+  def __init__(self, src:list|None=None, srcdir:str|None=None, bindir:str|None=None, binname=None, bintype=None, \
+               ctype:str|None=None, ccflags:list|None=None, defines:list|None=None, libs:list|None=None, ldflags:list|None=None, \
+               ccpath:list|None=None, libpath:list|None=None, parse:list|None=None, \
+               env=None, cStr:str|None=None, lStr:str|None=None, plat:str|None=None, arch:str|None=None ):
+    # Target                                                 * Mandatory    
+    self.src     = [] if src     is None else src      # * List of files that will be compiled
+    self.srcdir  = '' if srcdir  is None else srcdir   # * Folder where the source code is taken from
+    self.bindir  = '' if bindir  is None else bindir   # * Folder where the binaries will be created
+    self.binname = '' if binname is None else binname  # * Base name of the binary  `name` will become `name-x64`
+    self.bintype = '' if bintype is None else bintype  # * Output type of the file (executable or library)
+    # Compiler                                               - Optional
+    self.ctype   = '' if ctype   is None else ctype    # - Performance type (release, debug, etc) (ctype = compiler type)
+    self.ccflags = [] if ccflags is None else ccflags  # - Flags to append to CCFLAGS     (-Wflag)
+    self.defines = [] if defines is None else defines  # - Flags to append to CPPDEFINES  (-DSOMEFLAG)
+    self.libs    = [] if libs    is None else libs     # - Flags to append to LIBS        (-lsomelib)
+    self.ldflags = [] if ldflags is None else ldflags  # - Flags to append to LINKFLAGS   (-Wl,someflag)
+    self.ccpath  = [] if ccpath  is None else ccpath   # - Flags to append to CCPATH      (-I/path/to/smth)
+    self.libpath = [] if libpath is None else libpath  # - Flags to append to LIBPATH     (-L/path/to/smth)
+    self.parse   = [] if parse   is None else parse    # - Will be setup as env.ParseConfig('value')
     # Environment & System
     self.env     = env          # - Preexisting Environment to construct with
-    self.plat    = plat         # - Target Platform. Assumes current if None
-    self.arch    = arch         # - Target Architecture. Assumes current if None
-    self.cStr    = cStr         # - Format for CC compiler command. Assumes "CC" if None
-    self.lStr    = lStr         # - Format for LD compiler command. Assumes "LD" if None
+    self.plat    = '' if plat    is None else plat     # - Target Platform. Assumes current if None
+    self.arch    = '' if arch    is None else arch     # - Target Architecture. Assumes current if None
+    self.cStr    = '' if cStr    is None else cStr     # - Format for CC compiler command. Assumes "CC" if None
+    self.lStr    = '' if lStr    is None else lStr     # - Format for LD compiler command. Assumes "LD" if None
   # Type Checks       
   def chkList(self,var, errNone=False):    # errNone=False : Content is remapped to empty when its None. If True, it will ERR on None
     if not errNone and var is None: var = []
@@ -219,6 +230,7 @@ class BuildObject:
     self.chkList(self.libs)
     self.chkList(self.ldflags)
     self.chkList(self.ccpath)
+    self.chkList(self.libpath)
     self.chkList(self.parse)
     #self.env, self.cStr, self.lStr,
     #self.chkEnv (self.env)  # Environment is only checked in BuildObject.setup()
@@ -244,6 +256,7 @@ class BuildObject:
     result.libs    = [f for f in emptyIfNone(self.libs)]    + [f for f in emptyIfNone(data.libs)]
     result.ldflags = [f for f in emptyIfNone(self.ldflags)] + [f for f in emptyIfNone(data.ldflags)]
     result.ccpath  = [f for f in emptyIfNone(self.ccpath)]  + [f for f in emptyIfNone(data.ccpath)]
+    result.libpath = [f for f in emptyIfNone(self.libpath)] + [f for f in emptyIfNone(data.libpath)]
     result.parse   = [f for f in emptyIfNone(self.parse)]   + [f for f in emptyIfNone(data.parse)]
     # Environment & System
     result.env     = self.env  if self.env  else data.env
@@ -257,7 +270,6 @@ class BuildObject:
     # Add Processed data
     self.prefix  = f'/{self.ctype}-' if self.ctype else '/' # Prefix for the alias
     self.subdir  = self.prefix + f'{self.plat}-{self.arch}' # Alias for this build
-    if self.bindir is None or self.subdir is None or self.srcdir is None: print(f'bindir={self.bindir}, subdir={self.subdir}, srcdir={self.srcdir}')
     self.outdir  = self.bindir + self.subdir +'/'+ self.srcdir  # Final outdir. Will be linked to the source code folder
     self.trg     = self.outdir+'/../'+self.binname          # Combine outdir+binname into real output trg
     if isVerbose():
@@ -272,7 +284,7 @@ class BuildObject:
     # Create new environment for trgSystem
     if not self.env: 
       if self.plat in [getCur(PLAT)]: self.env = Environment()
-      elif getCur(PLAT) in ['posix'] and self.plat in ['win32']: self.env = mingw.NewEnvironment()
+      elif getCur(PLAT) in ['posix'] and self.plat in ['win32']: self.env = mingw.NewEnvironment(getBits(self.arch))
       elif getCur(PLAT) in ['win32']: sys.exit(f'::ERR Windows host cross-compilation is not currently supported')
     # Append Flags to env
     self.env.AppendUnique(CCFLAGS    = self.ccflags)
@@ -280,6 +292,7 @@ class BuildObject:
     self.env.AppendUnique(LIBS       = self.libs)
     self.env.AppendUnique(LINKFLAGS  = self.ldflags)
     self.env.AppendUnique(CCPATH     = self.ccpath)
+    self.env.AppendUnique(LIBPATH    = self.libpath)
     self.env.ParseConfig(self.parse) #TODO: Fix this for mingw, and for win32 hosts
     # Remove lib prefix
     if self.bintype in ['lib']: self.env.Replace(SHLIBPREFIX='')  # libXX = XX
@@ -299,8 +312,8 @@ class BuildObject:
       if code is None: code = [lnkDir+file]; continue  # Initializes list. Only happens the first time. 
       code += [lnkDir+file]  # lnkDir+file = Prepend lnkDir to the file string  `/path/to/folder`+`/sub/file.c`
     # Setup SCons to compile src with env as output
-    if   self.bintype in ['bin']: self.env.Program(      target=self.trg, source=code)
-    elif self.bintype in ['lib']: self.env.SharedLibrary(target=self.trg, source=code)  #TODO: Do we need shlibvers?
+    if   self.bintype in ['bin']: self.trg = self.env.Program(      target=self.trg, source=code)
+    elif self.bintype in ['lib']: self.trg = self.env.SharedLibrary(target=self.trg, source=code)
     else: sys.exit(f'::ERR in {self.trg}.setup():  Trying to set builder for an unknown type:  {self.bintype}')  # Should never happen
 
 

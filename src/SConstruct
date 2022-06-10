@@ -20,9 +20,11 @@
 # Naming Convention:
 # ::::::::::::::::::
 # cur___  : Current host
-# trg___  : Build target (could be cross compiling)
+# trg___  : Build target
 # rls___  : Release
 # dbg___  : Debug
+# win___  : Windows version
+# lnx___  : Linux version
 # env___  : Build environment
 # src___  : Source code
 # obj___  : Object built from source code
@@ -93,12 +95,10 @@ Help("""
 ###############
 # Helpers & imports
 # ::::::::::::::::::
-from   os.path import exists
-import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
-import lib.helper.mingw
 import lib.helper.scons as h
-from lib.helper.scons import getLocal, getCur, getCli, getGlob, getBits, isVerbose
-from lib.helper.scons import ARCH, PLAT, BITS, TRG, scPlatforms, BuildObject, BuildInfo
+from lib.helper.scons import getLocal, getCur, getCli, getGlob, getBits, isVerbose, BuildObject, BuildInfo
+from lib.helper.scons import ARCH, PLAT, BITS, TRG, scPlatforms, validPlatforms, validArchs
+import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
 
@@ -121,19 +121,6 @@ if h.exists('scons_local.py'): from scons_local import *
 ###############
 # Initialization
 # ::::::::::::::::
-# Supported Lists
-validPlatforms = ['posix', ]  #TODO: 'win32' #todo: x86', 'mingw32', 'mingw64','darwin', 'aarch64'.  They depend on the toolchain, just need specific config
-validArchs     = ['x86_64',]  # amd64 defaults to x86_64, unless pecified.   #todo: 'x86', 'arm', 'arm64'
-validTargets   = ['debug', ]  #TODO: 'release', 'distribute', 'engine', 'game', 'server', 'all', 'install',
-# Aliases
-  # Q3 renames  (not using them, keeping only as reference for future support implementation)
-  # q3Platforms  = ['x86_64', 'x86', 'mingw32', 'mingw64','darwin', 'aarch64']
-  # remaps:        'arm64':'aarch64',  'mingw32'+'i386':'x86',   'cygwin':'mingw32',   'arm':'aarch64'
-  # q3Archs      = ['i86pc','x86','x86_64','x64']
-  # remaps:        'i86pc':'x86',   'x86_64'or'x64':'x86_64'
-# Other
-vmArchs         = ['x86_64', 'x86', 'arm', 'aarch64'] # List of architectures compatible with vm compiling  #TEMP: Q3 names. fix this
-
 
 # Define system
 # ::::::::::::::
@@ -146,7 +133,7 @@ if curPlatform not in validPlatforms:  sys.exit(f'::ERR Compilation from host pl
 if curArch     not in validArchs:      sys.exit(f'::ERR Compilation from host arch: {curArch}  is not currently supported') 
 ## OS
 posix  = bool(curPlatform in ['posix'])
-win    = bool(curPlatform in ['win32'])    #todo: tools=['mingw'] during env creation, to change from msvc to mingw
+win    = bool(curPlatform in ['win32'])
 mingw  = bool(curPlatform in ['mingw'])    #TODO: How to set this value correctly? There is no mingw platform
 #darwin = bool(curPlatform in ['darwin'])
 #arm    = bool(curPlatform in ['arm'])
@@ -159,7 +146,7 @@ cliArch     = getCli(ARCH)
 # SCons setup
 # ::::::::::::
 ## Verbose
-if not isVerbose and scQuiet: SetOption('no_progress',1)  # Mute SCons progress text on non-verbose mode
+if not isVerbose() and scQuiet: SetOption('no_progress',1)  # Mute SCons progress text on non-verbose mode
 if isVerbose(): Progress(': Evaluating  $TARGET\n') # SCons will echo when each file is being evaluated. TODO: Chapter 9.3
 ## Jobs
 scJobs = max(2,int(cores*coresPc))
@@ -253,6 +240,7 @@ srcEngine_cl = [f for f in srcClient if f not in srcCurl] \
 ## Add Platform Specific
 srcEngine_cl_lnx  = srcEngine_cl + srcLinux
 srcEngine_cl_win  = srcEngine_cl + srcWin
+if use_local_jpeg:  srcEngine_cl_win += srcJpeg  # Always using system libraries. Linking local jpeg on win, libjpeg binaries are hard to find
 ## Add Renderers
 srcEngine_gl1_lnx = srcEngine_cl_lnx + srcRend1
 srcEngine_gl1_win = srcEngine_cl_win + srcRend1
@@ -266,7 +254,6 @@ if not use_opengl and not use_vulkan and not use_opengl2: sys.exit('::ERR No ren
 #  if posix or win:       srcEngine_cl += srcVM_x86
 #  if arm:                srcEngine_cl += srcVM_arm
 #  if arm64:              srcEngine_cl += srcVM_aa64
-#if not use_system_jpeg:  srcEngine_cl += srcJpeg  # Disabled. Always using system libraries
 
 
 # Target Sources: Game Client
@@ -331,83 +318,40 @@ base.ccflags  = CCFLAGS_base
 base.ccflags += [
       # Default in Q3 makefile:
     '-Wall','-Wstrict-prototypes', 
-    #'-Wno-unused-result', #I don't think this is needed. Mark functions as void instead??
-    #'-pipe', # Used to be a performance increase back in the day. Probably unnoticeable now, and it can create issues
-    #'-Wimplicit', # Default in Q3, but implied by -Wall
+    #'-Wno-unused-result',  # I don't think this is needed. Mark functions as void instead??
+    #'-pipe',               # Used to be a performance increase back in the day. Probably unnoticeable now, and it can create issues
+    #'-Wimplicit',          # Default in Q3, but implied by -Wall
+    '-m64',                 # 64bit math. q3e has it only on win, but should be base  #todo: support for 32bit?
+      # ioq3 only
+    '-fno-strict-aliasing', #TODO: Does this break odfe?
       # New by sOkam:
     #'-std=c89', '-Wpedantic', '-pedantic', #'-pedantic-errors', # Enforce ISO C89 standard. Probably want 99
-    #'-Wdouble-promotion', # Warn when a float is treated as a double
+    #'-Wdouble-promotion',  # Warn when a float is promoted to double
       # Recommended in tutorial:
     #'-Wextra',#'-Werror',
     #'-Wmissing-prototypes','-Wmisleading-indentation','-Wduplicated-cond','-Wold-style-definition',
     #'-Wconversion','-Wshadow','-Winit-self','-Wfloat-equal','-Wcast-align=strict',
     #'-Wformat-overflow=2','-Wformat-truncation=2', #'-Wformat', # Implied in -Wall
-    #'-fdiagnostics-format=text','-fdiagnostics-minimum-margin-width=5',#'-Wwrite-strings',
+    # '-fdiagnostics-format=text','-fdiagnostics-minimum-margin-width=5',#'-Wwrite-strings',
     ]
 ### General Defines
-base.defines = DFLAGS_base
-#compile_VM = True if trgArch in vmArchs else False   # Only compile VM if arch is compatible
-#if not compile_VM:   #todo: fix this for vm compatibility
-base.defines += ['NO_VM_COMPILED']
-if baseDir:         base.defines += [f'DEFAULT_BASEDIR="{baseDir}"']
-if use_vulkan_api:  base.defines += [ 'USE_VULKAN_API']
+base.defines  = DFLAGS_base
 base.defines += ['BOTLIB']
 ### Libraries
 #### Defines
-# We are not using local headers at all. We use system libraries always. And we are not using dlopen versions of any
-#if use_local_headers:  base.defines += ['USE_LOCAL_HEADERS=1']  #TODO: Revisit this after first rls.game playtest
-base.defines += ['USE_PCRE']
-base.defines += ['USE_SYSTEM_JPEG']
-base.defines += ['USE_CURL']
 #### Linking
-base.libs     = LIBS_base     # Initialize to list (currently None)
+base.libs     = LIBS_base
 base.libs    += ['m']         # -lm
-base.ldflags  = LDFLAGS_base  # Initialize to list (currently None)
+base.ldflags  = LDFLAGS_base
 base.ldflags += ['-Wl,--gc-sections', '-fvisibility=hidden']
 #### Include Paths
 base.ccpath   = CCPATH_base
 base.parse    = PARSE_base # Will be setup as env.ParseConfig('value')
-if posix:     base.parse += ['pkg-config --silence-errors --cflags-only-I sdl2']
-## Custom compiler name (non verbose)
 
-# Linux: Build Data
-#:::::::::::::::::::
-lnx = BuildObject()
-## Environment & System
-lnx.plat = 'posix'
-lnx.arch = 'x86_64'
-## Compiler
-lnx.defines += ['USE_ICON']
-#### Linking
-lnx.libs    += ['SDL2']      #TODO: Filter to only the client
-lnx.libs    += ['jpeg']      #TODO: Filter to only the client
-lnx.libs    += ['curl']      #TODO: Filter to only the client
-lnx.libs    += ['pcre']      #TODO: Filter to only the client
-lnx.libs    += ['dl']        # -ldl
-lnx.ldflags += ['-Wl,--hash-style=both']
-#### Include Paths
-lnx.ccpath  += ['/usr/include', '/usr/local/include']  #TODO: This shouldn't be needed, but.... is it?
-## Custom compiler name (non verbose)
-
-# Windows: Build Data
-#:::::::::::::::::::::
-win = BuildObject()
-## Environment & System
-win.plat     = 'win32'
-win.arch     = 'x86_64'
-## Compiler
-win.defines += ['USE_ICON']
-#if mingw: win.defines += ['CURL_STATICLIB']  #Default    elif mingw:
-# Memory addr nonsense fix
-win.libs     = []
-win.ldflags  = []
-
-# def DO_WINDRES (trg, src):  #TODO: How do we add Icon, q3.manifest and the other data defined in code/win32/win_resource.rc ??
-#   WINDRES_cmd -i src -o trg
 
 # Release: Build Data
 #:::::::::::::::::::::
-rls = BuildObject()
+rls = BuildObject()   # Don't use rls.setup(). This just stores build data
 ## Compiler
 ### Compiler FLAGS
 rls.ccflags += CCFLAGS_rls
@@ -415,18 +359,16 @@ rls.ccflags += [
     '-O2',                 # Perform all optimizations that do not involve a space-speed tradeoff. Default -O0
     '-fvisibility=hidden', # Make all symbols hidden, unless specified (private, static, public, etc)]
     '-s',                  # Strip all symbols from the binary
-    ]  #todo: Test and research -O3 and -Ofast. Could be faster than -O2. ** ioquake3 uses -O3 and -ffast-math everywhere
+    #'-ffast-math',         # Less precise, but faster, math
+    ]  #todo: Test and research -O3 and -Ofast. Could be faster than -O2. ** q3e -ffast-math only win. ioquake3 -O3 and -ffast-math everywhere
 rls.ctype = 'release'
 ### General Defines
 rls.defines += ['NDEBUG']
-# Memory addr nonsense fix
-rls.libs     = []
-rls.ldflags  = []
 
 
 # Debug: Build Data
 #::::::::::::::::::
-dbg = BuildObject()
+dbg = BuildObject()    # Don't use dbg.setup(). This just stores build data
 ## Compiler
 dbg.ctype = 'debug'
 ### Compiler FLAGS
@@ -437,9 +379,99 @@ dbg.ccflags += [
     ]
 ### General Defines
 dbg.defines += ['DEBUG', '_DEBUG']
-# Memory addr nonsense fix
-dbg.libs     = []
-dbg.ldflags  = []
+
+
+# Linux: Build Data
+#:::::::::::::::::::
+lnx = BuildObject()     # Don't use lnx.setup(). This just stores build data
+## Environment & System
+lnx.plat = 'posix'
+lnx.arch = 'x86_64'
+## Compiler
+#### Linking
+lnx.libs    += ['dl']        # -ldl
+lnx.ldflags += ['-Wl,--hash-style=both']
+#### Include Paths
+lnx.ccpath   = ['/usr/include', '/usr/local/include']  #TODO: This shouldn't be needed, but.... is it?
+## Compiler
+
+
+# Windows: Build Data
+#:::::::::::::::::::::
+win = BuildObject()      # Don't use win.setup(). This just stores build data
+## Environment & System
+win.plat     = 'win32'
+win.arch     = 'x86_64'
+## Compiler
+win.defines += ['WINVER=0x501']  # Require WinXP or later
+win.libs     = ['wsock32','gdi32','winmm','ole32','ws2_32','psapi','comctl32']
+win.ldflags  = ['-mwindows', '-Wl,--dynamicbase', '-Wl,--nxcompat',]
+
+# def DO_WINDRES (trg, src):  #TODO: How do we add Icon, q3.manifest and the other data defined in code/win32/win_resource.rc ??
+#   WINDRES_cmd -i src -o trg
+
+
+# Client: Build Data
+#::::::::::::::::::
+cl         = base.clone()
+## Output data
+cl.bintype = 'bin'
+### Custom compiler name (non verbose)
+cl.cStr    = 'CC'
+cl.lStr    = 'LD'
+## Source code
+cl.srcdir  = engineDir 
+### General Defines
+cl.defines += ['NO_VM_COMPILED']
+if baseDir:         cl.defines += [f'DEFAULT_BASEDIR="{baseDir}"']
+if use_vulkan_api:  cl.defines += [ 'USE_VULKAN_API']
+### Libraries
+#### Defines
+# We are not using local headers at all. We use system libraries always. And we are not using dlopen versions of any
+#if use_local_headers:  client.defines += ['USE_LOCAL_HEADERS=1']  #TODO: Revisit this after first rls.game playtest
+cl.defines += ['USE_PCRE']
+cl.defines += ['USE_CURL']
+#### Linking
+cl.libs    += ['SDL2']
+cl.libs    += ['pcre']
+cl.libs    += ['curl']
+cl.libs    += ['jpeg']
+
+## Linux
+clLnx          = cl.merge(lnx)
+clLnx.src      = srcEngine_gl1_lnx
+clLnx.binname = f'{cName}{"."+clLnx.arch if clLnx.arch in ["x86"] else ".x64"}'
+### Defines
+clLnx.defines += ['USE_ICON']
+clLnx.defines += ['USE_SYSTEM_JPEG']
+### Include Paths
+if posix:      clLnx.parse += ['pkg-config --silence-errors --cflags-only-I sdl2']
+# clLnx.defines += [f'ARCH_STRING="{clLnx.arch}"']
+## Create BuildObjects: Release and Debug
+clLnx_rls = clLnx.merge(rls)
+clLnx_dbg = clLnx.merge(dbg)
+
+## Windows
+clWin          = cl.merge(win)
+clWin.src      = srcEngine_gl1_win
+clWin.binname = f'{cName}{"-"+clWin.arch if clWin.arch in ["x86"] else "-x64"}'
+### Defines
+clWin.defines += ['USE_ICON']
+if not use_local_jpeg: clWin.defines += ['USE_SYSTEM_JPEG']
+# clWin.defines += [f'ARCH_STRING="{clWin.arch}"']
+# SDL extras
+if posix:      clWin.parse += ['pkg-config --silence-errors --cflags sdl2 | sed "s/-Dmain=SDL_main//"']
+# CURL extras
+clWin.defines += ['CURL_STATICLIB']
+clWin.libs    += ['wldap32','crypt32'] # Curl support libs
+clWin.ccpath  += [engineDir+'/libcurl/windows/include']
+clWin.libpath += [engineDir+'/libcurl/windows/mingw/lib64']
+# PCRE extras
+clWin.ccpath  += [engineDir+'/lib/pcre/windows/include']
+clWin.libpath += [engineDir+'/lib/pcre/windows/mingw/lib64']
+## Create BuildObjects: Release and Debug
+clWin_rls = clWin.merge(rls)
+clWin_dbg = clWin.merge(dbg)
 
 
 # Game Client: Build Object
@@ -465,15 +497,9 @@ cgLnx_dbg = cgLnx.merge(dbg)
 # Windows
 cgWin = cg.merge(win)
 cgWin.binname = f'cgame{cgWin.arch}'
-#cgWin.defines += [f'ARCH_STRING="{cgWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
+cgWin.defines += [f'ARCH_STRING="{cgWin.arch}"']
 cgWin_rls = cgWin.merge(rls)
 cgWin_dbg = cgWin.merge(dbg)
-
-# Order SCons to setup with data
-cgLnx_rls.setup()
-cgLnx_dbg.setup()
-cgWin_rls.setup()
-cgWin_dbg.setup()
 
 
 # Game Server: Build Object
@@ -499,15 +525,9 @@ sgLnx_dbg = sgLnx.merge(dbg)
 # Windows
 sgWin = sg.merge(win)
 sgWin.binname = f'qagame{sgWin.arch}'
-#sgWin.defines += [f'ARCH_STRING="{sgWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
+sgWin.defines += [f'ARCH_STRING="{sgWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
 sgWin_rls = sgWin.merge(rls)
 sgWin_dbg = sgWin.merge(dbg)
-
-# Order SCons to setup with data
-sgLnx_rls.setup()
-sgLnx_dbg.setup()
-sgWin_rls.setup()
-sgWin_dbg.setup()
 
 
 # Game UI: Build Object
@@ -531,13 +551,31 @@ uiLnx.defines += [f'ARCH_STRING="{uiLnx.arch}"']
 uiLnx_rls = uiLnx.merge(rls)
 uiLnx_dbg = uiLnx.merge(dbg)
 # Windows
-uiWin = sg.merge(win)
+uiWin = ui.merge(win)
 uiWin.binname = f'ui{uiWin.arch}'
-#uiWin.defines += [f'ARCH_STRING="{uiWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
+uiWin.defines += [f'ARCH_STRING="{uiWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
 uiWin_rls = uiWin.merge(rls)
 uiWin_dbg = uiWin.merge(dbg)
 
-# Order SCons to setup with data
+
+# Setup BuildObjects with SCons
+#:::::::::::::::::::::::::::::::
+## Engine: Client
+clWin_rls.setup()
+clWin_dbg.setup()
+clLnx_rls.setup()
+clLnx_dbg.setup()
+## Game: Client
+cgLnx_rls.setup()
+cgLnx_dbg.setup()
+cgWin_rls.setup()
+cgWin_dbg.setup()
+## Game: Server
+sgLnx_rls.setup()
+sgLnx_dbg.setup()
+sgWin_rls.setup()
+sgWin_dbg.setup()
+## Game: UI
 uiLnx_rls.setup()
 uiLnx_dbg.setup()
 uiWin_rls.setup()
@@ -570,36 +608,13 @@ xCompile = True if (trgPlatform != curPlatform) or (trgArch != curArch) else Fal
 # Platform/Architecture specific
 # ::::::::::::::::::::::::::::::
 trgArch_ext = None  #TODO: Remove this elsewhere
-if x64:      trgArch_ext = '.x64'  
+if x64:      trgArch_ext = '-x64'  
 #if arm:      trgArch_ext = '.arm'
 #if arm64:    trgArch_ext = '.aarch64'
-ext_x64   = '.x64'
+ext_x64   = '-x64'
 ext_arm   = '.arm'
 ext_arm64 = '.aarch64'
 
-## Definition
-trgClient   = f'{cName}{trgArch_ext}'   #TODO: Move this inside the class
-trgDed      = f'{dName}{trgArch_ext}'
-#trgRendV    = f'{render_prefix}_vulkan_{SHLIBNAME}'
-#trgRend1    = f'{render_prefix}_opengl_{SHLIBNAME}'
-#trgRend2    = f'{render_prefix}_opengl2_{SHLIBNAME}'
-#trgRend2str = f'{binDir}/rend2/stringify'
-
-# TEST Engine
-tst = dbg.clone()
-tst.plat = trgPlatform #TODO: Temporary test
-tst.arch = trgArch
-# Setup TEST build
-tst.src    = srcEngine_cl
-tst.srcdir = engineDir 
-# Custom compiler name (non verbose)
-tst.cStr = 'tst_CC'
-tst.lStr = 'tst_LD'
-# Output data
-tst.binname = f'{cName}.x64'
-tst.bintype = 'bin'
-# Order SCons to setup with data
-#tst.setup()
 
 
 
@@ -678,18 +693,54 @@ skel.lStr     = '' # Format for LD compiler command. Assumes "LD" if None
 #::::::::::::::::::
 ###############################
 
-# TODO:  ?? Alias(trg) 
-
 # Groups build, and aliases
-build_server = build_server or bool(server in COMMAND_LINE_TARGETS)
+# build_server = build_server or bool(server in COMMAND_LINE_TARGETS)
 trgBuildList = getCli(TRG)
 
-# Compile Keywords
+# # Compile Keywords
+# ## Target assignment
+# # engine
+trgEngine_ld = [clLnx_dbg.trg]
+trgEngine_lr = [clLnx_rls.trg]
+trgEngine_wd = [clWin_dbg.trg]
+trgEngine_wr = [clWin_rls.trg]
+# # server
+# #TODO add server (here and trgAll)
+# # game
+trgGame_ld   = [cgLnx_dbg.trg, sgLnx_dbg.trg, uiLnx_dbg.trg]
+trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiLnx_rls.trg]
+trgGame_wd   = [cgWin_dbg.trg, sgWin_dbg.trg, uiWin_dbg.trg]
+trgGame_wr   = [cgWin_rls.trg, sgWin_rls.trg, uiWin_rls.trg]
+# # all
+trgAll       = [trgEngine_ld, trgEngine_lr, trgEngine_wd, trgEngine_wr, 
+                trgGame_ld, trgGame_lr, trgGame_wd, trgGame_wr]
+
 ## Groups
-#  debug                 # * Debug   both        # group: engine + game
-#  release               # * Release both        # group: engine + game
+### Current Platform
+# engine
+if posix: Alias('engine', trgEngine_lr)
+elif win: Alias('engine', trgEngine_wr)
+if posix: Alias('engine-dbg', trgEngine_ld)
+elif win: Alias('engine-dbg', trgEngine_wd)
+Alias('engine-dist', trgEngine_lr + trgEngine_wr)
+# game
+if posix: Alias('game', trgGame_lr)
+elif win: Alias('game', trgGame_wr)
+if posix: Alias('game-dbg', trgGame_ld)
+elif win: Alias('game-dbg', trgGame_wd)
+Alias('game-dist', trgGame_lr + trgGame_wr)
+# both
+Alias('release', ['engine', 'game'])
+Alias('debug', ['engine-dbg', 'game-dbg'])
+Alias('distribute', ['engine-dist', 'game-dist'])  #TODO add server
+# all
+Alias('all', trgAll)
+
+## Groups
+#  engine                #   Release engine
 #  game                  # - Release gamecode    # group: cgame, sgame, ui
-#  all                   # - ??? Release and Debug of engine+ded+game, for target platform only
+#  debug                 # * Debug   both        # group: engine + game
+#  all                   # - Release and Debug of engine+ded+game, for target platform only
 
 ## Targets
 #  engine                # - engine  bin    #  ... : engine 
@@ -705,33 +756,28 @@ trgBuildList = getCli(TRG)
 
 ## Keywords  : build count
 #  !! TODO:   All keywords are aliases !!!
-#! game       = 1plat * 3target * 1perf   =  3obj   # Release Game   locally   ** #1
-#! debug      = 1plat * 5target * 1perf   =  5obj   # For development locally  ** #2 
-#! game-dist  = 2plat * 3target * 1perf   =  6obj   # Mod only                 ** TOP priority
-#! release    = 1plat * 5target * 1perf   =  5obj   # For best performance
+#  game       = 1plat * 3target * 1perf   =  3obj   # Release Game   locally   ** #1
+#  debug      = 1plat * 5target * 1perf   =  5obj   # For development locally  ** #2 
+#  game-dist  = 2plat * 3target * 1perf   =  6obj   # Mod only                 ** TOP priority
+#  release    = 1plat * 5target * 1perf   =  5obj   # For best performance
 #! install    = 1plat * 5target * 1perf   =  5obj   # Auto installing release
 #  engine     = 1plat * 1target * 1perf   =  1obj   # Release Engine locally
 #  server     = 1plat * 1target * 1perf   =  1obj   # Release Server locally
-#! distribute = 2plat * 5target * 2perf   = 20obj   # Engine+mod
+#  distribute = 2plat * 5target * 2perf   = 20obj   # Engine+mod
 
 
-#  scons                 Builds the targets set in the `build_default` list
-#  !scons debug          Builds debug version only     (client+server+game).  Default when `build_default` is empty
-#  !scons distribute     Cross-compiles and builds release versions for all supported platforms.
-#  !scons release        Builds release version only   (client+server+game)
-#  !scons engine         Builds only the engine code, without any game code
-#  !scons game           Builds only the game code (dynamic library), without the engine   (sgame, cgame, ui)
-#  !scons server         Builds only the dedicated server code (ded), without any client code
-#  !scons all            Builds all targets (including debug and release versions of both). Doesn't install
-#  !scons install        Builds release version only, and installs it in the folder defined in the script.
-#  !scons install=DIR    Same as `install`, but installs directly to `DIR` instead
+ # Define default targets to build (list, additive, doesn't replace)
+if not build_default:  Default('debug') # Build debug if empty
+else:                  Default(build_default)
+Default(None)
 
 
-#all: debug release
-#trgAll = ['debug','release','engine','game','server']
-#Alias('all', trgAll)
-#Alias('release', rlsDir)  #TODO: Define the binary name properly in this call
-#for it in build_default:  Default(it)  # Add every list element of build_default, to the Default targets to build (additive, doesn't replace)
+###########
+# BuildInfo
+#::::::::::::::::::
+###############################
+info = BuildInfo(name=cName, version=version, bindir=binDir, baseflags=base.ccflags, rlsflags=rls.ccflags, dbgflags=dbg.ccflags)
+if not (GetOption('help') or GetOption('clean')): info.print()
 
 
 #########
@@ -752,13 +798,6 @@ trgBuildList = getCli(TRG)
 #TODO:
 #    Install   scons install        Builds release version only, and installs it in the folder defined in the script.
 #              scons install=DIR    Same as `install`, but installs directly to `DIR` instead
-
-
-# BuildInfo
-#::::::::::::::::::
-###############################
-info = BuildInfo(name=cName, version=version, bindir=binDir, baseflags=base.ccflags, rlsflags=rls.ccflags, dbgflags=dbg.ccflags)
-if not (GetOption('help') or GetOption('clean')): info.print()
 
 
 # Import guard

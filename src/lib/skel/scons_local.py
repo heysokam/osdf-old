@@ -5,27 +5,27 @@
 
 # Config variables
 # :::::::::::::::::
-#cName           = None
-#dName           = None
-#render_prefix   = None
-#build_client    = None
-#build_server    = None
-#rootDir         = None
-#srcDi           = None
-#binDir          = None
-#instDir         = None
-#baseDir         = None
-#render_default  = None
-#use_opengl      = None
-#use_opengl2     = None
-#use_vulkan      = None
-#use_vulkan_api  = None
-#scDecider       = None
-#scQuiet         = None
-#scDir           = None
-#cores           = None
-#coresPc         = None
-#verbose         = None
+#cName           = ''
+#dName           = ''
+#render_prefix   = ''
+#build_client    = True
+#build_server    = True
+#rootDir         = ''
+#srcDi           = ''
+#binDir          = ''
+#instDir         = ''
+#baseDir         = ''
+#render_default  = ''
+#use_opengl      = True
+#use_opengl2     = False
+#use_vulkan      = False
+#use_vulkan_api  = use_vulkan
+#scDecider       = ''
+#scQuiet         = True
+#scDir           = ''
+#cores           = 2
+#coresPc         = 0.8
+#verbose         = False
 
 # Change not recommended
-#version         = None  # Overwrites version defined in source code. Don't change, unless you know what you are doing.
+#version         = ''  # Overwrites version defined in source code. Don't change, unless you know what you are doing.
