@@ -12,6 +12,9 @@
 
 # History
 ## 0.2.0
+2022.07.11
+fix : CPM Rocket Launcher: Vertical self knockback scaling reduced to 1
+
 2022.07.10  
 new : (cfg) VM configuration disables QVM loading (vm_cgame 0, vm_game 0, vm_ui 0)  
 new : (cfg) Server Pure is deactivated, to allow Library Loading (sv_pure 0)  
