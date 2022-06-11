@@ -9,14 +9,26 @@
 
 # Unreleased
 ... :  
-chg : CPM Rocket Launcher: Self knockback increased to 1.2
 
 # History
 ## 0.2.0
-rmv : Removed bash shell script used for automating the build process. Temporarily stored in `+` subfolder, but will be deleted. (2022.05.10)  
-new : Linux automated build script has been fully rewritten in nimscript (bash becomes {cr}ypt!$C real fast) (2022.05.10)  
-chg : The build system no longer compiles into QVM by default. It creates Dynamic Libraries instead. (2022.05.10)  
-dep : This mod will no longer support the QVM architecture moving forward. Incoming features will make the mod fully incompatible with QVM compilation (2022.05.10)  
+2022.07.10  
+new : (cfg) VM configuration disables QVM loading (vm_cgame 0, vm_game 0, vm_ui 0)  
+new : (cfg) Server Pure is deactivated, to allow Library Loading (sv_pure 0)  
+new : Buildsystem ported to SCons. No longer uses make  
+... : Buildsystem handles Cross-Compiling for both win/lnx  
+... : Libraries are not packed in a .pk3 (they don't work from inside one)  
+... : Buildscript creates and zips both platform binaries  
+chg : CPM Rocket Launcher: Self knockback increased to 1.2  
+rmv : Removed bash shell script for launching the mod (was system dependent)  
+new : Custom fork of oDFe. Loads osdf mod directly
+fix : /cpm and /vq3 commands now work with osdf
+
+2022.05.10  
+rmv : Removed bash shell script used for automating the build process. Temporarily stored in `+` subfolder, but will be deleted.  
+new : Linux automated build script has been fully rewritten in nimscript (bash becomes {cr}ypt!$C real fast)  
+chg : The build system no longer compiles into QVM by default. It creates Dynamic Libraries instead.  
+dep : This mod will no longer support the QVM architecture moving forward. Incoming features will make the mod fully incompatible with QVM compilation  
 
 ## 0.0.2
 new : Local Timer. Best per session. All maps have TimeReset (temporary hack until better Timer support)  
@@ -69,27 +81,25 @@ _Important : Lead us towards our mission/goals. Require planning, organization a
 #::::::::::::::
 # 1 : IMP.URG : Critical
 #::::::::::::::
-new : (cfg) VM configuration disables QVM loading (vm_cgame 0, vm_game 0, vm_ui 0)
-new : (cfg) Server Pure is deactivated, to allow Library Loading (sv_pure 0)
-new : Build script handles Cross-Compiling for both win/lnx
-... : Libraries are not be packed in a .pk3 (they don't work from inside one)
-... : Build script creates and zips both platform binaries
-fix : W movement working properly in q1 physics
+fix : q1 physics working correctly with native binaries  
+fix : W movement working properly in q1 physics  
 
 #:::::::::::::::
 # 2 : IMP.notU : Planned Goals
 #:::::::::::::::
-new : New hud for Player state configuration (health, ammo, powerups, etc)
-new : Velocity pads
-new : Proxymod support
-new : OBfix
-new : Map loader UI
+new : Proxymod support  
+new : Velocity pads  
+new : OBfix  
+new : Map loader UI  
+new : New hud for Player state configuration (health, ammo, powerups, etc)  
+new : Launcher / Updater / Downloader
 
 #:::::::::::::::
 # 3 : notI.URG : Non-critical Fixes
 #:::::::::::::::
-rmv : Custom qvm-only acos function removed from the code
-chg : CPM w-turn acos function should use stdlib instead
+fix : sound bug on some systems (potentially SDL non-static linking or version)  
+rmv : Custom qvm-only acos function removed from the code  
+chg : CPM w-turn acos function should use stdlib instead  
 
 #::::::::::::::::
 # 4 : notI.notU : Implement when possible

@@ -46,11 +46,13 @@ const
 # Windows Libraries: Binaries
 const
   libDir       = binDir/"lib"
+  # Curl
   curlDir      = libDir/"wincurl"
   curlFile     = "libcurl-x64.dll"
   curlFile_rn  = "libcurl-4.dll"  # Name expected by the engine
   curlZip      = "curl-win64-latest.zip"
   curlLink     = &"https://curl.se/windows/{curlZip}"
+  # SDL
   sdlDir       = libDir/"winsdl"
   sdlFile      = sdlDir/"SDL2.dll"
   sdlZip       = "SDL2-2.0.22-win32-x64.zip"

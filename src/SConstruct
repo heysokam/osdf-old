@@ -57,24 +57,23 @@ Help("""
 ::::::::::    ::::::::             ::::::::::::
                 !cmd : not implemented
 : Help:       scons -h             Shows this text.
-: Verbose:    scons -V             Make the output of scons fully verbose: Formatting removed and nothing filtered.
+: Verbose:    !scons -V             Make the output of scons fully verbose: Formatting removed and nothing filtered.
               TEMP: Use V=1        until bugfix. There is a reported issue in SCons. 
 : Cores:      scons -j NUM         Use NUM of cores for building. Overwrites the value set in the scripts
-: Clean:      scons -c             Cleans all built targets. Doesn't remove folders.
+: Clean:      scons -c             Cleans default build targets. Doesn't remove folders.
+              scons -c NAME        Cleans selected build targets. Doesn't remove folders.
 : Build:        
     Default   scons                Builds the targets set in the `build_default` list
-    Game    -> scons game           Builds only the game code (dynamic library), without the engine   (sgame, cgame, ui)
-    Debug    **scons debug          Builds debug version only     (client+server+game).  Default when `build_default` is empty
-    Engine    !scons engine         Builds only the engine code, without any game code
+    Game      scons game           Builds only the game code (dynamic library), without the engine   (sgame, cgame, ui)
+    Debug     scons debug          Builds debug version only     (client+server+game).  Default when `build_default` is empty
+    Engine    scons engine         Builds only the engine code, without any game code
     Server    !scons server         Builds only the dedicated server code (ded), without any client code
-    Release   !scons release        Builds release version only   (client+server+game)
-    Distrib   !scons distribute     Cross-compiles and builds release versions for all supported platforms.
-    All       !scons all            Builds all targets (including debug and release versions of both). Doesn't install
-    Install   !scons install        Builds release version only, and installs it in the folder defined in the script.
-              !scons install=DIR    Same as `install`, but installs directly to `DIR` instead
+    Release   scons release        Builds release version only   (client+server+game)
+    Distrib   scons distribute     Cross-compiles and builds release versions for all supported platforms.
+    All       scons all            Builds all targets (including debug and release versions of both)
 : Options:
     Platform  scons p=NAME         Cross-compilation for a platform different than the current host platform
-                    platform=NAME   Valid names:                     # TODO: darwin, ?mingw?
+                    platform=NAME   Valid names:                     # todo: darwin
                                     Win64: 'w', 'win'                : SCons 'win32':'64bit'
                                     Win32: 'w32', 'win32'            : SCons 'win32':'32bit'
                                     Linux: 'l', 'lnx', 'linux'       : SCons 'posix':'64bit'
@@ -134,7 +133,6 @@ if curArch     not in validArchs:      sys.exit(f'::ERR Compilation from host ar
 ## OS
 posix  = bool(curPlatform in ['posix'])
 win    = bool(curPlatform in ['win32'])
-mingw  = bool(curPlatform in ['mingw'])    #TODO: How to set this value correctly? There is no mingw platform
 #darwin = bool(curPlatform in ['darwin'])
 #arm    = bool(curPlatform in ['arm'])
 #arm64  = bool(curPlatform in ['arm64'])
@@ -325,7 +323,7 @@ base.ccflags += [
       # ioq3 only
     '-fno-strict-aliasing', #TODO: Does this break odfe?
       # New by sOkam:
-    #'-std=c89', '-Wpedantic', '-pedantic', #'-pedantic-errors', # Enforce ISO C89 standard. Probably want 99
+    #'-std=c99', '-Wpedantic', '-pedantic', #'-pedantic-errors', # Enforce ISO C89 standard. Probably want 99
     #'-Wdouble-promotion',  # Warn when a float is promoted to double
       # Recommended in tutorial:
     #'-Wextra',#'-Werror',
@@ -393,7 +391,6 @@ lnx.libs    += ['dl']        # -ldl
 lnx.ldflags += ['-Wl,--hash-style=both']
 #### Include Paths
 lnx.ccpath   = ['/usr/include', '/usr/local/include']  #TODO: This shouldn't be needed, but.... is it?
-## Compiler
 
 
 # Windows: Build Data
@@ -525,7 +522,7 @@ sgLnx_dbg = sgLnx.merge(dbg)
 # Windows
 sgWin = sg.merge(win)
 sgWin.binname = f'qagame{sgWin.arch}'
-sgWin.defines += [f'ARCH_STRING="{sgWin.arch}"']  #TODO: Fix Memory Address nonsense. This is already defined???
+sgWin.defines += [f'ARCH_STRING="{sgWin.arch}"']
 sgWin_rls = sgWin.merge(rls)
 sgWin_dbg = sgWin.merge(dbg)
 
@@ -582,72 +579,6 @@ uiWin_rls.setup()
 uiWin_dbg.setup()
 
 
-
-
-
-
-
-
-
-
-## TEST Build Objects
-# ::::::::::::::::::::
-# Target system
-trgPlatform = cliPlatform if cliPlatform else getLocal(trgPlatform, curPlatform) # Chooses cli if not empty, else script specified target, or else current host platform
-## Error Management
-if trgPlatform not in scPlatforms:    sys.exit(f'::ERR Trying to compile for a platform not supported by SCons: {trgPlatform}')
-if trgPlatform not in validPlatforms: sys.exit(f'::ERR Trying to compile for an unsupported platform: {trgPlatform}')
-## Architecture
-#if arm: trgArch = 'arm'   #todo: For arm support. Overrides previous x86 assumption 
-# Assumed x86/64 anytime we supply a platform. For amd64: we need to override from 'arch=' or trgArch from config, unless platform is not specified
-trgArch = cliArch if cliArch else getLocal(trgArch,  curArch)  # Chooses cli if not empty, else script specified target, or else current host arch
-trgBits = getBits(trgArch) if trgArch else curBits
-x64 = bool(trgBits==64)  
-x86 = not x64  # Opposite of x64. If we are not on 64bit, then we are on 32bit. One or the other
-xCompile = True if (trgPlatform != curPlatform) or (trgArch != curArch) else False
-# Platform/Architecture specific
-# ::::::::::::::::::::::::::::::
-trgArch_ext = None  #TODO: Remove this elsewhere
-if x64:      trgArch_ext = '-x64'  
-#if arm:      trgArch_ext = '.arm'
-#if arm64:    trgArch_ext = '.aarch64'
-ext_x64   = '-x64'
-ext_arm   = '.arm'
-ext_arm64 = '.aarch64'
-
-
-
-
-
-# Skel Build Object
-#::::::::::::::::::
-skel = rls.clone()
-## Environment & System
-skel.plat     = '' # Target Platform. Assumes current if None
-skel.arch     = '' # Target Architecture. Assumes current if None
-## Source code
-skel.src      = [] # List of files that will be compiled
-skel.srcdir   = '' # Folder where the source code is taken from
-# Output data
-skel.bindir   = '' # Folder where the binaries will be created
-skel.binname  = '' # Base name of the binary  `name` will become `name-x64`
-skel.bintype  = '' # Output type of the file (executable or library)
-## Compiler
-skel.ctype    = '' # Performance type (release, debug, etc) (ctype = compiler type)
-skel.ccflags += [] # Flags to append to CCFLAGS
-skel.defines += [] # Flags to append to CPPDEFINES
-skel.libs    += [] # Flags to append to LIBS
-skel.ldflags += [] # Flags to append to LINKFLAGS
-skel.ccpath  += [] # Flags to append to CCPATH
-skel.parse   += [] # Will be setup as env.ParseConfig('value')
-## Custom compiler name (non verbose)
-skel.cStr     = '' # Format for CC compiler command. Assumes "CC" if None
-skel.lStr     = '' # Format for LD compiler command. Assumes "LD" if None
-## Order SCons to setup with data
-#skel.setup()
-
-
-
 #############################################################################
 # DEDICATED SERVER
 #############################################################################
@@ -692,9 +623,7 @@ skel.lStr     = '' # Format for LD compiler command. Assumes "LD" if None
 # Keywords
 #::::::::::::::::::
 ###############################
-
-# Groups build, and aliases
-# build_server = build_server or bool(server in COMMAND_LINE_TARGETS)
+#build_server = build_server or bool(server in COMMAND_LINE_TARGETS)
 trgBuildList = getCli(TRG)
 
 # # Compile Keywords
@@ -736,24 +665,6 @@ Alias('distribute', ['engine-dist', 'game-dist'])  #TODO add server
 # all
 Alias('all', trgAll)
 
-## Groups
-#  engine                #   Release engine
-#  game                  # - Release gamecode    # group: cgame, sgame, ui
-#  debug                 # * Debug   both        # group: engine + game
-#  all                   # - Release and Debug of engine+ded+game, for target platform only
-
-## Targets
-#  engine                # - engine  bin    #  ... : engine 
-#  server                # - server  bin    #  ... : ded only
-#  cgame                 # - cgame   lib
-#  sgame                 # - sgame   lib
-#  ui                    # - ui      lib
-
-## Target Options
-# kw:  release vs  debug     # Performance types
-# sc:  lnx     vs  win       # Platforms
-
-
 ## Keywords  : build count
 #  !! TODO:   All keywords are aliases !!!
 #  game       = 1plat * 3target * 1perf   =  3obj   # Release Game   locally   ** #1
@@ -762,14 +673,18 @@ Alias('all', trgAll)
 #  release    = 1plat * 5target * 1perf   =  5obj   # For best performance
 #! install    = 1plat * 5target * 1perf   =  5obj   # Auto installing release
 #  engine     = 1plat * 1target * 1perf   =  1obj   # Release Engine locally
-#  server     = 1plat * 1target * 1perf   =  1obj   # Release Server locally
-#  distribute = 2plat * 5target * 2perf   = 20obj   # Engine+mod
+#! server     = 1plat * 1target * 1perf   =  1obj   # Release Server locally
+#  distribute = 2plat * 5target * 1perf   = 10obj   # Engine+mod
+#  all        = 2plat * 5target * 2perf   = 20obj   # Engine+mod
 
 
- # Define default targets to build (list, additive, doesn't replace)
-if not build_default:  Default('debug') # Build debug if empty
-else:                  Default(build_default)
-Default(None)
+# Default targets
+#::::::::::::::::::
+# What to build when no targets are selected (additive, doesn't replace, list or strings)
+if not build_default:  Default('debug')       # Build debug if list is empty
+else:                  Default(build_default) # Assign the list to SCons build defaults
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+############################################################
 
 
 ###########
@@ -778,27 +693,12 @@ Default(None)
 ###############################
 info = BuildInfo(name=cName, version=version, bindir=binDir, baseflags=base.ccflags, rlsflags=rls.ccflags, dbgflags=dbg.ccflags)
 if not (GetOption('help') or GetOption('clean')): info.print()
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+############################################################
 
 
-#########
-# Install
-#::::::::::::::::::
-###############################
-
-#install: release
-#	INSTALL_cmd -m 0755
-#TODO: Install builder setup
-#rlsInstall = compile(objInstall)
-#rls.Install(rlsDir, rlsInstall)  # Install B into folder A
-#rls.Alias('install', rlsDir)     # Alias Install folder as CLI target 'install'
-#TODO: add  install=DIR   as an option, that compiles the release version and installs it in DIR
-#instDir = getCli(INSTDIR) if getCli(INSTDIR) else instDir 
-#doinstall @ instDir
-
-#TODO:
-#    Install   scons install        Builds release version only, and installs it in the folder defined in the script.
-#              scons install=DIR    Same as `install`, but installs directly to `DIR` instead
-
-
+##############
 # Import guard
+#::::::::::::::::::
 if __name__=='__main__': import sys; sys.exit(f'::MODULE-ERROR: {__file__} is not meant to be executed on its own')
+############################################################
