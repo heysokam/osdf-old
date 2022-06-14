@@ -8,6 +8,7 @@
 > ... : Part of the feature listed above it
 
 # Unreleased
+new : VJK physics. VQ3 with 4airaccel, 12groundspeed, 250speed and 225jumpvel
 ... :  
 
 # History

@@ -1,0 +1,13 @@
+# Jedi Knight / Doombringer / Daikatana physics
+- vjk             # Vanilla Jedi Knight
+- vsk             # Vanilla Star Knight
+- Force physics   # Great description, great theming
+- Star physics    # Pretty good
+- Star Knight     # Feels super rip-off, but accurate
+- Knight physics  # Simple enough but..
+- Outcast physics # Will people recognize it?
+- Chaos physics   # New, but only represents doombringer-like
+- vq3-aa          # They don't feel vq3-like, so these are a bit meh
+- vq3-ha
+- vq3-haa
+- haa
