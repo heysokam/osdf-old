@@ -73,9 +73,10 @@ scons distribute    # engine and gamecode
 scons game-dist     # gamecode only
 scons engine-dist   # engine only
 ```
-**Note: MinGW cross-compilation for Windows, from Linux**
+**Note: MinGW cross-compilation for Windows, from Linux**  
 The old buildsystem used static linking, but we are linking dynamically instead  
 _(as it is explicitely recommended by the developers of many of the used libraries. eg: sdl2)_.  
+
 If you are cross compiling, you will need mingw-w64 versions of the required libraries installed and accessible by mingw.  
 And they don't exist pre-packed in some distros, so be mindful of that when choosing where to build from.  
 Installing and compiling with mingw-w64 in some distros is not an easy process (not looking at you, Ubuntu / WSL), and this buildsystem cannot possibly handle and automate the installation of all of that for you.  
@@ -97,7 +98,7 @@ MSYS: To be done
 Cygwin: Unknown territory  
 WSL: Will never be supported. SCons behaves really weird inside WSL (and ubuntu in general).  
 
-# Automation helper (Linux only)
+# Automation helper (Bash only)
 _TODO: Documentation._  
 _For now, read the file comments to understand what it does._  
 ```bash
