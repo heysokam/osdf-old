@@ -98,6 +98,7 @@ import lib.helper.scons as h
 from lib.helper.scons import getLocal, getCur, getCli, getGlob, getBits, isVerbose, BuildObject, BuildInfo
 from lib.helper.scons import ARCH, PLAT, BITS, TRG, scPlatforms, validPlatforms, validArchs
 import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
+from os.path import sep
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
 
@@ -132,7 +133,7 @@ if curPlatform not in validPlatforms:  sys.exit(f'::ERR Compilation from host pl
 if curArch     not in validArchs:      sys.exit(f'::ERR Compilation from host arch: {curArch}  is not currently supported') 
 ## OS
 posix  = bool(curPlatform in ['posix'])
-win    = bool(curPlatform in ['win32'])
+win32  = bool(curPlatform in ['win32'])
 #darwin = bool(curPlatform in ['darwin'])
 #arm    = bool(curPlatform in ['arm'])
 #arm64  = bool(curPlatform in ['arm64'])
@@ -151,7 +152,7 @@ scJobs = max(2,int(cores*coresPc))
 if cores: SetOption('num_jobs', scJobs)
 ## Others
 Decider(scDecider) # Could be assigned per environment, but using global config instead
-SConsignFile(scDir+'/scons-sign')
+SConsignFile(os.path.join(scDir,'scons-sign'))
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
@@ -163,69 +164,71 @@ SConsignFile(scDir+'/scons-sign')
 ######################
 # Client 
 #::::::::
-srcClient = getGlob(engineDir, clDir+'/*.c' )   # All of these are relative to the src folder. But they won't contain the folder in the string
-srcServer = getGlob(engineDir, svDir+'/*.c' )   #   srcDir + clDir+'/file.c'  ==    /absolute/to/src/cldir/file.c
-srcCommon = getGlob(engineDir, qcmDir+'/*.c')
-srcBot    = getGlob(engineDir, botDir+'/*.c')
+# srcClient = getGlob(engineDir, os.path.join(clDir,'*.c' ))   # All of these are relative to the src folder. But they won't contain the folder in the string
+srcClient = Glob(engineDir.Dir(clDir).path  +sep+ '*.c')
+srcServer = Glob(engineDir.Dir(svDir).path  +sep+ '*.c')   #   srcDir + clDir,'file.c'  ==    /absolute/to/src/cldir/file.c
+srcCommon = Glob(engineDir.Dir(qcmDir).path +sep+ '*.c')
+srcBot    = Glob(engineDir.Dir(botDir).path +sep+ '*.c')
 # Renderer
-srcRendC  = getGlob(engineDir, rcDir+'/*.c')
-srcRend1  = getGlob(engineDir, r1Dir+'/*.c') + srcRendC
-srcRendV  = getGlob(engineDir, rvDir+'/*.c') + [f for f in srcRendC if f not in [rcDir+'/tr_image.c']]  #rendv = rendv + rendc - rendc_image (rc/tr_image.c)
+srcRendC  = Glob(engineDir.Dir(rcDir).path  +sep+ '*.c')
+srcRend1  = Glob(engineDir.Dir(r1Dir).path  +sep+ '*.c') + srcRendC
+srcRendV  = Glob(engineDir.Dir(rvDir).path  +sep+ '*.c') + [f for f in srcRendC if f not in [engineDir.Dir(rcDir).File('tr_image.c')]]  #rendv = rendv + rendc - rendc_image (rc/tr_image.c)
 # Unsupported renderer
-srcRend2  = getGlob(engineDir, r2Dir+'/*.c') + srcRendC  # Disabled. Renderer2 is not used
+srcRend2  = Glob(engineDir.Dir(r2Dir).path  +sep+ '*.c') + srcRendC   # Disabled. Renderer2 is not used
 #objRend2str = """ %s/rend2/glsl/bokeh_fp.o, ETC, ETC """ % B  #todo: How do we compile *.glsl into *.o ?
 ## Libraries
-srcJpeg   = getGlob(engineDir, jpgDir+'/*.c')
-srcSdl    = getGlob(engineDir, sdlDir+'/*.c')
+srcJpeg   = Glob(engineDir.Dir(jpgDir).path  +sep+ '*.c')
+srcSdl    = Glob(engineDir.Dir(sdlDir).path  +sep+ '*.c')
 ## Platform Specific
-srcUnix   = getGlob(engineDir, unxDir+'/*.c')
-srcWin    = getGlob(engineDir, winDir+'/*.c')
+srcUnix   = Glob(engineDir.Dir(unxDir).path  +sep+ '*.c')
+srcWin    = Glob(engineDir.Dir(winDir).path  +sep+ '*.c')
 ## Filters: Remove
-srcServer_rankings    = [svDir+'/sv_rankings.c']
-srcCommon_VMplatforms = [qcmDir+'/vm_x86.c', qcmDir+'/vm_armv7l.c', qcmDir+'/vm_aarch64.c']
+srcServer_rankings    = [engineDir.Dir(svDir).File('sv_rankings.c')]
+srcCommon_VMplatforms = [engineDir.Dir(qcmDir).File('vm_x86.c'), engineDir.Dir(qcmDir).File('vm_armv7l.c'), engineDir.Dir(qcmDir).File('vm_aarch64.c')]
 ## Filters: Add
 ### Linux
 srcLinux = [
-  unxDir+'/unix_main.c',
-  unxDir+'/unix_shared.c',
-  unxDir+'/linux_signals.c',
+  engineDir.Dir(unxDir).File('unix_main.c'),
+  engineDir.Dir(unxDir).File('unix_shared.c'),
+  engineDir.Dir(unxDir).File('linux_signals.c'),
   ]
 srcLinux_nonsdl = [
-  unxDir+'/linux_glimp.c', 
-  unxDir+'/linux_qgl.c',
-  unxDir+'/linux_snd.c',
-  unxDir+'/x11_dga.c',
-  unxDir+'/x11_randr.c',
-  unxDir+'/x11_vidmode.c',
+  engineDir.Dir(unxDir).File('linux_glimp.c'),
+  engineDir.Dir(unxDir).File('linux_gpl.c'),
+  engineDir.Dir(unxDir).File('linux_snd.c'),
+  engineDir.Dir(unxDir).File('x11_dga.c'),
+  engineDir.Dir(unxDir).File('x11_dga.c'),
+  engineDir.Dir(unxDir).File('x11_randr.c'),
+  engineDir.Dir(unxDir).File('x11_vidmode.c'),
   ]
-srcLinux_qvk = [unxDir+'/linux_qvk.c']
+srcLinux_qvk = [engineDir.Dir(unxDir).File('linux_qvk.c')]
 ### Windows
 srcWin = [
-  winDir+'/win_main.c',
-  winDir+'/win_shared.c',
-  winDir+'/win_syscon.c',
-  #winDir+'/win_resource.o', #FIXME: This is a .rc file, converted to .o with windres
+  engineDir.Dir(winDir).File('win_main.c'),
+  engineDir.Dir(winDir).File('win_shared.c'),
+  engineDir.Dir(winDir).File('win_syscon.c'),
+  #winDir,'win_resource.o', #FIXME: This is a .rc file, converted to .o with windres
   ]
 srcWin_nonsdl = [
-  winDir+'/win_gamma.c',
-  winDir+'/win_glimp.c',
-  winDir+'/win_input.c',
-  winDir+'/win_minimize.c',
-  winDir+'/win_qgl.c',
-  winDir+'/win_snd.c',
-  winDir+'/win_wndproc.c',
+  engineDir.Dir(winDir).File('win_gamma.c'),
+  engineDir.Dir(winDir).File('win_glimp.c'),
+  engineDir.Dir(winDir).File('win_input.c'),
+  engineDir.Dir(winDir).File('win_minimize.c'),
+  engineDir.Dir(winDir).File('win_qgl.c'),
+  engineDir.Dir(winDir).File('win_snd.c'),
+  engineDir.Dir(winDir).File('win_wndproc.c'),
   ]
-srcWin_qvk = [winDir+'/win_qvk.c']
+srcWin_qvk = [engineDir.Dir(winDir).File('win_qvk.c')]
 ### VM Platforms
-srcVM_x86  = [qcmDir+'/vm_x86.c']
-srcVM_arm  = [qcmDir+'/vm_armv7l.c']
-srcVM_aa64 = [qcmDir+'/vm_aarch64.c']
+srcVM_x86  = [engineDir.Dir(qcmDir).File('vm_x86.c')]
+srcVM_arm  = [engineDir.Dir(qcmDir).File('vm_armv7l.c')]
+srcVM_aa64 = [engineDir.Dir(qcmDir).File('vm_aarch64.c')]
 ### Libraries
-srcCurl = [clDir+'/cl_curl.c']
+srcCurl = [engineDir.Dir(clDir).File('cl_curl.c')]
 ## Shared Library dependencies
 srcShlib = [
-  qcmDir+'/q_math.c',
-  qcmDir+'/q_shared.c',
+  gameDir.Dir(qcmDir).File('q_math.c'),   #os.path.join('*',qcmDir,'q_math.c'),
+  gameDir.Dir(qcmDir).File('q_shared.c'), #os.path.join('*',qcmDir,'q_shared.c'),
   ]
 
 # Target Sources: Client Engine
@@ -256,13 +259,13 @@ if not use_opengl and not use_vulkan and not use_opengl2: sys.exit('::ERR No ren
 
 # Target Sources: Game Client
 #:::::::::::::::::::::::::::::
-srcCGame = getGlob(gameDir, cgDir+'/*.c')
+srcCGame = Glob(gameDir.Dir(cgDir).path +sep+ '*.c')
 ## Filter: Add
 srcCGame_shared = [
-  sgDir+'/bg_misc.c',
-  sgDir+'/bg_pmove.c',
-  sgDir+'/bg_slidemove.c',
-  sgDir+'/bg_lib.c',
+  gameDir.Dir(sgDir).File('bg_misc.c'),
+  gameDir.Dir(sgDir).File('bg_pmove.c'),
+  gameDir.Dir(sgDir).File('bg_slidemove.c'),
+  gameDir.Dir(sgDir).File('bg_lib.c'),
   ]
 ## Filters: Apply
 srcGame_cg = srcCGame + srcCGame_shared + srcShlib
@@ -270,29 +273,31 @@ srcGame_cg = srcCGame + srcCGame_shared + srcShlib
 
 # Target Sources: Game Server
 #::::::::::::::::::::::::::::
-srcSGame = getGlob(gameDir, sgDir+'/*.c')
+# srcSGame = getGlob(gameDir, os.path.join(sgDir,'*.c'))
+srcSGame = Glob(gameDir.Dir(sgDir).path +sep+ '*.c')
 ## Filter: Remove
-srcSGame_rankings = [sgDir+'/g_rankings.c']
+# srcSGame_rankings = [os.path.join(sgDir,'g_rankings.c')]
+srcSGame_rankings = [gameDir.Dir(sgDir).File('g_rankings.c')]
 ## Filters: Apply
 srcGame_sg = [f for f in srcSGame if f not in srcSGame_rankings] + srcShlib
 
 
 # Target Sources: Game UI
 #:::::::::::::::::::::::::
-srcUI = getGlob(gameDir, uiDir+'/*.c')
+srcUI = Glob(gameDir.Dir(uiDir).path +sep+ '*.c')
 ## Filter: Add
 srcUI_bg = [
-  sgDir+'/bg_misc.c',
-  sgDir+'/bg_lib.c',
+  gameDir.Dir(sgDir).File('bg_misc.c'),
+  gameDir.Dir(sgDir).File('bg_lib.c'),
   ]
 ## Filter: Remove
 srcUI_rankings = [
-  uiDir+'/ui_login.c',
-  uiDir+'/ui_rankings.c',
-  uiDir+'/ui_rankstatus.c',
-  uiDir+'/ui_signup.c',
-  uiDir+'/ui_specifyleague.c',
-  uiDir+'/ui_spreset.c',
+  gameDir.Dir(uiDir).File('ui_login.c'),
+  gameDir.Dir(uiDir).File('ui_rankings.c'),
+  gameDir.Dir(uiDir).File('ui_rankstatus.c'),
+  gameDir.Dir(uiDir).File('ui_signup.c'),
+  gameDir.Dir(uiDir).File('ui_specifyleague.c'),
+  gameDir.Dir(uiDir).File('ui_spreset.c'),
   ]
 ## Filters: Apply
 srcGame_ui = [f for f in srcUI if f not in srcUI_rankings] + srcUI_bg + srcShlib
@@ -390,7 +395,7 @@ lnx.arch = 'x86_64'
 lnx.libs    += ['dl']        # -ldl
 lnx.ldflags += ['-Wl,--hash-style=both']
 #### Include Paths
-lnx.ccpath   = ['/usr/include', '/usr/local/include']  #TODO: This shouldn't be needed, but.... is it?
+lnx.ccpath   = [os.path.join('/usr','include'), os.path.join('/usr','local','include')]  #TODO: This shouldn't be needed, but.... is it?
 
 
 # Windows: Build Data
@@ -461,11 +466,11 @@ if posix:      clWin.parse += ['pkg-config --silence-errors --cflags sdl2 | sed 
 # CURL extras
 clWin.defines += ['CURL_STATICLIB']
 clWin.libs    += ['wldap32','crypt32'] # Curl support libs
-clWin.ccpath  += [engineDir+'/libcurl/windows/include']
-clWin.libpath += [engineDir+'/libcurl/windows/mingw/lib64']
+clWin.ccpath  += [os.path.join(engineDir.path,'libcurl','windows','include')]
+clWin.libpath += [os.path.join(engineDir.path,'libcurl','windows','mingw','lib64')]
 # PCRE extras
-clWin.ccpath  += [engineDir+'/lib/pcre/windows/include']
-clWin.libpath += [engineDir+'/lib/pcre/windows/mingw/lib64']
+clWin.ccpath  += [os.path.join(engineDir.path,'lib','pcre','windows','include')]
+clWin.libpath += [os.path.join(engineDir.path,'lib','pcre','windows','mingw','lib64')]
 ## Create BuildObjects: Release and Debug
 clWin_rls = clWin.merge(rls)
 clWin_dbg = clWin.merge(dbg)
@@ -613,7 +618,7 @@ uiWin_dbg.setup()
 #::::::::::::::::
 #binDir/trgDed: objDed
 #	CC_cmd -o THIS_trgFilename objDed LDFLAGS_base
-#compile(lnkDir+'/'+trgDed, env=rls, cStr='DED_CC')
+#compile(lnkDir,''+trgDed, env=rls, cStr='DED_CC')
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
@@ -647,16 +652,16 @@ trgAll       = [trgEngine_ld, trgEngine_lr, trgEngine_wd, trgEngine_wr,
 ## Groups
 ### Current Platform
 # engine
-if posix: Alias('engine', trgEngine_lr)
-elif win: Alias('engine', trgEngine_wr)
-if posix: Alias('engine-dbg', trgEngine_ld)
-elif win: Alias('engine-dbg', trgEngine_wd)
+if   posix: Alias('engine', trgEngine_lr)
+elif win32: Alias('engine', trgEngine_wr)
+if   posix: Alias('engine-dbg', trgEngine_ld)
+elif win32: Alias('engine-dbg', trgEngine_wd)
 Alias('engine-dist', trgEngine_lr + trgEngine_wr)
 # game
-if posix: Alias('game', trgGame_lr)
-elif win: Alias('game', trgGame_wr)
-if posix: Alias('game-dbg', trgGame_ld)
-elif win: Alias('game-dbg', trgGame_wd)
+if   posix: Alias('game', trgGame_lr)
+elif win32: Alias('game', trgGame_wr)
+if   posix: Alias('game-dbg', trgGame_ld)
+elif win32: Alias('game-dbg', trgGame_wd)
 Alias('game-dist', trgGame_lr + trgGame_wr)
 # both
 Alias('release', ['engine', 'game'])

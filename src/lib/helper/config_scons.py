@@ -1,6 +1,6 @@
 import os
 from lib.helper.scons import getVersion, isVerbose
-from SCons.Script import ARGUMENTS
+from SCons.Script import ARGUMENTS, Dir, File
 
 # They are used as declarations. Values MUST be at least `None`
 trgPlatform = None  # Can't be an alias, must be a valid & supported SCons platform
@@ -13,15 +13,15 @@ cName             = 'osdf'
 dName             = cName+'.ded'
 render_prefix     = cName
 # Directories
-rootDir           = '..'                       # Must be relative. Was Absolute
-srcDir            = '.'                        # This MUST be relative to the SConstruct file.
-engineDir         = srcDir+'/engine'           # Repository for engine code
-gameDir           = srcDir+'/game'             # Repository for gamecode
-binDir            = rootDir+'/bin'             # Output root folder where binaries will be compiled to
-instDir           = rootDir+'/install-'+cName  # Default linux:  '/usr/local/games/quake3'
-baseDir           = None                       #TODO: what is this DEFAULT_BASEDIR value used for?
+rootDir           = Dir('..')                       # Must be relative. Was Absolute
+srcDir            = Dir('.')                        # This MUST be relative to the SConstruct file.
+engineDir         = srcDir.Dir('engine')            # Repository for engine code
+gameDir           = srcDir.Dir('game')              # Repository for gamecode
+binDir            = rootDir.Dir('bin')              # Output root folder where binaries will be compiled to
+instDir           = rootDir.Dir('install-'+cName)   # Default linux:  '/usr/local/games/quake3'
+baseDir           = None                            #TODO: what is this DEFAULT_BASEDIR value used for?
 # Select what to build
-build_default     = []#['release','debug',]   # List of targets to build by default. Will use debug if empty
+build_default     = ['game']#['release','debug',]   # List of targets to build by default. Will use debug if empty
 # Select what systems to compile
 use_local_jpeg    = True   # Links to local jpeg (windows only). Binaries are hard to find
 use_local_pcre    = True   # Links to local pcre (windows only). Binaries are hard to find
@@ -41,14 +41,14 @@ if render_default == 'opengl2': use_opengl2 = True
 if render_default == 'vulkan':  use_vulkan  = use_vulkan_api = True
 
 # Versioning
-verFile           = engineDir+'/qcommon/q_shared.h'  # File where the version will be searched for. If changed, version won't be searched for in the right file
+verFile           = engineDir.Dir('qcommon').File('q_shared.h')  # File where the version will be searched for. If changed, version won't be searched for in the right file
 verMacro          = 'Q3_VERSION'                     # Macro name of the version value. If changed, version won't be found in the file
 version           = getVersion(verFile,verMacro)     # If this is changed, we overwrite the project's version defined in the source code
 
 # SCons config
 ## General
-scDir             = binDir+'/scons'
-scDecider         = 'MD5-timestamp'  # First timestamp, then MD5. SCcons default = 'MD5' = 'content'. Makefile default = timestamp = 'make'
+scDir             = 'scons'         # Relative to the bin folder. Will be created when needed
+scDecider         = 'MD5-timestamp' # First timestamp, then MD5. SCcons default = 'MD5' = 'content'. Makefile default = timestamp = 'make'
 cores             = 12   # Max Computer cores available. Set to 0 or None for default cli behavior
 coresPc           = 0.7  # Percentage of cpu that will be used for compiling jobs. Ignored if cores is 0, or `-j NUM` is set from CLI
 ## Verbose
@@ -60,35 +60,32 @@ verbose   = isVerbose()  #fixme: Use this when the SCons bug is fixed
 # Source code directories
 # ::::::::::::::::::::::::::
 ############################
-dbgDir = binDir+f'/debug-{trgPlatform}-{trgArch}'    #TODO: Switch trgDir
-rlsDir = binDir+f'/release-{trgPlatform}-{trgArch}'  #TODO: Switch trgDir
-#trgDir = binDir+f'/{trgType}-{trgPlatform}-{trgArch}'  # ex:   release-posix-x86_64
-# Engine src folders      #  relative to srcDir, we need multiple links (virtual copies) for SCons. absolute = srcDir+'/folder'
-clDir  = '/client'
-svDir  = '/server'
-rcDir  = '/rendc'
-r1Dir  = '/rend1'
-r2Dir  = '/rend2'
-rvDir  = '/rendv'
-sdlDir = '/sdl'
-qcmDir = '/qcommon'
-unxDir = '/unix'
-winDir = '/win32'
-botDir = '/botlib'
+# Engine src folders      #  relative to srcDir, we need multiple links (virtual copies) for SCons. absolute = srcDir/'folder'
+clDir  = 'client'
+svDir  = 'server'
+rcDir  = 'rendc'
+r1Dir  = 'rend1'
+r2Dir  = 'rend2'
+rvDir  = 'rendv'
+sdlDir = 'sdl'
+qcmDir = 'qcommon'
+unxDir = 'unix'
+winDir = 'win32'
+botDir = 'botlib'
 # Libraries
-libDir  = '/lib'
-jpgDir  = libDir+'/jpeg'
-pcreDir = libDir+'/pcre'
+libDir  = 'lib'
+jpgDir  = os.path.join(libDir,'jpeg')
+pcreDir = os.path.join(libDir,'pcre')
 # Gamecode src folders
-cgDir  = '/cgame'
-sgDir  = '/sgame'
-uiDir  = '/ui'
+cgDir  = 'cgame'
+sgDir  = 'sgame'
+uiDir  = 'ui'
 # LCC Compiler tools folder     #TODO: Port from ioq3 Makefile
-# toolDir= lnkDir+'/tools'
-# lccDir = lnkDir+toolDir+'/lcc'
+# toolDir= lnkDir +s+ 'tools'
+# lccDir = lnkDir+toolDir +s+ 'lcc'
 # Not used
-asmDir = '/asm'
-tuiDir = '/ui_ta'
+asmDir = 'asm'
+tuiDir = 'ui_ta'
 
 ## Compiler Flags
 # ::::::::::::::::

@@ -1,6 +1,6 @@
 # Imports
 import sys
-from os.path import exists      # file/dir checks
+from os.path import exists, sep # file/dir checks
 from copy import deepcopy       # Class cloning
 from SCons.Script import *      # SCons specific variables and methods
 from lib.helper import mingw    # MinGW Environment() setup
@@ -32,9 +32,9 @@ def getKey(val,dic):  # Get key of the dic.sublist that contains val
 # Version
 import re
 def getVersion(file,macro):
-  for line in open(file).readlines(): # For every line in file
-    parts = line.split()              # Convert line into a list
-    lineIsEmpty = not bool(parts)     # true if parts is None
+  for line in open(file.abspath).readlines():   # For every line in file
+    parts = line.split()                        # Convert line into a list
+    lineIsEmpty = not bool(parts)               # true if parts is None
     lineHasOneWord = not (0 < 1 < len(parts))   # bool( index `1` exists in `parts` )  :Python thinks: (0 < 1) and (1 < len(parts)) 
     if lineIsEmpty or lineHasOneWord: continue
     lineContainsMacro = bool(parts[1] == macro)  # If the second word is the macro name
@@ -71,7 +71,7 @@ def getCliPlatform_tru():  # Converts alias to SCons supported architecture
   return getKey(plat,truPlatform)
 
 # Supported Lists
-validPlatforms = ['posix', ]  #TODO: 'win32' #todo: x86', 'mingw32', 'mingw64','darwin', 'aarch64'.  They depend on the toolchain, just need specific config
+validPlatforms = ['posix', 'win32' ]  #TODO: 'win32' #todo:,'darwin',.  They depend on the toolchain, they need specific config
 validArchs     = ['x86_64',]  # amd64 defaults to x86_64, unless specified.   #todo: 'x86', 'arm', 'arm64'
 validTargets   = ['release','debug',     'distribute', 'all',
                   'engine', 'engine-dbg','engine-dist',
@@ -117,13 +117,13 @@ def getCur(v):
   switch = {
     ARCH     : curEnv['HOST_ARCH'] if not (curEnv['HOST_ARCH']=='amd64') else 'x86_64', # SCons detected arch. Swap amd64 to x86_64 (can be overwritten, but #todo: support)
     PLAT     : curEnv['HOST_OS'],
-    BITS     : getBits(curEnv['HOST_ARCH']),  }
+    BITS     : getBits(curEnv['HOST_ARCH']), }
   return switch.get(v,None)
 
 # SCons Helpers
 # This is the SCons way of specifying an output folder for binaries. We are just abstracting away the confusion :shrug:
 def LinkDir(src, trg):  # trg=src :: Make trg a virtual copy of src
-  VariantDir(trg,src, duplicate=0)
+  VariantDir(trg.relpath, src.relpath, duplicate=0)
   if isVerbose(): print(f':: Linked {src} to {trg}')
   return trg  
 def MapDir (src, trg):  # trg=src :: Make trg a copy of src, that contains a duplicate of src when it was compiled
@@ -132,9 +132,9 @@ def MapDir (src, trg):  # trg=src :: Make trg a copy of src, that contains a dup
   return trg  
 def getGlob(ab,rel):
   result = []
-  glob = Glob(ab+rel)
+  glob = Glob(os.path.join(ab,rel))
   for file in glob: 
-    result += [re.sub(r'[a-z]*','',file.relpath, count=1)]
+    result += [re.sub(r'[a-z]*','',file.relpath, count=1)] # Remove first instance of relpath from the file string
   if isVerbose(): print(f'|--> Glob for {ab} + {rel} =\n{result}\n')
   return result
 
@@ -202,6 +202,29 @@ class BuildObject:
     self.arch    = '' if arch    is None else arch     # - Target Architecture. Assumes current if None
     self.cStr    = '' if cStr    is None else cStr     # - Format for CC compiler command. Assumes "CC" if None
     self.lStr    = '' if lStr    is None else lStr     # - Format for LD compiler command. Assumes "LD" if None
+  # Print Debug
+  def debugPrint(self):
+    print( "\n::::::::::::::::::::::::::::::::::::::::::")
+    print(  f": Debug Data for:  {self.binname}")
+    print(   "::::::::::::::::::::::::::::::::::::::::::")
+    print('src=\n',[str(n) for n in self.src],"\n:::::::::::::::::::::::::::::")
+    print('srcdir=\n',self.srcdir,"\n:::::::::::::::::::::::::::::")
+    print('bindir=\n',self.bindir,"\n:::::::::::::::::::::::::::::")
+    print('binname=\n',self.binname,"\n:::::::::::::::::::::::::::::")
+    print('bintype=\n',self.bintype,"\n:::::::::::::::::::::::::::::")
+    print('ctype=\n',self.ctype,"\n:::::::::::::::::::::::::::::")
+    print('ccflags=\n',self.ccflags,"\n:::::::::::::::::::::::::::::")
+    print('defines=\n',self.defines,"\n:::::::::::::::::::::::::::::")
+    print('libs=\n',self.libs,"\n:::::::::::::::::::::::::::::")
+    print('ldflags=\n',self.ldflags,"\n:::::::::::::::::::::::::::::")
+    print('ccpath=\n',self.ccpath,"\n:::::::::::::::::::::::::::::")
+    print('libpath=\n',self.libpath,"\n:::::::::::::::::::::::::::::")
+    print('parse=\n',self.parse,"\n:::::::::::::::::::::::::::::")
+    print('env=\n',self.env,"\n:::::::::::::::::::::::::::::")
+    print('plat=\n',self.plat,"\n:::::::::::::::::::::::::::::")
+    print('arch=\n',self.arch,"\n:::::::::::::::::::::::::::::")
+    print('cStr=\n',self.cStr,"\n:::::::::::::::::::::::::::::")
+    print('lStr=\n',self.lStr,"\n:::::::::::::::::::::::::::::")
   # Type Checks       
   def chkList(self,var, errNone=False):    # errNone=False : Content is remapped to empty when its None. If True, it will ERR on None
     if not errNone and var is None: var = []
@@ -209,6 +232,9 @@ class BuildObject:
   def chkStr (self,var, errNone=False):    # errNone=False : Content is remapped to empty when its None. If True, it will ERR on None
     if not errNone and var is None: var = ''
     if not isinstance(var, str): sys.exit(f'::ERR in {self.trg}:  {var} is type:  {type(var)}  Should be:  {type("")}')
+  def chkDir (self,var, errNone=False):    # errNone=False : Content is remapped to empty when its None. If True, it will ERR on None
+    if not errNone and var is None: var = ''
+    if not isinstance(var, SCons.Node.FS.Dir): sys.exit(f'::ERR in {self.trg}:  {var} is type:  {type(var)}  Should be:  {type(Dir())}')
   def chkType(self,var,lst):
     if var not in lst:           sys.exit(f'::ERR in {self.trg}:  {var} is not a valid type. Valid list: {lst}')
   def chkEnv (self,var):
@@ -217,8 +243,8 @@ class BuildObject:
   def check(self):
     #self.trg, self.src, self.bindir, self.binname, self.bintype,
     self.chkList(self.src,     errNone=True)
-    self.chkStr (self.srcdir,  errNone=True)
-    self.chkStr (self.bindir,  errNone=True)
+    self.chkDir (self.srcdir,  errNone=True)
+    self.chkDir (self.bindir,  errNone=True)
     self.chkStr (self.binname, errNone=True)
     self.chkStr (self.bintype, errNone=True)
     self.chkType(self.bintype, ['bin','lib'])
@@ -268,10 +294,10 @@ class BuildObject:
     return result
   def setup(self): 
     # Add Processed data
-    self.prefix  = f'/{self.ctype}-' if self.ctype else '/' # Prefix for the alias
-    self.subdir  = self.prefix + f'{self.plat}-{self.arch}' # Alias for this build
-    self.outdir  = self.bindir + self.subdir +'/'+ self.srcdir  # Final outdir. Will be linked to the source code folder
-    self.trg     = self.outdir+'/../'+self.binname          # Combine outdir+binname into real output trg
+    self.prefix  = f'{self.ctype}-' if self.ctype else ''         # Prefix for the alias
+    self.subdir  = self.prefix + f'{self.plat}-{self.arch}'       # Alias for this build
+    self.outdir  = self.bindir.Dir(self.subdir).Dir(self.srcdir.relpath)  # Final outdir. Will be linked to the source code folder
+    self.trg     = self.outdir.Dir('..').File(self.binname)       # Combine outdir+binname into real output trg
     if isVerbose():
       print(f':: Created properties for BuildData {self.trg}:')
       print(f':  self.prefix = {self.prefix}')
@@ -283,9 +309,13 @@ class BuildObject:
     if self.env: self.chkEnv(self.env)  # Only check if not none. If none, a new one will be created
     # Create new environment for trgSystem
     if not self.env: 
-      if self.plat in [getCur(PLAT)]: self.env = Environment()
-      elif getCur(PLAT) in ['posix'] and self.plat in ['win32']: self.env = mingw.NewEnvironment(getBits(self.arch))
-      elif getCur(PLAT) in ['win32']: sys.exit(f'::ERR Windows host cross-compilation is not currently supported')
+      plat = getCur(PLAT)
+      if   plat in ['posix'] and self.plat in ['win32']: self.env = mingw.NewEnvironment(getBits(self.arch))
+      # elif plat in ['win32'] and self.plat in ['posix']: pass#print(f'::WRN Cross-compilation win-to-linux has not being developed yet')
+      elif plat in ['posix']: self.env = Environment()
+      elif plat in ['win32']: self.env = Environment(tools=['mingw'])  # Currently no plans to support msvc tools
+      elif plat in ['darwin']: sys.exit(f'::ERR MacOS host compilation has not being developed yet')
+      else: sys.exit(f'::ERR Trying to compile for a non-supported platform: {getCur(PLAT)}')
     # Append Flags to env
     self.env.AppendUnique(CCFLAGS    = self.ccflags)
     self.env.AppendUnique(CPPDEFINES = self.defines)
@@ -302,18 +332,18 @@ class BuildObject:
         self.env.Replace(CCCOMSTR   =f'{self.cStr} $SOURCES')
         self.env.Replace(SHCCCOMSTR =f'{self.cStr} $SOURCES')
       if self.lStr:
-        self.env.Replace(LINKCOMSTR =f'{self.lStr} $TARGET')
+        self.env.Replace(LINKCOMSTR   =f'{self.lStr} $TARGET')
         self.env.Replace(SHLINKCOMSTR =f'{self.lStr} $TARGET')
     # Link srcdir to outdir       
     lnkDir = LinkDir(self.srcdir, self.outdir)
     # Convert src/file.c to lnk/file.c     #  src/sub/file.c to lnk/sub/file.c  when file is /sub/file.c
     code = None
     for file in self.src:  # For every file in the input src list
-      if code is None: code = [lnkDir+file]; continue  # Initializes list. Only happens the first time. 
-      code += [lnkDir+file]  # lnkDir+file = Prepend lnkDir to the file string  `/path/to/folder`+`/sub/file.c`
+      if code is None: code  = [os.path.join(lnkDir.abspath,'..',file.relpath)]  # Initializes list. Only happens the first time. 
+      else:            code += [os.path.join(lnkDir.abspath,'..',file.relpath)]  # lnkDir+file = Prepend lnkDir to the file string  `/path/to/folder`+`/sub/file.c`
     # Setup SCons to compile src with env as output
-    if   self.bintype in ['bin']: self.trg = self.env.Program(      target=self.trg, source=code)
-    elif self.bintype in ['lib']: self.trg = self.env.SharedLibrary(target=self.trg, source=code)
+    if   self.bintype in ['bin']: self.trg = self.env.Program(      target=self.trg.abspath, source=code)
+    elif self.bintype in ['lib']: self.trg = self.env.SharedLibrary(target=self.trg.abspath, source=code)
     else: sys.exit(f'::ERR in {self.trg}.setup():  Trying to set builder for an unknown type:  {self.bintype}')  # Should never happen
 
 

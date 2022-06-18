@@ -8,7 +8,15 @@
 > ... : Part of the feature listed above it
 
 # Unreleased
-new : VJK physics. VQ3 with 4airaccel, 12groundspeed, 250speed and 225jumpvel
+chg : CPM Item Pickup: Above size increased from 36u (32u doesn't trigger) to 66 (62u doesn't trigger)
+new : VJK physics. VQ3 with 4airaccel, 12groundspeed, 250speed and 225jumpvel. `/exec phy_vjk`
+chg : Moved all custom bg_pmove.c code into subfolder sgame/phy/  (not connected to the buildsystem yet) 
+new : Added basic buildsystem instructions (sketch)
+... : Added Native windows build instructions for the `chocolatey/mingw` method
+... : Added disclaimer for WSL cross-compilation
+new : Initial edits to the buildsystem for native windows compilation
+... : Fixed native win32 SCons environment resolution
+... : Changed file path resolution, so that it remains system-agnostic ( `os.path.join(one,'two.c')` vs `one+'/two.c'` )
 ... :  
 
 # History
@@ -85,18 +93,24 @@ _Important : Lead us towards our mission/goals. Require planning, organization a
 #::::::::::::::
 # 1 : IMP.URG : Critical
 #::::::::::::::
-fix : q1 physics working correctly with native binaries  
+new : Hud element: Current map & Internal version  
+fix : Crouch not working in q1  
+fix : Stepdown bug on q1 physics  
 fix : W movement working properly in q1 physics  
+fix : q1 physics working correctly with native binaries  
+
 
 #:::::::::::::::
 # 2 : IMP.notU : Planned Goals
 #:::::::::::::::
-new : Proxymod support  
-new : Velocity pads  
 new : OBfix  
+new : Velocity pads  
 new : Map loader UI  
-new : New hud for Player state configuration (health, ammo, powerups, etc)  
 new : Launcher / Updater / Downloader
+new : Proxymod support  
+new : New hud for Player state configuration (health, ammo, powerups, etc)  
+chg : Test backoff = 0 in VectorReflect, when resulting dot is positive (VectorReflect OneSided?)
+new : Buildsystem support from win
 
 #:::::::::::::::
 # 3 : notI.URG : Non-critical Fixes
@@ -104,6 +118,9 @@ new : Launcher / Updater / Downloader
 fix : sound bug on some systems (potentially SDL non-static linking or version)  
 rmv : Custom qvm-only acos function removed from the code  
 chg : CPM w-turn acos function should use stdlib instead  
+new : USE buttons
+new : Pre-run balance for q1. Pure vs Pro runs from AG (maybe also cpm?)
+new : Unlock 1000 maxfps
 
 #::::::::::::::::
 # 4 : notI.notU : Implement when possible
