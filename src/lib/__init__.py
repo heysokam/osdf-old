@@ -4,3 +4,5 @@
 #
 # todo: any possible method to remove it?
 # maybe doing something with sys.path
+
+import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder

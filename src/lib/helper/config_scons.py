@@ -1,4 +1,5 @@
 import os
+import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
 from lib.helper.scons import getVersion, isVerbose
 from SCons.Script import ARGUMENTS, Dir, File
 

@@ -1,6 +1,6 @@
 import os
 import os.path
-import sys
+import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
 
 import SCons.Action
 import SCons.Builder

@@ -8,23 +8,34 @@
 > ... : Part of the feature listed above it
 
 # Unreleased
-chg : CPM Item Pickup: Above size increased from 36u (32u doesn't trigger) to 66 (62u doesn't trigger)
-new : VJK physics. VQ3 with 4airaccel, 12groundspeed, 250speed and 225jumpvel. `/exec phy_vjk`
-chg : Moved all custom bg_pmove.c code into subfolder sgame/phy/  (not connected to the buildsystem yet) 
-new : Added basic buildsystem instructions (sketch)
-... : Added Native windows build instructions for the `chocolatey/mingw` method
-... : Added disclaimer for WSL cross-compilation
-new : Initial edits to the buildsystem for native windows compilation
-... : Fixed native win32 SCons environment resolution
-... : Changed file path resolution, so that it remains system-agnostic ( `os.path.join(one,'two.c')` vs `one+'/two.c'` )
 ... :  
 
 # History
 ## 0.2.0
+2022.07.20
+new : Initial work on Strafehud porting. Not connected, but doesn't break compiling
+chg : (VJK) Changed jumpvel from 225 to default vq3 (270), to allow easier clearing of defrag maps
+fix : (Q1) "Stepdown" bug is fixed (wasn't stepdown, it was q1 downramp behavior happening on incorrect dotproduct)
+fix : (Q1) W/S movement working properly in q1 physics  
+fix : (Q1) Surf ramps no longer stick you to the ramp on exit
+fix : (Q1) Crouch works again in q1 physics  
+
+2022.07.18  
+chg : CPM Item Pickup: Above size increased from 36u (32u doesn't trigger) to 66 (62u doesn't trigger)  
+new : VJK physics. VQ3 with 4airaccel, 12groundspeed, 250speed and 225jumpvel. `/exec phy_vjk`  
+chg : Moved all custom bg_pmove.c code into subfolder sgame/phy/  (not connected to the buildsystem yet)   
+new : Added basic buildsystem instructions (sketch)  
+... : Added Native windows build instructions for the `chocolatey/mingw` method  
+... : Added disclaimer for WSL cross-compilation  
+new : Initial edits to the buildsystem for native windows compilation  
+... : Fixed native win32 SCons environment resolution  
+... : Changed file path resolution, so that it remains system-agnostic (uses SCons Nodes wherever possible)  
+
 2022.07.11
-fix : CPM Rocket Launcher: Vertical self knockback scaling reduced to 1
+fix : CPM Rocket Launcher: Vertical self knockback scaling reduced to 1  
 
 2022.07.10  
+_v0.2.0-r0_  
 new : (cfg) VM configuration disables QVM loading (vm_cgame 0, vm_game 0, vm_ui 0)  
 new : (cfg) Server Pure is deactivated, to allow Library Loading (sv_pure 0)  
 new : Buildsystem ported to SCons. No longer uses make  
@@ -94,11 +105,7 @@ _Important : Lead us towards our mission/goals. Require planning, organization a
 # 1 : IMP.URG : Critical
 #::::::::::::::
 new : Hud element: Current map & Internal version  
-fix : Crouch not working in q1  
-fix : Stepdown bug on q1 physics  
-fix : W movement working properly in q1 physics  
 fix : q1 physics working correctly with native binaries  
-
 
 #:::::::::::::::
 # 2 : IMP.notU : Planned Goals
@@ -110,7 +117,7 @@ new : Launcher / Updater / Downloader
 new : Proxymod support  
 new : New hud for Player state configuration (health, ammo, powerups, etc)  
 chg : Test backoff = 0 in VectorReflect, when resulting dot is positive (VectorReflect OneSided?)
-new : Buildsystem support from win
+new : Q1 barrel entity
 
 #:::::::::::::::
 # 3 : notI.URG : Non-critical Fixes

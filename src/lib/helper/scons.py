@@ -1,5 +1,5 @@
 # Imports
-import sys
+import sys; sys.dont_write_bytecode=True  # Do not create bytecode __pycache__ folder
 from os.path import exists, sep # file/dir checks
 from copy import deepcopy       # Class cloning
 from SCons.Script import *      # SCons specific variables and methods
@@ -157,7 +157,7 @@ class BuildInfo:   # Build Information that will be printed on console
     self.curBits   = getCur(BITS)
     self.targets   = [it for it in getCli(TRG)] if getCli(TRG) else ['---']
     self.cc        = DefaultEnvironment()['CC']
-    self.ccvers    = DefaultEnvironment()['CCVERSION']
+    self.ccvers    = 'v. !Undefined' if 'CCVERSION' not in DefaultEnvironment() else DefaultEnvironment()['CCVERSION']
   def print(self):
     print(f':: Software Construction tool for:  {self.name}  v.{self.version}')
     print(f': Current host platform:            {self.curPlat}')

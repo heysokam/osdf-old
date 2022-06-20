@@ -76,7 +76,7 @@ let make       = getOpt("m")
 let install    = not getOpt("r")
 let keyword    = if getBuildType() != "": getBuildType() else: "debug"
 let distribute = keyword in ["distribute"]
-let release    = keyword in ["release"]
+let release    = keyword in ["release", "game", "engine"]
 let debug      = keyword in ["debug"]
 let v          = if isVerbose(): 1 else: 0
 let cmdBuild   = &"scons V={v} {keyword}"
@@ -127,6 +127,7 @@ for id,each in dirList:
     let libFiles = listFiles(getCurrentDir()).filterIt(libExt in it)
     let binFiles = listFiles(getCurrentDir()).filterIt(binExt in it)
     for id,it in libFiles:
+      echo "test cp it"
       if not debug: cp it, modRoot
       if install:   cp it, installBase/modName
     for id,it in binFiles:
