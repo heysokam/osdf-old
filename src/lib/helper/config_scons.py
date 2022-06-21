@@ -81,6 +81,8 @@ pcreDir = os.path.join(libDir,'pcre')
 cgDir  = 'cgame'
 sgDir  = 'sgame'
 uiDir  = 'ui'
+phyDir = os.path.join(sgDir,'phy')
+hudDir = os.path.join(cgDir,'hud')
 # LCC Compiler tools folder     #TODO: Port from ioq3 Makefile
 # toolDir= lnkDir +s+ 'tools'
 # lccDir = lnkDir+toolDir +s+ 'lcc'

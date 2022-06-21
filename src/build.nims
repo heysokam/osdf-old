@@ -127,7 +127,6 @@ for id,each in dirList:
     let libFiles = listFiles(getCurrentDir()).filterIt(libExt in it)
     let binFiles = listFiles(getCurrentDir()).filterIt(binExt in it)
     for id,it in libFiles:
-      echo "test cp it"
       if not debug: cp it, modRoot
       if install:   cp it, installBase/modName
     for id,it in binFiles:

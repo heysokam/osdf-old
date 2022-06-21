@@ -227,8 +227,8 @@ srcVM_aa64 = [engineDir.Dir(qcmDir).File('vm_aarch64.c')]
 srcCurl = [engineDir.Dir(clDir).File('cl_curl.c')]
 ## Shared Library dependencies
 srcShlib = [
-  gameDir.Dir(qcmDir).File('q_math.c'),   #os.path.join('*',qcmDir,'q_math.c'),
-  gameDir.Dir(qcmDir).File('q_shared.c'), #os.path.join('*',qcmDir,'q_shared.c'),
+  gameDir.Dir(qcmDir).File('q_math.c'),
+  gameDir.Dir(qcmDir).File('q_shared.c'),
   ]
 
 # Target Sources: Client Engine
@@ -257,6 +257,10 @@ if not use_opengl and not use_vulkan and not use_opengl2: sys.exit('::ERR No ren
 #  if arm64:              srcEngine_cl += srcVM_aa64
 
 
+# Target Sources: Game Both
+#:::::::::::::::::::::::::::::
+srcGame_phy = Glob(gameDir.Dir(phyDir).path +sep+ '*.c')
+
 # Target Sources: Game Client
 #:::::::::::::::::::::::::::::
 srcCGame = Glob(gameDir.Dir(cgDir).path +sep+ '*.c')
@@ -268,18 +272,16 @@ srcCGame_shared = [
   gameDir.Dir(sgDir).File('bg_lib.c'),
   ]
 ## Filters: Apply
-srcGame_cg = srcCGame + srcCGame_shared + srcShlib
+srcGame_cg = srcCGame + srcCGame_shared + srcGame_phy + srcShlib
 
 
 # Target Sources: Game Server
 #::::::::::::::::::::::::::::
-# srcSGame = getGlob(gameDir, os.path.join(sgDir,'*.c'))
-srcSGame = Glob(gameDir.Dir(sgDir).path +sep+ '*.c')
+srcSGame    = Glob(gameDir.Dir(sgDir).path +sep+ '*.c')
 ## Filter: Remove
-# srcSGame_rankings = [os.path.join(sgDir,'g_rankings.c')]
 srcSGame_rankings = [gameDir.Dir(sgDir).File('g_rankings.c')]
 ## Filters: Apply
-srcGame_sg = [f for f in srcSGame if f not in srcSGame_rankings] + srcShlib
+srcGame_sg = [f for f in srcSGame if f not in srcSGame_rankings] + srcGame_phy + srcShlib
 
 
 # Target Sources: Game UI

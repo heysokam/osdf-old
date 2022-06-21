@@ -13,12 +13,19 @@
 # History
 ## 0.2.0
 2022.07.20
+chg : bg_pmove restructure. Moved all custom code to phy/ subfolder
+
+2022.07.20
 new : Initial work on Strafehud porting. Not connected, but doesn't break compiling
 chg : (VJK) Changed jumpvel from 225 to default vq3 (270), to allow easier clearing of defrag maps
 fix : (Q1) "Stepdown" bug is fixed (wasn't stepdown, it was q1 downramp behavior happening on incorrect dotproduct)
 fix : (Q1) W/S movement working properly in q1 physics  
-fix : (Q1) Surf ramps no longer stick you to the ramp on exit
 fix : (Q1) Crouch works again in q1 physics  
+fix : (Q1) Surf ramps no longer stick you to the ramp on exit
+... : (code) VectorReflectOS. Sets backoff = 0 when facing away from the surface
+new : (Q1) Variable Jump Heights. Activated with +speed. 
+... :      Flatground = x0.5 jumpvel
+... :      Downramps behave like q1 (additive, based on your current Zvel)
 
 2022.07.18  
 chg : CPM Item Pickup: Above size increased from 36u (32u doesn't trigger) to 66 (62u doesn't trigger)  
@@ -116,7 +123,6 @@ new : Map loader UI
 new : Launcher / Updater / Downloader
 new : Proxymod support  
 new : New hud for Player state configuration (health, ammo, powerups, etc)  
-chg : Test backoff = 0 in VectorReflect, when resulting dot is positive (VectorReflect OneSided?)
 new : Q1 barrel entity
 
 #:::::::::::::::
