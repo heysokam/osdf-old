@@ -12,7 +12,9 @@
 
 # History
 ## 0.2.0
-2022.07.20
+2022.07.21
+_v0.2.0-r0_  
+new : OBfix. Applied on SURF_NOOB surfaces (cvar to be done)
 chg : bg_pmove restructure. Moved all custom code to phy/ subfolder
 
 2022.07.20
@@ -111,32 +113,30 @@ _Important : Lead us towards our mission/goals. Require planning, organization a
 #::::::::::::::
 # 1 : IMP.URG : Critical
 #::::::::::::::
-new : Hud element: Current map & Internal version  
 fix : q1 physics working correctly with native binaries  
 
 #:::::::::::::::
 # 2 : IMP.notU : Planned Goals
 #:::::::::::::::
-new : OBfix  
 new : Velocity pads  
+new : Proxymod support  
+new : Hud element: Current map & Internal version  
 new : Map loader UI  
 new : Launcher / Updater / Downloader
-new : Proxymod support  
 new : New hud for Player state configuration (health, ammo, powerups, etc)  
-new : Q1 barrel entity
 
 #:::::::::::::::
 # 3 : notI.URG : Non-critical Fixes
 #:::::::::::::::
 fix : sound bug on some systems (potentially SDL non-static linking or version)  
-rmv : Custom qvm-only acos function removed from the code  
-chg : CPM w-turn acos function should use stdlib instead  
-new : USE buttons
 new : Pre-run balance for q1. Pure vs Pro runs from AG (maybe also cpm?)
-new : Unlock 1000 maxfps
 
 #::::::::::::::::
 # 4 : notI.notU : Implement when possible
 #::::::::::::::::
+new : Q1 barrel entity
+new : USE buttons
+new : Unlock 1000 maxfps. Possible?
 new : /varcommand
+chg : (CPM) Correct deceleration values
 

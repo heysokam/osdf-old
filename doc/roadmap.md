@@ -1,24 +1,4 @@
 # Roadmap:
-## CPM and Physics selection (0.2.0)
-- [x] Physics type Selection (phy_movetype NUMBER :: 0=CPM, 3=VQ3, 1:Q1-ag)
-- [x] Full cpm strafing (double jumps, slick and other specific mechanics)
-- [ ] Full CPM weapons
-  - [x] Instant weapon switch
-  - [x] Rocket Launcher speed increased from 900 to 1000
-  - [x] Rocket Launcher knockback increased from 1 to 1.2
-  - [ ] Item pickup size increased (from ? to ?)
-  - [x] CPMA changes: Need side-by-side comparison of csdf-cpm and osdf-cpm
-    - [x] (false) Shotgun damage decreased from 10 to 7
-    - [x] (false) Shotgun spread increased from 700 to 900
-    - [x] (false) Shotgun knockback increased from 1 to 1.35
-    - [x] (false) Plasma Gun damage reduced from 20 to 15
-    - [x] (false) Plasma Gun knockback reduced from 1 to 0.5
-    - [x] (false) Grenade Launcher reload reduced from 800 to 600
-    - [x] (false) Gauntlet knockback changed from 1 to 0.5
-    - [x] (false) Machine Gun damage changed from 7 to 5
-    - [x] (false) Lightning Gun knockback increased from 1 to 1.55
-    - [x] (false) Railgun cooldown decreased from 1500 to 1000 for weapon switch
-
 ## Strafehud and velocity pads (0.3.0)
 - [ ] Proxymod strafehud  _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
 - [ ] Velocity pads  
@@ -39,9 +19,6 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
 
 ## 0.5.0 and over
 - [ ] Crouch doesn't remove +left/+right
-- [ ] no-ob
-  - [ ] Rough implementation (cvar phy_overbounce_scale = 1.000f) //TODO Code is created. cvar is currently disconnected
-  - [ ] Robust fix for random overbounces only, while keeping the good ones.
 - [ ] Menus
 - [ ] cg_drawgun 2
 - [ ] cg_nodamagekick
@@ -52,6 +29,7 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
 
 ## Entities (0.6.0)
 - [ ] Map entities reset on `ClientSpawn()`
+- [ ] No reset speed Teleporter SpawnFlag
 - [ ] Support for all Entities
   - [ ] target_ entities
     - [x] target_startTimer
@@ -92,21 +70,21 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
   - [ ] Remove player interaction (`df_mp_interferenceOff`)
   - [ ] Per client entity state (timers, weapons, etc)
   - [ ] Scoreboard
-
-## Ghosts and Records (0.9.0)
-- [ ] Records saving to disk 
 - [ ] Better timer
   - [ ] Independent timer score (separate to fragfilters/score)
   - [ ] Revert hack for `trigger_multiple->wait -1` being hardcoded to `0.5`
   - [ ] Per-client activation of triggers
-- [ ] Checkpoints and comparison to best times
+  - [ ] Checkpoints and comparison to best times
+
+## Ghosts and Records (0.9.0)
+- [ ] Records saving to disk 
 - [ ] Automatic replay recording
 - [ ] Ghosts
 
 ## Complete functionality (1.0.0)
 - [ ] Entity compatibility for existing maps
 - [ ] HUD customization
-- [ ] HUD cvar compatibility   //Is this necessary, because of the hud rewrite ??
+- [ ] HUD cvar compatibility
 - [ ] Server leaderboards
 - [ ] Web access to leaderboards data
 
@@ -187,3 +165,27 @@ _[this section is not a todo, but more like a wishlist of sorts]_
 - [x] Gamemode "run" (basic)
   - [x] Definition in code (replaced FFA, g_gametype 0)
 - [x] First cpm/vq3 alpha/dev release version
+
+## CPM and Physics selection (0.2.0)
+- [x] Physics type Selection (phy_movetype NUMBER :: 0=CPM, 3=VQ3, 1:Q1-ag)
+- [x] Full cpm strafing (double jumps, slick and other specific mechanics)
+- [x] Full CPM weapons
+  - [x] Instant weapon switch
+  - [x] Rocket Launcher speed increased from 900 to 1000
+  - [x] Rocket Launcher knockback increased from 1 to 1.2
+  - [x] Item pickup size increased (from 36 to 66)
+  - [x] CPMA changes: Need side-by-side comparison of csdf-cpm and osdf-cpm
+    - [x] (false) Shotgun damage decreased from 10 to 7
+    - [x] (false) Shotgun spread increased from 700 to 900
+    - [x] (false) Shotgun knockback increased from 1 to 1.35
+    - [x] (false) Plasma Gun damage reduced from 20 to 15
+    - [x] (false) Plasma Gun knockback reduced from 1 to 0.5
+    - [x] (false) Grenade Launcher reload reduced from 800 to 600
+    - [x] (false) Gauntlet knockback changed from 1 to 0.5
+    - [x] (false) Machine Gun damage changed from 7 to 5
+    - [x] (false) Lightning Gun knockback increased from 1 to 1.55
+    - [x] (false) Railgun cooldown decreased from 1500 to 1000 for weapon switch
+- [x] no-ob
+  - [x] Rough implementation (cvar phy_overbounce_scale = 1.000f) //TODO Code is created. cvar is currently disconnected
+  - [x] Robust fix for random overbounces only, while keeping the good ones.
+
