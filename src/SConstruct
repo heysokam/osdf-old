@@ -152,7 +152,7 @@ scJobs = max(2,int(cores*coresPc))
 if cores: SetOption('num_jobs', scJobs)
 ## Others
 Decider(scDecider) # Could be assigned per environment, but using global config instead
-SConsignFile(os.path.join(scDir,'scons-sign'))
+SConsignFile(scDir.File('scons-sign').abspath)
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
@@ -250,6 +250,8 @@ srcEngine_gl1_win = srcEngine_cl_win + srcRend1
 srcEngine_vk_lnx  = srcEngine_cl_lnx + srcRendV + srcLinux_qvk  #todo: use_vulkan_api filter needed?
 srcEngine_vk_win  = srcEngine_cl_win + srcRendV + srcWin_qvk    #todo: use_vulkan_api filter needed?
 if not use_opengl and not use_vulkan and not use_opengl2: sys.exit('::ERR No renderer has been defined.')
+# Static version of SDL for windows (sound bug alternative)
+# srcEngine_gl1_win_staticsdl = srcEngine_cl_win + srcRend1 + srcSDL_static
 ## Add VM & local libs
 #if compile_VM:
 #  if posix or win:       srcEngine_cl += srcVM_x86
@@ -263,7 +265,8 @@ srcGame_phy = Glob(gameDir.Dir(phyDir).path +sep+ '*.c')
 
 # Target Sources: Game Client
 #:::::::::::::::::::::::::::::
-srcCGame = Glob(gameDir.Dir(cgDir).path +sep+ '*.c')
+srcCGame     = Glob(gameDir.Dir(cgDir).path  +sep+ '*.c')
+srcCGame_hud = Glob(gameDir.Dir(hudDir).path +sep+ '*.c')
 ## Filter: Add
 srcCGame_shared = [
   gameDir.Dir(sgDir).File('bg_misc.c'),
@@ -272,7 +275,7 @@ srcCGame_shared = [
   gameDir.Dir(sgDir).File('bg_lib.c'),
   ]
 ## Filters: Apply
-srcGame_cg = srcCGame + srcCGame_shared + srcGame_phy + srcShlib
+srcGame_cg = srcCGame +srcCGame_shared +srcCGame_hud +srcGame_phy +srcShlib
 
 
 # Target Sources: Game Server
@@ -440,8 +443,10 @@ cl.libs    += ['SDL2']
 cl.libs    += ['pcre']
 cl.libs    += ['curl']
 cl.libs    += ['jpeg']
+#:::::::::::::::::::::::::::::::
 
 ## Linux
+#:::::::::::::::::::::::::::::::
 clLnx          = cl.merge(lnx)
 clLnx.src      = srcEngine_gl1_lnx
 clLnx.binname = f'{cName}{"."+clLnx.arch if clLnx.arch in ["x86"] else ".x64"}'
@@ -454,8 +459,10 @@ if posix:      clLnx.parse += ['pkg-config --silence-errors --cflags-only-I sdl2
 ## Create BuildObjects: Release and Debug
 clLnx_rls = clLnx.merge(rls)
 clLnx_dbg = clLnx.merge(dbg)
+#:::::::::::::::::::::::::::::::
 
 ## Windows
+#:::::::::::::::::::::::::::::::
 clWin          = cl.merge(win)
 clWin.src      = srcEngine_gl1_win
 clWin.binname = f'{cName}{"-"+clWin.arch if clWin.arch in ["x86"] else "-x64"}'
@@ -464,18 +471,33 @@ clWin.defines += ['USE_ICON']
 if not use_local_jpeg: clWin.defines += ['USE_SYSTEM_JPEG']
 # clWin.defines += [f'ARCH_STRING="{clWin.arch}"']
 # SDL extras
-if posix:      clWin.parse += ['pkg-config --silence-errors --cflags sdl2 | sed "s/-Dmain=SDL_main//"']
+# if posix:      clWin.parse += ['pkg-config --silence-errors --cflags sdl2 | sed "s/-Dmain=SDL_main//"']
 # CURL extras
 clWin.defines += ['CURL_STATICLIB']
 clWin.libs    += ['wldap32','crypt32'] # Curl support libs
-clWin.ccpath  += [os.path.join(engineDir.path,'libcurl','windows','include')]
-clWin.libpath += [os.path.join(engineDir.path,'libcurl','windows','mingw','lib64')]
+clWin.ccpath  += [os.path.join(engineDir.abspath,'lib','curl','windows','include')]
+clWin.libpath += [os.path.join(engineDir.abspath,'lib','curl','windows','mingw','lib64')]
 # PCRE extras
-clWin.ccpath  += [os.path.join(engineDir.path,'lib','pcre','windows','include')]
-clWin.libpath += [os.path.join(engineDir.path,'lib','pcre','windows','mingw','lib64')]
+clWin.ccpath  += [os.path.join(engineDir.abspath,'lib','pcre','windows','include')]
+clWin.libpath += [os.path.join(engineDir.abspath,'lib','pcre','windows','mingw','lib64')]
 ## Create BuildObjects: Release and Debug
 clWin_rls = clWin.merge(rls)
 clWin_dbg = clWin.merge(dbg)
+#:::::::::::::::::::::::::::::::
+
+# SDL static version (win only)
+#:::::::::::::::::::::::::::::::
+clWin_sdl = clWin_rls.clone()
+clWin_sdl.binname += '-staticsdl'
+clWin_sdl.ssdir    = 'staticsdl'
+clWin_sdl.defines += ['USE_LOCAL_HEADERS=1']
+clWin_sdl.ccpath  += [os.path.join(engineDir.abspath,'lib','sdl','windows','include','SDL2')]
+clWin_sdl.libpath += [os.path.join(engineDir.abspath,'lib','sdl','windows','mingw','lib64')]
+clWin_sdl.libs     = [lib for lib in clWin_sdl.libs if lib not in ['SDL2']] + ['SDL264']
+clWin_sdl.ldflags += ['-static']
+#todo Might be only for dynamic linking, and not need this file
+libSDL2 = engineDir.Dir('lib').Dir('sdl').Dir('windows').Dir('mingw').Dir('lib64').File('SDL264.dll')
+#:::::::::::::::::::::::::::::::
 
 
 # Game Client: Build Object
@@ -484,9 +506,10 @@ cg         = base.clone()
 ## Source code
 cg.src     = srcGame_cg
 cg.srcdir  = gameDir 
+cg.ssdir   = 'cgame'
 # Custom compiler name (non verbose)
-cg.cStr    = 'cgame_CC'
-cg.lStr    = 'cgame_LD'
+cg.cStr    = 'CC_cgame'
+cg.lStr    = 'LD_cgame'
 # Output data
 cg.bintype = 'lib'
 # Add defines
@@ -512,9 +535,10 @@ sg         = base.clone()
 ## Source code
 sg.src     = srcGame_sg
 sg.srcdir  = gameDir 
+sg.ssdir   = 'sgame'
 # Custom compiler name (non verbose)
-sg.cStr    = 'sgame_CC'
-sg.lStr    = 'sgame_LD'
+sg.cStr    = 'CC_sgame'
+sg.lStr    = 'LD_sgame'
 # Output data
 sg.bintype = 'lib'
 # Add defines
@@ -540,9 +564,10 @@ ui         = base.clone()
 ## Source code
 ui.src     = srcGame_ui
 ui.srcdir  = gameDir 
+ui.ssdir   = 'ui'
 # Custom compiler name (non verbose)
-ui.cStr    = 'ui_CC'
-ui.lStr    = 'ui_LD'
+ui.cStr    = 'CC_ui'
+ui.lStr    = 'LD_ui'
 # Output data
 ui.bintype = 'lib'
 # Add defines
@@ -569,6 +594,7 @@ clWin_rls.setup()
 clWin_dbg.setup()
 clLnx_rls.setup()
 clLnx_dbg.setup()
+clWin_sdl.setup()
 ## Game: Client
 cgLnx_rls.setup()
 cgLnx_dbg.setup()
@@ -640,6 +666,7 @@ trgEngine_ld = [clLnx_dbg.trg]
 trgEngine_lr = [clLnx_rls.trg]
 trgEngine_wd = [clWin_dbg.trg]
 trgEngine_wr = [clWin_rls.trg]
+trgEngine_ws = [clWin_sdl.trg]
 # # server
 # #TODO add server (here and trgAll)
 # # game
@@ -648,7 +675,7 @@ trgGame_lr   = [cgLnx_rls.trg, sgLnx_rls.trg, uiLnx_rls.trg]
 trgGame_wd   = [cgWin_dbg.trg, sgWin_dbg.trg, uiWin_dbg.trg]
 trgGame_wr   = [cgWin_rls.trg, sgWin_rls.trg, uiWin_rls.trg]
 # # all
-trgAll       = [trgEngine_ld, trgEngine_lr, trgEngine_wd, trgEngine_wr, 
+trgAll       = [trgEngine_ld, trgEngine_lr, trgEngine_wd, trgEngine_wr, trgEngine_ws,
                 trgGame_ld, trgGame_lr, trgGame_wd, trgGame_wr]
 
 ## Groups
@@ -659,6 +686,7 @@ elif win32: Alias('engine', trgEngine_wr)
 if   posix: Alias('engine-dbg', trgEngine_ld)
 elif win32: Alias('engine-dbg', trgEngine_wd)
 Alias('engine-dist', trgEngine_lr + trgEngine_wr)
+Alias('engine-sdl', trgEngine_ws)
 # game
 if   posix: Alias('game', trgGame_lr)
 elif win32: Alias('game', trgGame_wr)

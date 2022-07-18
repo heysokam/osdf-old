@@ -16,7 +16,7 @@ import lib/helper/bash as sh
 # ::::::::::::::::::::
 # Mod
 const
-  modVers       = "0.2.0"
+  modVers       = "0.3.0"
   modName       = "osdf"
   fullName      = "opensource-defrag"
 
@@ -29,8 +29,8 @@ const
   devRoot       = getEnv"HOME"/"gd/osdf"
   rlsDir        = devRoot/"bin/releases"
   srcRoot       = devRoot/"src"
-  gameDir       = srcRoot/"osdf-game"
-  engineDir     = srcRoot/"osdf-engine"
+  gameDir       = srcRoot/"game"
+  engineDir     = srcRoot/"engine"
   cfgDir        = srcRoot/"cfg"
 ## Source files
 const
@@ -75,7 +75,7 @@ if alwaysClean or getOpt("c"):
 let make       = getOpt("m")
 let install    = not getOpt("r")
 let keyword    = if getBuildType() != "": getBuildType() else: "debug"
-let distribute = keyword in ["distribute"]
+let distribute = keyword in ["distribute", "game-dist"]
 let release    = keyword in ["release", "game", "engine"]
 let debug      = keyword in ["debug"]
 let v          = if isVerbose(): 1 else: 0
@@ -144,7 +144,7 @@ for id,it in cfgFiles:
   if install: cp it, installBase/modName
 
 # Avoid installing when called with "m" or "r" options
-if getOpt("r"):  quit ":: Build made & copied, but not installed or packed."
+if not install:  quit ":: Build made & copied, but not installed or packed."
 # Avoid packing when called with "i" option
 if not distribute:  quit ":: Build made, copied & installed, but not packed."
 

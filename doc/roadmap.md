@@ -7,7 +7,7 @@
 _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
 - [ ] Complete proxymod port
   - [ ] strafehud
-    - [ ] cgaz
+    - [ ] accel
     - [ ] snaps
   - [ ] pitch
   - [ ] compass
@@ -24,6 +24,7 @@ _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
 - [ ] cg_nodamagekick
 - [ ] ...
   - [ ] Complete the list of TODO features
+- [ ] Auto demo recording on timerStart, stop on timerEnd, and cancel on playerdie
 
 
 
@@ -118,8 +119,8 @@ _[this section is not a todo, but more like a wishlist of sorts]_
   - [x] AD movement
     - [x] QW balanced
     - [x] AG balanced
+  - [x] Baby Jumps (aka Duckroll)
   - [ ] SBJ
-  - [ ] Duckroll
   - [ ] Q1 rocket launcher
   - [ ] Gaus (needs new name)
   - [ ] ...

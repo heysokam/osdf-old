@@ -74,7 +74,7 @@ def getCliPlatform_tru():  # Converts alias to SCons supported architecture
 validPlatforms = ['posix', 'win32' ]  #TODO: 'win32' #todo:,'darwin',.  They depend on the toolchain, they need specific config
 validArchs     = ['x86_64',]  # amd64 defaults to x86_64, unless specified.   #todo: 'x86', 'arm', 'arm64'
 validTargets   = ['release','debug',     'distribute', 'all',
-                  'engine', 'engine-dbg','engine-dist',
+                  'engine', 'engine-dbg','engine-dist', 'engine-sdl',
                   # 'server', 'server-dbg','server-dist',  #TODO: 'server',
                   'game',   'game-dbg',  'game-dist']
 # Aliases
@@ -177,7 +177,7 @@ class BuildInfo:   # Build Information that will be printed on console
 # Build Object Class
 #class BuildData:    #todo (maybe):  figuring out super() for cloning was stupid hard, compared to the benefit
 class BuildObject:
-  def __init__(self, src:list|None=None, srcdir:str|None=None, bindir:str|None=None, binname=None, bintype=None, \
+  def __init__(self, src:list|None=None, srcdir:str|None=None, bindir:str|None=None, binname:str|None=None, bintype:str|None=None, ssdir:str|None=None, \
                ctype:str|None=None, ccflags:list|None=None, defines:list|None=None, libs:list|None=None, ldflags:list|None=None, \
                ccpath:list|None=None, libpath:list|None=None, parse:list|None=None, \
                env=None, cStr:str|None=None, lStr:str|None=None, plat:str|None=None, arch:str|None=None ):
@@ -187,6 +187,7 @@ class BuildObject:
     self.bindir  = '' if bindir  is None else bindir   # * Folder where the binaries will be created
     self.binname = '' if binname is None else binname  # * Base name of the binary  `name` will become `name-x64`
     self.bintype = '' if bintype is None else bintype  # * Output type of the file (executable or library)
+    self.ssdir   = '' if ssdir   is None else ssdir    # - SubSub folder where objects will be built. Avoids env clashing
     # Compiler                                               - Optional
     self.ctype   = '' if ctype   is None else ctype    # - Performance type (release, debug, etc) (ctype = compiler type)
     self.ccflags = [] if ccflags is None else ccflags  # - Flags to append to CCFLAGS     (-Wflag)
@@ -209,6 +210,7 @@ class BuildObject:
     print(   "::::::::::::::::::::::::::::::::::::::::::")
     print('src=\n',[str(n) for n in self.src],"\n:::::::::::::::::::::::::::::")
     print('srcdir=\n',self.srcdir,"\n:::::::::::::::::::::::::::::")
+    print('ssdir=\n',self.ssdir,"\n:::::::::::::::::::::::::::::")
     print('bindir=\n',self.bindir,"\n:::::::::::::::::::::::::::::")
     print('binname=\n',self.binname,"\n:::::::::::::::::::::::::::::")
     print('bintype=\n',self.bintype,"\n:::::::::::::::::::::::::::::")
@@ -248,6 +250,7 @@ class BuildObject:
     self.chkStr (self.binname, errNone=True)
     self.chkStr (self.bintype, errNone=True)
     self.chkType(self.bintype, ['bin','lib'])
+    self.chkStr (self.ssdir)
     #self.ccflags, self.defines, self.libs, self.ldflags, self.ccpath, self.parse,
     self.chkStr (self.ctype)
     self.chkType(self.ctype, ['release','debug',''])
@@ -275,6 +278,7 @@ class BuildObject:
     result.bindir  = self.bindir  if self.bindir  else data.bindir
     result.binname = self.binname if self.binname else data.binname
     result.bintype = self.bintype if self.bintype else data.bintype
+    result.ssdir   = self.ssdir   if self.ssdir   else data.ssdir
     # Compiler
     result.ctype   = self.ctype   if self.ctype   else data.ctype
     result.ccflags = [f for f in emptyIfNone(self.ccflags)] + [f for f in emptyIfNone(data.ccflags)]
@@ -296,14 +300,18 @@ class BuildObject:
     # Add Processed data
     self.prefix  = f'{self.ctype}-' if self.ctype else ''         # Prefix for the alias
     self.subdir  = self.prefix + f'{self.plat}-{self.arch}'       # Alias for this build
-    self.outdir  = self.bindir.Dir(self.subdir).Dir(self.srcdir.relpath)  # Final outdir. Will be linked to the source code folder
-    self.trg     = self.outdir.Dir('..').File(self.binname)       # Combine outdir+binname into real output trg
+    if not self.ssdir:
+      self.outdir = self.bindir.Dir(self.subdir).Dir(self.srcdir.relpath) # Final outdir. Will be linked to the source code folder
+      self.trg    = self.outdir.Dir('..').File(self.binname)       # Combine outdir+binname into real output trg
+    else:
+      self.outdir = self.bindir.Dir(self.subdir).Dir(self.ssdir)
+      self.trg    = self.outdir.Dir('..').File(self.binname)
     if isVerbose():
       print(f':: Created properties for BuildData {self.trg}:')
-      print(f':  self.prefix = {self.prefix}')
-      print(f':  self.subdir = {self.subdir}')
-      print(f':  self.outdir = {self.outdir}')
-      print(f':  self.trg    = {self.trg}')
+      print(f':   prefix = {self.prefix}')
+      print(f':   subdir = {self.subdir}')
+      print(f':   outdir = {self.outdir}')
+      print(f':   trg    = {self.trg}')
     # Error check data
     self.check()
     if self.env: self.chkEnv(self.env)  # Only check if not none. If none, a new one will be created
@@ -321,7 +329,7 @@ class BuildObject:
     self.env.AppendUnique(CPPDEFINES = self.defines)
     self.env.AppendUnique(LIBS       = self.libs)
     self.env.AppendUnique(LINKFLAGS  = self.ldflags)
-    self.env.AppendUnique(CCPATH     = self.ccpath)
+    self.env.AppendUnique(CPPPATH    = self.ccpath)
     self.env.AppendUnique(LIBPATH    = self.libpath)
     self.env.ParseConfig(self.parse) #TODO: Fix this for mingw, and for win32 hosts
     # Remove lib prefix
@@ -334,13 +342,15 @@ class BuildObject:
       if self.lStr:
         self.env.Replace(LINKCOMSTR   =f'{self.lStr} $TARGET')
         self.env.Replace(SHLINKCOMSTR =f'{self.lStr} $TARGET')
-    # Link srcdir to outdir       
-    lnkDir = LinkDir(self.srcdir, self.outdir)
+    # Link srcdir to outdir    (will be  outdir/ssdir  if ssdir is set)
+    lnkDir = LinkDir(self.srcdir.Dir('..'), self.outdir)
     # Convert src/file.c to lnk/file.c     #  src/sub/file.c to lnk/sub/file.c  when file is /sub/file.c
     code = None
     for file in self.src:  # For every file in the input src list
-      if code is None: code  = [os.path.join(lnkDir.abspath,'..',file.relpath)]  # Initializes list. Only happens the first time. 
-      else:            code += [os.path.join(lnkDir.abspath,'..',file.relpath)]  # lnkDir+file = Prepend lnkDir to the file string  `/path/to/folder`+`/sub/file.c`
+      if not self.ssdir: f = os.path.join(lnkDir.abspath,'..',file.relpath)
+      else:              f = os.path.join(lnkDir.abspath,file.relpath)
+      if code is None:   code  = [f]  # Initializes list. Only happens the first time. 
+      else:              code += [f]  # lnkDir+file = Prepend lnkDir to the file string  `/path/to/folder`+`/sub/file.c`
     # Setup SCons to compile src with env as output
     if   self.bintype in ['bin']: self.trg = self.env.Program(      target=self.trg.abspath, source=code)
     elif self.bintype in ['lib']: self.trg = self.env.SharedLibrary(target=self.trg.abspath, source=code)

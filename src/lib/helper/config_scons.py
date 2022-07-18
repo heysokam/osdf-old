@@ -48,8 +48,8 @@ version           = getVersion(verFile,verMacro)     # If this is changed, we ov
 
 # SCons config
 ## General
-scDir             = 'scons'         # Relative to the bin folder. Will be created when needed
-scDecider         = 'MD5-timestamp' # First timestamp, then MD5. SCcons default = 'MD5' = 'content'. Makefile default = timestamp = 'make'
+scDir             = binDir.Dir('scons')  # Relative to the bin folder. Will be created when needed
+scDecider         = 'MD5-timestamp'  # First timestamp, then MD5. SCcons default = 'MD5' = 'content'. Makefile default = timestamp = 'make'
 cores             = 12   # Max Computer cores available. Set to 0 or None for default cli behavior
 coresPc           = 0.7  # Percentage of cpu that will be used for compiling jobs. Ignored if cores is 0, or `-j NUM` is set from CLI
 ## Verbose
