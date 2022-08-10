@@ -80,15 +80,20 @@ pcreDir = os.path.join(libDir,'pcre')
 # Gamecode src folders
 cgDir  = 'cgame'
 sgDir  = 'sgame'
-uiDir  = 'ui'
+uiDir  = 'ui_q3'
 phyDir = os.path.join(sgDir,'phy')
 hudDir = os.path.join(cgDir,'hud')
-# LCC Compiler tools folder     #TODO: Port from ioq3 Makefile
+# LCC Compiler tools folder     #todo: Port from ioq3 Makefile 
 # toolDir= lnkDir +s+ 'tools'
 # lccDir = lnkDir+toolDir +s+ 'lcc'
 # Not used
 asmDir = 'asm'
 tuiDir = 'ui_ta'
+# New UI folders (WIP)
+nuiDir       = 'ui'
+nuiDir_menu  = os.path.join(nuiDir,'menu')
+nuiDir_fwork = os.path.join(nuiDir,'framework')
+nuiDir_color = os.path.join(nuiDir,'color')
 
 ## Compiler Flags
 # ::::::::::::::::

@@ -76,7 +76,8 @@ validArchs     = ['x86_64',]  # amd64 defaults to x86_64, unless specified.   #t
 validTargets   = ['release','debug',     'distribute', 'all',
                   'engine', 'engine-dbg','engine-dist', 'engine-sdl',
                   # 'server', 'server-dbg','server-dist',  #TODO: 'server',
-                  'game',   'game-dbg',  'game-dist']
+                  'game',   'game-dbg',  'game-dist',
+                  'q3ui', 'nui'] # New UI (wip)  #TODO: merge to game when done
 # Aliases
   # Q3 renames  (not using them, keeping only as reference for future support implementation)
   # q3Platforms  = ['x86_64', 'x86', 'mingw32', 'mingw64','darwin', 'aarch64']
@@ -345,12 +346,11 @@ class BuildObject:
     # Link srcdir to outdir    (will be  outdir/ssdir  if ssdir is set)
     lnkDir = LinkDir(self.srcdir.Dir('..'), self.outdir)
     # Convert src/file.c to lnk/file.c     #  src/sub/file.c to lnk/sub/file.c  when file is /sub/file.c
-    code = None
+    code = []
     for file in self.src:  # For every file in the input src list
-      if not self.ssdir: f = os.path.join(lnkDir.abspath,'..',file.relpath)
-      else:              f = os.path.join(lnkDir.abspath,file.relpath)
-      if code is None:   code  = [f]  # Initializes list. Only happens the first time. 
-      else:              code += [f]  # lnkDir+file = Prepend lnkDir to the file string  `/path/to/folder`+`/sub/file.c`
+      # lnkDir+file = Prepend lnkDir to the file string  `/path/to/folder`+`/sub/file.c`
+      f = os.path.join(lnkDir.abspath,file.relpath)
+      code += [f]
     # Setup SCons to compile src with env as output
     if   self.bintype in ['bin']: self.trg = self.env.Program(      target=self.trg.abspath, source=code)
     elif self.bintype in ['lib']: self.trg = self.env.SharedLibrary(target=self.trg.abspath, source=code)

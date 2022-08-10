@@ -305,7 +305,14 @@ srcUI_rankings = [
   gameDir.Dir(uiDir).File('ui_spreset.c'),
   ]
 ## Filters: Apply
-srcGame_ui = [f for f in srcUI if f not in srcUI_rankings] + srcUI_bg + srcShlib
+srcGame_ui = [f for f in srcUI if f not in srcUI_rankings] +srcUI_bg +srcShlib
+
+## Ui New
+srcUI_core  = Glob(gameDir.Dir(nuiDir).Dir('c').path +sep+ '*.c')
+srcUI_menu  = Glob(gameDir.Dir(nuiDir_menu).Dir('c').path +sep+ '*.c')
+srcUI_fwork = Glob(gameDir.Dir(nuiDir_fwork).Dir('c').path +sep+ '*.c')
+srcUI_color = Glob(gameDir.Dir(nuiDir_color).Dir('c').path +sep+ '*.c')
+srcGame_nui = srcUI_core +srcShlib +srcUI_menu +srcUI_fwork +srcUI_color# +srcUI_bg
 
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 ############################################################
@@ -586,6 +593,14 @@ uiWin.defines += [f'ARCH_STRING="{uiWin.arch}"']  #TODO: Fix Memory Address nons
 uiWin_rls = uiWin.merge(rls)
 uiWin_dbg = uiWin.merge(dbg)
 
+#:::::::::::::::::::::::::::::::
+# Ui New
+uiNew = uiLnx_rls.clone()
+uiNew.src = srcGame_nui
+uiNew.ssdir = 'nui'
+uiNew.binname = 'n'+uiNew.binname
+#:::::::::::::::::::::::::::::::
+
 
 # Setup BuildObjects with SCons
 #:::::::::::::::::::::::::::::::
@@ -610,6 +625,8 @@ uiLnx_rls.setup()
 uiLnx_dbg.setup()
 uiWin_rls.setup()
 uiWin_dbg.setup()
+## Ui New
+uiNew.setup()
 
 
 #############################################################################
@@ -677,6 +694,11 @@ trgGame_wr   = [cgWin_rls.trg, sgWin_rls.trg, uiWin_rls.trg]
 # # all
 trgAll       = [trgEngine_ld, trgEngine_lr, trgEngine_wd, trgEngine_wr, trgEngine_ws,
                 trgGame_ld, trgGame_lr, trgGame_wd, trgGame_wr]
+# WIP
+trgUiQ3      = [uiLnx_rls.trg]
+trgUiNew     = [uiNew.trg]
+Alias('q3ui', trgUiQ3)
+Alias('nui', trgUiNew)
 
 ## Groups
 ### Current Platform

@@ -1,5 +1,5 @@
 # ::::::::::::::::::::
-#!/usr/bin/env -Sv nim --hints:off
+#!/usr/bin/env -S nim --hints:off
 # ScriptMode:
 let sMode= "v"    ; if sMode == "w": mode= Scriptmode.Whatif elif smode == "s": mode= ScriptMode.Silent elif smode == "v": mode= ScriptMode.Verbose else: discard #   WhatIf: Do not run commands, instead just echo what would have been done.
 # ::::::::::::::::::::
@@ -80,6 +80,24 @@ let release    = keyword in ["release", "game", "engine"]
 let debug      = keyword in ["debug"]
 let v          = if isVerbose(): 1 else: 0
 let cmdBuild   = &"scons V={v} {keyword}"
+
+# :::::::::::::::::::: #TODO: REMOVE this   ------------------
+# New UI block    
+if getOpt("n"):
+  withDir srcRoot:
+    # Build it
+    echo &":: Entered folder: {getCurrentDir()}"
+    let cmdNewUi = &"scons V={v} nui"
+    try: exec cmdNewUi
+    except OSError: quit "ERR:: Failed to compile New UI. Read compiler output for more info."
+    # Copy to test dir
+    let nuiLib  = binDir_rl/"nuix86_64.so"
+    let testDir = "/app/vg/defrag/testdg/"
+    let nuiFile = testdir/"uix86_64.so"
+    cp nuiLib, nuiFile, "file"
+    # Exit
+    quit &":: New UI file built, and installed as {nuiFile}."
+# :::::::::::::::::::: # TODO: REMOVE this   ------------------
 
 # Enter srcDir and build
 withDir srcRoot:

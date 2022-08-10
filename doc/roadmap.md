@@ -1,6 +1,6 @@
 # Roadmap:
 ## Strafehud and velocity pads (0.3.0)
-- [ ] Proxymod strafehud  _// Requires a non-qvm environment (depends on <stdlib.h> for math)_
+- [ ] Proxymod strafehud
 - [ ] Velocity pads  
 
 ## Proxymod port (0.4.0) 
@@ -94,8 +94,10 @@ _[this section is not a todo, but more like a wishlist of sorts]_
 - [ ] Airjump Powerup
 - [ ] Physics selection Powerups (cpm and vq3 sections in the same map)
 - [ ] Client sided logic (EntityPlus and SourceEngine-I/O inspired)
-- [ ] Native race mode (like AG, first to finish wins. also FFA race, standings based on finish order)
-- [ ] PVP race mode (can interact with other players, and do things to change their movement)
+- [ ] Gamemodes:
+  - [ ] Native race mode (like AG, first to finish wins. also FFA race, standings based on finish order)
+  - [ ] PVP race mode (can interact with other players, and do things to change their movement)
+  - [ ] Timed Duel maps : Pick all key items to set a time (like ctf, but for duel maps instead)
 - [ ] Look-behind command (map-based, not global)
 - [ ] Improved replay tools (q3mme inspired, using the new UI tools)
 - [ ] New data and stats:
@@ -105,7 +107,6 @@ _[this section is not a todo, but more like a wishlist of sorts]_
 - [ ] Ghosts expand:
   - [ ] Multiple ghosts (example: own & spec'ed player)
 - [ ] Conditional binds (bind X if cvar cvarvalue actionTrue actionFalse)
-- [ ] ? Optional taller pickups / flags
 - [ ] Improved Loading screen:
   - [ ] Adjust thumbnail based on resolution
   - [ ] Better map info distribution
@@ -120,12 +121,12 @@ _[this section is not a todo, but more like a wishlist of sorts]_
     - [x] QW balanced
     - [x] AG balanced
   - [x] Baby Jumps (aka Duckroll)
-  - [ ] SBJ
+  - [x] SBJ
   - [ ] Q1 rocket launcher
   - [ ] Gaus (needs new name)
   - [ ] ...
 - [ ] vq2 movement
-- [ ] vq4 movement
+- [x] vq4 movement
 - [ ] New mechanics
   - [ ] Walljumps (urt insp) (optional wsw-like powerup, to boost its power)
   - [ ] ...

@@ -8,11 +8,16 @@
 > ... : Part of the feature listed above it
 
 # Unreleased
+2022.08.04
+```
+fix : Fixed a buildsystem bug. After changing to SCons nodes, the engine wasn't being built
+```
 ... :  
 
 # History
 ## 0.3.0
-_v0.3.0-r0_
+_v0.3.0-r0_  
+
 2022.07.18  
 ```
 new : Initial accel hud code has been added to the buildsystem. Currently inactive (WIP)  
@@ -42,7 +47,9 @@ new : pm_time hud element   (mainly related to skimming, but general purpose)
 new : New mechanic: Rampslides from Q2  (currently active for VQ4 physics)  
 chg : (VQ1) Added Q3 Overbounces  
 fix : (VQ1) Fixed visual glitch on physics change without `/map` command  
-new : (VQ1) Crouching mid-air raises your feet by 14u (sbj). Allows jump to reach higher and further.  
+fix : (VQ1) Fixed downramps sometimes not giving a speed boost
+new : (VQ1) New mechanic: Feetraise
+... :       Crouching mid-air raises your feet by 14u (sbj). Allows jump to reach higher and further.  
 new : (VQ4) Crouching mid-air raises your feet by 12u (sbj). Allows jump to reach higher and further.  
 ```
 
@@ -192,6 +199,7 @@ _Important : Lead us towards our mission/goals. Require planning, organization a
 #::::::::::::::
 fix : double-ramp-boost bug on `r7-climbworld` (found on VQ1, check on other physics)
 fix : Wall-stop bug
+chg : `g_synchronousClients 1` by default for offline
 
 #:::::::::::::::
 # 2 : IMP.notU : Planned Goals
@@ -238,4 +246,5 @@ new : USE buttons
 new : Unlock 1000 maxfps. Possible?
 new : /varcommand
 chg : (CPM) Correct deceleration values
+fix : 1ups overbounce fix
 
