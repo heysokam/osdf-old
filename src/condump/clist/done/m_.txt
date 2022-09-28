@@ -1,8 +1,0 @@
-m = [
-{"name":"m_filter", "value": "0"}
-{"name":"m_forward", "value": "0.25"}
-{"name":"m_menuSensitivity", "value": "1"}
-{"name":"m_pitch", "value": "0.022"}
-{"name":"m_side", "value": "0.25"}
-{"name":"m_yaw", "value": "0.022"}
-]

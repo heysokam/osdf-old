@@ -1,5 +1,0 @@
-
-05:53:22
-05:53:22 803 total cvars
-05:53:22 803 cvar indexes
-05:53:22 Dumped console text to clist/wolfcam_.txt.

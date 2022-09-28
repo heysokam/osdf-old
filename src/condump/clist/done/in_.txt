@@ -1,5 +1,0 @@
-in = [
-{"name":"in_keyboardDebug", "value": "0"}
-{"name":"in_mouse", "value": "1"}
-{"name":"in_nograb", "value": "0"}
-]

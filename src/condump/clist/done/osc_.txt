@@ -1,5 +1,0 @@
-
-05:53:20
-05:53:20 803 total cvars
-05:53:20 803 cvar indexes
-05:53:20 Dumped console text to clist/osc_.txt.

@@ -1,9 +1,0 @@
-[submodule "src/osdf-ioq3"]
-	path = src/osdf-ioq3
-	url = https://github.com/heysokam/osdf-ioq3.git
-[submodule "src/engine"]
-	path = src/engine
-	url = https://github.com/heysokam/osdf-engine.git
-[submodule "src/game"]
-	path = src/game
-	url = https://github.com/heysokam/osdf-game.git
