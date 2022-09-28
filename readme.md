@@ -1,4 +1,4 @@
-# Kua: Multiplayer
+# Opensource Defrag: GPL
 
 ## Goals:
 ### Code & License:
