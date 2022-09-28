@@ -159,12 +159,14 @@ new : Initial Main Menu UI layout, background and theme
 ## 0.0.1
 ```
 new : Basic cpm strafing (Correct accel, aircontrol and A/D strafing)  
-new : Instant respawn.   
-... : player_die() has no delay.   
+new : Instant respawn:  
+... : Respawn minimum delay changed from 1700 to 0 on player_die()
 ... : g_forcerespawn now means miliseconds, instead of seconds  
 ... : g_forcerespawn default value changed to 1. Previous behavior is now `g_forcerespawn 20000`  
+chg : Powerups no longer drop on player_die()  (sk->wrn : date/version might be wrong)
+chg : Score is now set to 0 on player_die()
+... : New function SetScore() on g_combat.c. Modified version of AddScore()
 new : Gamemode "run" (basic). Replaces FFA, `g_gametype 0`  
-... : Powerups no longer drop on dead
 chg : Changed default pmove_fixed value to 1. It doesn't need to be changed by cfg to work correctly.  
 new : Created default .cfg files. Solves pmove_fixed not being used automatically, and some other configuration basics.  
 ```
@@ -217,6 +219,8 @@ fix : Mappers/visual cfg gets wiped out by the build script
 port github.com/Jelvan1/cgame_proxymod#examples
 
 port Warp entities
+
+new : SURF_FORCESTEPUP
 
 #SP
 new : Font support

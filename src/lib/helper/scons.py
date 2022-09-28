@@ -88,7 +88,7 @@ validTargets   = ['release','debug',     'distribute', 'all',
 vmArchs         = ['x86_64', 'x86', 'arm', 'aarch64'] # List of architectures compatible with vm compiling  #TEMP: Q3 names. fix this
 def getCliTargets(): # Returns a list of valid targets, with error checking
   if not cliTarg(): return None # Skip empty from check, so that it doesn't err
-  result = ['']
+  result = []
   for it in COMMAND_LINE_TARGETS:
     if it not in validTargets: sys.exit(f'::ERR Target  {it}  is not a valid target')
     result.append(it)

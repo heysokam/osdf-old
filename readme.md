@@ -1,16 +1,8 @@
-# Open Source defrag's mod code
+# Kua: Multiplayer
 
 ## Goals:
 ### Code & License:
-- Respect FOSS philosophy. Open source and community focus.
-- Eliminate all traces of q3a-sdk licensing constraints.
-- Rewrite the code 1:1, with the aid of reverse-engineered code only where strictly necessary.
-- Community based, where anyone can become a contributor.
-
 ### Gameplay:
-- Maintain gameplay 1:1.
-- Achieve compatibility with existing maps. Avoid requiring any form of map porting for existing content.
-- Community collaboration in bug-fixing and further development of the mod.
 
 ## Reference Repositories
 ## Base:
@@ -25,10 +17,3 @@ Most accurate non-id3-engine implementation to date
 
 - oDFe: https://github.com/JBustos22/oDFe.git  
 Base engine that was forked to start osdf-engine
-
-## Helper:
-Repositories that can aid in the success of this project:
-- Existing reverse engineering effort: https://github.com/krsh732/DF_Reverse_Stuff
-- Q3vm disassembler: https://github.com/brugal/q3vm 
-- Existing OpenDF attempt, based on OpenArena: https://github.com/oitzujoey/opendf
-- Existing CPM gameplay implementation: https://github.com/rdntcntrl/ratoa_gamecode.git

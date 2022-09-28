@@ -118,8 +118,6 @@ scons game-dbg      # Builds debug version of the gamecode only
 ```
 
 ## From Windows
-_(To be done)_  
-The current buildsystem doesn't have support for compilation from windows.  
 
 ### Native:
 _(tested on powershell)_
@@ -149,7 +147,7 @@ If you ended with more than one SCons version installed:
 : ... or always use `py -3.10 -m scons` (or whatever version) everytime you run the buildsystem
 
 #### Install chocolatey:
-Download from their website, follow instructions
+Download from their website, follow their install instructions
 
 #### Install mingw with chocolatey:
 ```bash
@@ -157,7 +155,8 @@ choco install mingw
 ```
 
 #### To build
-See general build instructions
+If everything is installed correctly up to this point, the buildsystem will work normally.
+See general build instructions for how to use it.  
 
 ### MSYS
 _To be done_  
@@ -170,7 +169,7 @@ _To be done_
 
 ### Cygwin
 **Unknown territory**  
-Possibly worse than MSYS2 (due to mingw-w64 libraries) maybe? But completely unknown  
+Possibly worse than MSYS2 (due to mingw-w64 libraries)? But completely unknown  
 
 ### WSL
 **Will not be supported**  
@@ -186,7 +185,7 @@ _For now, read the file comments to understand what it does._
 ```bash
 nim REPO/src/build.nims
 ```
-Requires Nim _(install with choosenim, for your sanity)_  
+Requires Nim _(install with choosenim, as its recommended. but will work with any nim install method)_  
 
 Only useful when you want to **automate** local installation or distribution of the mod.  
 It can be called with different switches, to control what it does.  

@@ -113,6 +113,10 @@ _[this section is not a todo, but more like a wishlist of sorts]_
   - [ ] Add map description text field
 - [ ] Separate respawn command
 - [ ] 0ups Teleport property
+- [ ] Improved networking
+  - [ ] serverside rollback
+  - [ ] clientside prediction for projectiles
+  - [ ] predicted explosions
 
 
 ### New physics

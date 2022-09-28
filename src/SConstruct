@@ -722,18 +722,6 @@ Alias('distribute', ['engine-dist', 'game-dist'])  #TODO add server
 # all
 Alias('all', trgAll)
 
-## Keywords  : build count
-#  !! TODO:   All keywords are aliases !!!
-#  game       = 1plat * 3target * 1perf   =  3obj   # Release Game   locally   ** #1
-#  debug      = 1plat * 5target * 1perf   =  5obj   # For development locally  ** #2 
-#  game-dist  = 2plat * 3target * 1perf   =  6obj   # Mod only                 ** TOP priority
-#  release    = 1plat * 5target * 1perf   =  5obj   # For best performance
-#! install    = 1plat * 5target * 1perf   =  5obj   # Auto installing release
-#  engine     = 1plat * 1target * 1perf   =  1obj   # Release Engine locally
-#! server     = 1plat * 1target * 1perf   =  1obj   # Release Server locally
-#  distribute = 2plat * 5target * 1perf   = 10obj   # Engine+mod
-#  all        = 2plat * 5target * 2perf   = 20obj   # Engine+mod
-
 
 # Default targets
 #::::::::::::::::::
